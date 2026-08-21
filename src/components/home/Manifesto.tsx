@@ -37,7 +37,7 @@ export const Manifesto: React.FC = () => {
           <Reveal delay={3}>
             <div className="flex items-center gap-4 pt-2">
               <span className="font-display text-5xl text-[var(--primary)]">↳</span>
-              <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/70">
+              <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[var(--text-soft)]">
                 Marcas + Creators + Conteúdo
               </p>
             </div>

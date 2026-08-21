@@ -31,13 +31,15 @@ export const FilterBar: React.FC<FilterBarProps> = ({ active, onChange, counts }
 export const WorkItem: React.FC<{
   project: PortfolioProject;
   aspect?: string;
-  large?: boolean;
-}> = ({ project, aspect = "aspect-[4/3]", large = false }) => (
-  <Link to={`/portfolio/${project.slug}`} className={`work-item group ${large ? "" : ""}`}>
+}> = ({ project, aspect = "aspect-[4/3]" }) => (
+  <Link to={`/portfolio/${project.slug}`} className="work-item group">
     <div className={`media-frame ${aspect}`}>
       <img src={project.imagem} alt={project.title} loading="lazy" />
-      <span className="absolute top-4 left-4 z-10 text-[0.58rem] font-extrabold uppercase tracking-[0.22em] text-white bg-black/60 backdrop-blur px-3 py-1.5">
-        {project.categoria}
+      <span className="absolute top-4 left-4 z-10 flex items-center gap-2 text-[0.58rem] font-extrabold uppercase tracking-[0.22em]">
+        <span className="text-white/50">01 /</span>
+        <span className="text-[var(--primary)] bg-black/60 backdrop-blur px-2.5 py-1">
+          {project.categoria}
+        </span>
       </span>
     </div>
     <div className="work-meta">
@@ -66,7 +68,7 @@ export const PortfolioGrid: React.FC<{ projects: PortfolioProject[] }> = ({ proj
     <div className="flex flex-col gap-16 lg:gap-24">
       {first && (
         <Reveal className="reveal-clip">
-          <WorkItem project={first} aspect="aspect-video lg:aspect-[21/9]" large />
+          <WorkItem project={first} aspect="aspect-video lg:aspect-[21/9]" />
         </Reveal>
       )}
 

@@ -51,7 +51,7 @@ export const BlogDetails: React.FC = () => {
         <div className="container max-w-4xl">
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-zinc-500 hover:text-[var(--primary)] mb-10 transition-colors"
+            className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-[var(--text-faint)] hover:text-[var(--primary)] mb-10 transition-colors"
           >
             <ArrowLeft size={14} />
             <span>Notes from the Studio</span>
@@ -62,7 +62,7 @@ export const BlogDetails: React.FC = () => {
             <h1 className="display-lg mb-10">{post.title}</h1>
           </Reveal>
 
-          <div className="flex flex-wrap items-center gap-x-8 gap-y-2 text-[0.62rem] font-extrabold uppercase tracking-[0.22em] text-zinc-500 hairline-t pt-5">
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-2 text-[0.62rem] font-extrabold uppercase tracking-[0.22em] text-[var(--text-faint)] hairline-t pt-5">
             <span>{post.autor}</span>
             <span>{post.data}</span>
             <span>{post.tempoLeitura} de leitura</span>

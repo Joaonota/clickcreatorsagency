@@ -8,7 +8,7 @@ import {
   FilterBar,
 } from "../components/portfolio/PortfolioGrid";
 import { CreatorGrid } from "../components/creators/CreatorGrid";
-import { PartnersShowcase } from "../components/partners/PartnersShowcase";
+import { TrustedBy } from "../components/partners/TrustedBy";
 import { TeamGrid } from "../components/team/TeamGrid";
 import { SocialFeed } from "../components/common/SocialFeed";
 import { CTASection } from "../components/common/CTASection";
@@ -91,8 +91,8 @@ export const Home: React.FC = () => {
       {/* CREATORS */}
       <CreatorGrid creators={creators} />
 
-      {/* PARTNERS */}
-      <PartnersShowcase partners={partners} />
+      {/* PARTNERS — compacto */}
+      <TrustedBy partners={partners} />
 
       {/* TEAM */}
       <TeamGrid members={team} />

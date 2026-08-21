@@ -41,7 +41,7 @@ export const TeamGrid: React.FC<{ members: TeamMember[] }> = ({ members }) => (
   <section className="section-y bg-[var(--surface)] hairline-t hairline-b">
     <div className="container">
       <SectionHeader
-        index="(04)"
+        index="(05)"
         eyebrow="The Team"
         titleLines={["THE PEOPLE", "BEHIND", "THE WORK"]}
       />

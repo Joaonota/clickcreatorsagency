@@ -48,16 +48,16 @@ export const ProjectDetails: React.FC = () => {
   return (
     <div className="flex flex-col">
       {/* Cinematic hero */}
-      <section className="relative min-h-[85svh] flex flex-col justify-end overflow-hidden">
+      <section className="relative min-h-\[85svh\] flex flex-col justify-end overflow-hidden force-dark">
         <div className="absolute inset-0 z-0 media-frame !overflow-hidden">
           <img src={project.imagem} alt={project.title} className="kenburns" />
         </div>
-        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/50 to-[#0a0a0c]/40" />
+        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[var(--background)] via-[var(--background)]/50 to-[var(--background)]/40" />
 
         <div className="container relative z-10 pb-14 pt-44">
           <Link
             to="/portfolio"
-            className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-white/70 hover:text-[var(--primary)] mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-[var(--text-soft)] hover:text-[var(--primary)] mb-8 transition-colors"
           >
             <ArrowLeft size={14} />
             <span>Selected Work</span>
@@ -78,12 +78,12 @@ export const ProjectDetails: React.FC = () => {
             { label: "Ano", value: "2025" },
           ].map((meta) => (
             <div key={meta.label} className="flex flex-col gap-1 pr-4 border-l border-[var(--border)] pl-4 first:border-l-0 first:pl-0">
-              <span className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] text-zinc-500">
+              <span className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] text-[var(--text-faint)]">
                 {meta.label}
               </span>
               <span
                 className={`font-display text-lg uppercase tracking-wide ${
-                  meta.accent ? "text-[var(--primary)]" : "text-white"
+                  meta.accent ? "text-[var(--primary)]" : "text-[var(--color-text)]"
                 }`}
               >
                 {meta.value}
@@ -156,7 +156,7 @@ export const ProjectDetails: React.FC = () => {
                 <Reveal
                   key={idx}
                   delay={(idx % 3) as 0 | 1 | 2}
-                  className="bg-[#0a0a0c] p-8 lg:p-10 flex items-start gap-4 min-h-[140px]"
+                  className="bg-[var(--background)] p-8 lg:p-10 flex items-start gap-4 min-h-[140px]"
                 >
                   <span className="font-display text-3xl text-[var(--primary)] leading-none">
                     {String(idx + 1).padStart(2, "0")}

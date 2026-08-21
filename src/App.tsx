@@ -8,6 +8,7 @@ import { PortfolioPage } from "./pages/Portfolio";
 import { ProjectDetails } from "./pages/ProjectDetails";
 import { CreatorsPage } from "./pages/Creators";
 import { CreatorDetails } from "./pages/CreatorDetails";
+import { PartnersPage } from "./pages/Partners";
 import { BlogPage } from "./pages/Blog";
 import { BlogDetails } from "./pages/BlogDetails";
 import { Contact } from "./pages/Contact";
@@ -26,6 +27,7 @@ function App() {
           <Route path="portfolio/:slug" element={<ProjectDetails />} />
           <Route path="creators" element={<CreatorsPage />} />
           <Route path="creators/:slug" element={<CreatorDetails />} />
+          <Route path="partners" element={<PartnersPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:slug" element={<BlogDetails />} />
           <Route path="contactos" element={<Contact />} />

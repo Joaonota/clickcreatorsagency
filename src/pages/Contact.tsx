@@ -39,7 +39,7 @@ export const Contact: React.FC = () => {
   ];
 
   const inputClass =
-    "field placeholder:text-zinc-600";
+    "field placeholder:text-[var(--text-faint)]";
 
   return (
     <div className="flex flex-col">
@@ -66,7 +66,7 @@ export const Contact: React.FC = () => {
           {/* Channels */}
           <div className="lg:col-span-4 flex flex-col gap-10">
             <Reveal>
-              <p className="eyebrow eyebrow-bare mb-2 text-white/40 flex items-center gap-3">
+              <p className="eyebrow eyebrow-bare mb-2 text-[var(--text-faint)] flex items-center gap-3">
                 <span className="pulse-dot" aria-hidden="true" />
                 Disponíveis para novos projetos
               </p>
@@ -80,7 +80,7 @@ export const Contact: React.FC = () => {
                     {...(ch.external ? { target: "_blank", rel: "noreferrer" } : {})}
                     className="group hairline-t py-6 flex flex-col gap-1.5"
                   >
-                    <span className="text-[0.58rem] font-extrabold uppercase tracking-[0.26em] text-zinc-500 group-hover:text-[var(--primary)] transition-colors">
+                    <span className="text-[0.58rem] font-extrabold uppercase tracking-[0.26em] text-[var(--text-faint)] group-hover:text-[var(--primary)] transition-colors">
                       {ch.label}
                     </span>
                     <span className="flex items-center justify-between gap-4 font-display text-xl sm:text-2xl uppercase tracking-wide group-hover:text-[var(--primary)] transition-colors break-all">
@@ -94,7 +94,7 @@ export const Contact: React.FC = () => {
 
             <Reveal delay={2}>
               <div className="hairline-t pt-6">
-                <p className="text-[0.58rem] font-extrabold uppercase tracking-[0.26em] text-zinc-500 mb-2">
+                <p className="text-[0.58rem] font-extrabold uppercase tracking-[0.26em] text-[var(--text-faint)] mb-2">
                   Estúdio
                 </p>
                 <p className="text-sm muted leading-relaxed">{contactConfig.address}</p>
@@ -168,7 +168,7 @@ export const Contact: React.FC = () => {
                       <select
                         value={formData.service}
                         onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                        className={`${inputClass} bg-transparent [&>option]:bg-[#111114]`}
+                        className={`${inputClass} bg-transparent [&>option]:bg-[var(--surface)]`}
                       >
                         <option value="marketing-digital">Marketing Digital</option>
                         <option value="producao-audiovisual">Produção Audiovisual</option>

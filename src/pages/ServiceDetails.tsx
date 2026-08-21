@@ -48,16 +48,16 @@ export const ServiceDetails: React.FC = () => {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative min-h-[75svh] flex flex-col justify-end overflow-hidden">
+      <section className="relative min-h-\[75svh\] flex flex-col justify-end overflow-hidden force-dark">
         <div className="absolute inset-0 z-0 media-frame">
           <img src={service.image} alt={service.title} className="kenburns" />
         </div>
-        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/55 to-[#0a0a0c]/40" />
+        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[var(--background)] via-[var(--background)]/55 to-[var(--background)]/40" />
 
         <div className="container relative z-10 pb-14 pt-44">
           <Link
             to="/servicos"
-            className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-white/70 hover:text-[var(--primary)] mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-[var(--text-soft)] hover:text-[var(--primary)] mb-8 transition-colors"
           >
             <ArrowLeft size={14} />
             <span>What We Do</span>
@@ -89,11 +89,11 @@ export const ServiceDetails: React.FC = () => {
       {/* Deliverables & Benefits */}
       <section className="section-y">
         <div className="container grid grid-cols-1 lg:grid-cols-2 gap-px bg-[var(--border)] border border-[var(--border)]">
-          <Reveal className="bg-[#0a0a0c] p-8 lg:p-14">
+          <Reveal className="bg-[var(--background)] p-8 lg:p-14">
             <p className="index-num mb-6">01 — Deliverables</p>
             <ul className="flex flex-col">
               {service.deliverables.map((item, idx) => (
-                <li key={idx} className="flex items-start gap-4 hairline-t py-4 text-sm font-medium text-white/85">
+                <li key={idx} className="flex items-start gap-4 hairline-t py-4 text-sm font-medium text-[var(--color-text-secondary)]">
                   <span className="text-[var(--primary)] shrink-0 font-display text-lg leading-none pt-0.5">
                     +
                   </span>
@@ -103,11 +103,11 @@ export const ServiceDetails: React.FC = () => {
             </ul>
           </Reveal>
 
-          <Reveal delay={1} className="bg-[#0a0a0c] p-8 lg:p-14">
+          <Reveal delay={1} className="bg-[var(--background)] p-8 lg:p-14">
             <p className="index-num mb-6">02 — Benefits</p>
             <ul className="flex flex-col">
               {service.benefits.map((item, idx) => (
-                <li key={idx} className="flex items-start gap-4 hairline-t py-4 text-sm font-medium text-white/85">
+                <li key={idx} className="flex items-start gap-4 hairline-t py-4 text-sm font-medium text-[var(--color-text-secondary)]">
                   <span className="text-[var(--primary)] shrink-0 font-display text-lg leading-none pt-0.5">
                     ↳
                   </span>

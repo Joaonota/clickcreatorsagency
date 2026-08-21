@@ -11,7 +11,7 @@ export const ImpactNumbers: React.FC = () => {
             <Reveal
               key={item.id}
               delay={(i % 4) as 0 | 1 | 2 | 3}
-              className="flex flex-col justify-between gap-8 py-10 lg:py-16 px-6 sm:px-10 bg-[#0a0a0c]"
+              className="flex flex-col justify-between gap-8 py-10 lg:py-16 px-6 sm:px-10 bg-[var(--background)]"
             >
               <span className="display-lg text-[var(--primary)] leading-none">{item.value}</span>
               <span className="flex flex-col">

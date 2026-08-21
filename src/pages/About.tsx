@@ -96,17 +96,17 @@ export const About: React.FC = () => {
             </Reveal>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[var(--border)] border border-[var(--border)] mt-14">
-              <Reveal className="bg-[#0a0a0c] p-8 lg:p-10">
+              <Reveal className="bg-[var(--background)] p-8 lg:p-10">
                 <p className="index-num mb-4">Mission</p>
-                <p className="text-sm leading-relaxed text-white/85">
+                <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">
                   Transformar ideias em comunicação criativa e estratégica, produzindo
                   conteúdos de altíssimo valor que impulsionam negócios e conectam marcas
                   aos seus públicos.
                 </p>
               </Reveal>
-              <Reveal delay={1} className="bg-[#0a0a0c] p-8 lg:p-10">
+              <Reveal delay={1} className="bg-[var(--background)] p-8 lg:p-10">
                 <p className="index-num mb-4">Vision</p>
-                <p className="text-sm leading-relaxed text-white/85">
+                <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">
                   Ser a agência criativa de referência no ecossistema de marketing digital,
                   audiovisual e gestão de creators — inspirando inovação e excelência.
                 </p>

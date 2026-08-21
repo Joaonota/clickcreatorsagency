@@ -12,7 +12,7 @@ export const MainLayout: React.FC = () => {
   }, [pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0a0a0c] text-white grain">
+    <div className="min-h-screen flex flex-col bg-[var(--background)] text-[var(--color-text)] grain">
       <Header />
       <main key={pathname} className="flex-grow page-enter">
         <Outlet />

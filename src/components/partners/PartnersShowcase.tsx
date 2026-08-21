@@ -1,39 +1,29 @@
 import React from "react";
 import type { Partner } from "../../data/partners";
+import { PartnerLogo } from "./PartnerLogo";
 import { SectionHeader } from "../common/SectionHeader";
 import { Reveal } from "../../hooks/useReveal";
 
-const Wordmark: React.FC<{ partner: Partner }> = ({ partner }) => (
-  <span className="partner-wordmark">
-    {partner.logo ? (
-      <img src={partner.logo} alt={partner.name} loading="lazy" />
-    ) : (
-      <>
-        <span className="pw-name">{partner.name}</span>
-        <span className="pw-cat">{partner.category}</span>
-      </>
-    )}
-  </span>
-);
-
+/* Grelha premium de parceiros — desktop 4 / tablet 3 / mobile 2.
+   Espaçamento generoso, sem cards pesados: apenas hairlines. */
 export const PartnersShowcase: React.FC<{ partners: Partner[] }> = ({ partners }) => {
   return (
     <section className="section-y">
       <div className="container">
         <SectionHeader
-          index="(03)"
+          index="(04)"
           eyebrow="Our Partners"
-          titleLines={["BRANDS WE", "WORK WITH"]}
+          titleLines={["BRANDS THAT", "TRUST US"]}
           description="Trabalhamos com marcas que acreditam no poder da criatividade, do conteúdo e da comunicação relevante."
         />
 
         {/* Marquee — movimento horizontal discreto */}
-        <div className="partner-marquee-wrap overflow-hidden hairline-t hairline-b py-8 -mx-5 sm:-mx-10 xl:-mx-16 px-5 sm:px-10 xl:px-16 mb-14 lg:mb-20">
-          <div className="partner-marquee gap-20 pr-20" aria-hidden="false">
+        <div className="partner-marquee-wrap overflow-hidden hairline-t py-10 -mx-5 sm:-mx-10 xl:-mx-16 px-5 sm:px-10 xl:px-16">
+          <div className="partner-marquee gap-24 pr-24" aria-hidden="true">
             {[0, 1].map((dup) => (
-              <div key={dup} className="flex gap-20 shrink-0 pr-20">
+              <div key={dup} className="flex gap-24 shrink-0 pr-24">
                 {partners.map((p) => (
-                  <Wordmark key={`${dup}-${p.id}`} partner={p} />
+                  <PartnerLogo key={`${dup}-${p.id}`} partner={{ ...p, website: undefined }} />
                 ))}
               </div>
             ))}
@@ -46,12 +36,18 @@ export const PartnersShowcase: React.FC<{ partners: Partner[] }> = ({ partners }
             <Reveal
               key={p.id}
               delay={(i % 4) as 0 | 1 | 2 | 3}
-              className="bg-[#0a0a0c] p-8 flex items-center justify-center min-h-[130px]"
+              className="bg-[var(--background)] p-8 lg:p-12 flex items-center justify-center min-h-[130px] lg:min-h-[160px]"
             >
-              <Wordmark partner={p} />
+              <PartnerLogo partner={p} />
             </Reveal>
           ))}
         </div>
+
+        <Reveal>
+          <p className="text-[0.6rem] font-bold uppercase tracking-[0.22em] muted mt-6 text-right">
+            Logos oficiais em atualização
+          </p>
+        </Reveal>
       </div>
     </section>
   );

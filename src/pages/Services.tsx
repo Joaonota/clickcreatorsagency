@@ -72,7 +72,7 @@ export const ServicesPage: React.FC = () => {
                       {service.deliverables.slice(0, 4).map((item, idx) => (
                         <li
                           key={idx}
-                          className="flex items-start gap-3 text-xs font-medium text-white/85 hairline-t py-2.5"
+                          className="flex items-start gap-3 text-xs font-medium text-[var(--color-text-secondary)] hairline-t py-2.5"
                         >
                           <span className="text-[var(--primary)] shrink-0">+</span>
                           <span>{item}</span>

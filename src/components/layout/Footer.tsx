@@ -9,6 +9,7 @@ const navLinks = [
   { name: "Serviços", path: "/servicos" },
   { name: "Portfólio", path: "/portfolio" },
   { name: "Creators", path: "/creators" },
+  { name: "Parceiros", path: "/partners" },
   { name: "Blog", path: "/blog" },
   { name: "Contactos", path: "/contactos" },
 ];
@@ -24,7 +25,7 @@ export const Footer: React.FC = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#0a0a0c] hairline-t relative overflow-hidden">
+    <footer className="bg-\[var\(--background\)\] hairline-t relative overflow-hidden force-dark">
       {/* Big headline */}
       <div className="container pt-20 md:pt-28 pb-14 hairline-b">
         <p className="eyebrow mb-8">Pronto para começar?</p>
@@ -85,7 +86,7 @@ export const Footer: React.FC = () => {
 
         {/* Nav */}
         <nav aria-label="Navegação do rodapé">
-          <p className="eyebrow eyebrow-bare mb-6 text-white/40">Navegação</p>
+          <p className="eyebrow eyebrow-bare mb-6 text-[var(--text-faint)]">Navegação</p>
           <ul className="grid grid-cols-2 md:grid-cols-1 gap-x-8 gap-y-3">
             {navLinks.map((link) => (
               <li key={link.path}>
@@ -102,7 +103,7 @@ export const Footer: React.FC = () => {
 
         {/* Contact */}
         <div>
-          <p className="eyebrow eyebrow-bare mb-6 text-white/40">Contacto</p>
+          <p className="eyebrow eyebrow-bare mb-6 text-[var(--text-faint)]">Contacto</p>
           <ul className="flex flex-col gap-3 text-sm muted">
             <li>
               <a href={`tel:${contactConfig.phone}`} className="hover:text-[var(--primary)] transition-colors">
@@ -121,8 +122,8 @@ export const Footer: React.FC = () => {
 
       {/* Bottom bar */}
       <div className="container pb-8 flex flex-col md:flex-row items-center justify-between gap-3 pt-6 hairline-t">
-        <p className="text-xs text-zinc-600">© {year} Click Creators Agency — Todos os direitos reservados.</p>
-        <p className="text-[0.55rem] font-extrabold uppercase tracking-[0.3em] text-zinc-600">
+        <p className="text-xs text-[var(--text-faint)]">© {year} Click Creators Agency — Todos os direitos reservados.</p>
+        <p className="text-[0.55rem] font-extrabold uppercase tracking-[0.3em] text-[var(--text-faint)]">
           We Create What People Remember
         </p>
       </div>

@@ -64,16 +64,16 @@ export const CreatorDetails: React.FC = () => {
   return (
     <div className="flex flex-col">
       {/* Hero — fotografia grande */}
-      <section className="relative min-h-[90svh] flex flex-col justify-end overflow-hidden">
+      <section className="relative min-h-\[90svh\] flex flex-col justify-end overflow-hidden force-dark">
         <div className="absolute inset-0 z-0 media-frame">
           <img src={creator.coverImage || creator.image} alt={creator.name} className="kenburns" />
         </div>
-        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/45 to-[#0a0a0c]/40" />
+        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[var(--background)] via-[var(--background)]/45 to-[var(--background)]/40" />
 
         <div className="container relative z-10 pb-14 pt-44">
           <Link
             to="/creators"
-            className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-white/70 hover:text-[var(--primary)] mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-[var(--text-soft)] hover:text-[var(--primary)] mb-8 transition-colors"
           >
             <ArrowLeft size={14} />
             <span>Our Creators</span>
@@ -106,7 +106,7 @@ export const CreatorDetails: React.FC = () => {
               >
                 {stat.value}
               </span>
-              <span className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] text-zinc-500">
+              <span className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] text-[var(--text-faint)]">
                 {stat.label}
               </span>
             </div>

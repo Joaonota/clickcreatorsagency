@@ -35,7 +35,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         {(index || eyebrow) && (
           <Reveal>
             <p className="eyebrow mb-5">
-              {index && <span className="text-white/40">{index}</span>}
+              {index && <span className="text-[var(--text-faint)]">{index}</span>}
               {eyebrow}
             </p>
           </Reveal>

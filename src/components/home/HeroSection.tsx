@@ -6,7 +6,7 @@ export const HeroSection: React.FC = () => {
   const { heroVideo, heroPoster, heroLines } = siteConfig;
 
   return (
-    <section className="relative min-h-[100svh] flex flex-col justify-end overflow-hidden">
+    <section className="relative min-h-\[100svh\] flex flex-col justify-end overflow-hidden force-dark">
       {/* Background media */}
       <div className="absolute inset-0 z-0">
         {heroVideo ? (
@@ -28,8 +28,8 @@ export const HeroSection: React.FC = () => {
             fetchPriority="high"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/55 to-[#0a0a0c]/35" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0c]/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/55 to-[var(--background)]/35" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/80 via-transparent to-transparent" />
       </div>
 
       {/* Vertical side label */}
@@ -49,7 +49,14 @@ export const HeroSection: React.FC = () => {
                   i === 1 ? "text-outline" : ""
                 }`}
               >
-                {line}
+                {line.endsWith(".") ? (
+                  <>
+                    {line.slice(0, -1)}
+                    <span className="text-[var(--primary)]">.</span>
+                  </>
+                ) : (
+                  line
+                )}
               </span>
             </span>
           ))}
@@ -57,14 +64,14 @@ export const HeroSection: React.FC = () => {
 
         <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
           <div className="anim-hero anim-hero-3 flex flex-col gap-6 max-w-xl">
-            <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-white/80">
+            <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-[var(--text-soft)]">
               Social Media <span className="text-[var(--primary)] mx-1">•</span> Content{" "}
               <span className="text-[var(--primary)] mx-1">•</span> Creators{" "}
               <span className="text-[var(--primary)] mx-1">•</span> Audiovisual
             </p>
             <div className="flex items-center gap-3">
               <span className="pulse-dot" aria-hidden="true" />
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-soft)]">
                 Disponíveis para novos projetos
               </span>
             </div>
@@ -82,7 +89,7 @@ export const HeroSection: React.FC = () => {
       </div>
 
       {/* Bottom marquee strip */}
-      <div className="relative z-10 hairline-t bg-[#0a0a0c]/80 backdrop-blur-sm overflow-hidden py-4 partner-marquee-wrap">
+      <div className="relative z-10 hairline-t bg-[var(--background)]/80 backdrop-blur-sm overflow-hidden py-4 partner-marquee-wrap">
         <div className="partner-marquee gap-16 pr-16" aria-hidden="true">
           {[0, 1].map((dup) => (
             <div key={dup} className="flex gap-16 shrink-0">
@@ -90,7 +97,7 @@ export const HeroSection: React.FC = () => {
                 (word) => (
                   <span
                     key={word}
-                    className="font-display text-lg tracking-[0.15em] uppercase text-white/50 whitespace-nowrap"
+                    className="font-display text-lg tracking-[0.15em] uppercase text-[var(--text-faint)] whitespace-nowrap"
                   >
                     {word} <span className="text-[var(--primary)] ml-4">✦</span>
                   </span>
