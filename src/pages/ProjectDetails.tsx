@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, CheckCircle2, Video, Images } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { ImageGallery } from "../components/common/ImageGallery";
 import { CTASection } from "../components/common/CTASection";
-import { PortfolioCard } from "../components/portfolio/PortfolioCard";
+import { WorkItem } from "../components/portfolio/PortfolioGrid";
+import { Reveal } from "../hooks/useReveal";
 import { NotFound } from "./NotFound.tsx";
 import { apiService } from "../services/api";
 import type { PortfolioProject } from "../data/portfolio";
@@ -23,7 +24,7 @@ export const ProjectDetails: React.FC = () => {
           setProject(data);
           document.title = `${data.title} | Click Creators Agency`;
           apiService.getPortfolioProjects().then((all) => {
-            if (isMounted) setRelated(all.filter((p) => p.slug !== slug).slice(0, 2));
+            if (isMounted) setRelated(all.filter((p) => p.slug !== slug).slice(0, 3));
           });
         }
         setLoading(false);
@@ -37,138 +38,159 @@ export const ProjectDetails: React.FC = () => {
   if (loading && slug) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-lime-400 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
-  if (!project) {
-    return <NotFound />;
-  }
+  if (!project) return <NotFound />;
 
   return (
-    <div className="flex flex-col gap-0">
-      {/* HERO SECTION */}
-      <section className="relative py-16 lg:py-24 bg-slate-950 border-b border-zinc-800">
-        <div className="container">
+    <div className="flex flex-col">
+      {/* Cinematic hero */}
+      <section className="relative min-h-[85svh] flex flex-col justify-end overflow-hidden">
+        <div className="absolute inset-0 z-0 media-frame !overflow-hidden">
+          <img src={project.imagem} alt={project.title} className="kenburns" />
+        </div>
+        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/50 to-[#0a0a0c]/40" />
+
+        <div className="container relative z-10 pb-14 pt-44">
           <Link
             to="/portfolio"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-400 hover:text-lime-400 mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-white/70 hover:text-[var(--primary)] mb-8 transition-colors"
           >
             <ArrowLeft size={14} />
-            <span>Voltar ao Portfólio</span>
+            <span>Selected Work</span>
           </Link>
 
-          <div className="flex flex-col gap-4 mb-8">
-            <span className="badge w-fit">{project.categoria}</span>
-            <h1 className="text-3xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
-              {project.title}
-            </h1>
-            <p className="text-base md:text-xl text-zinc-300 max-w-3xl leading-relaxed">
-              {project.descricao}
-            </p>
+          <p className="eyebrow eyebrow-bare mb-5">{project.categoria}</p>
+          <h1 className="display-xl max-w-5xl">{project.title}</h1>
+        </div>
+      </section>
+
+      {/* Meta bar */}
+      <section className="hairline-b bg-[var(--surface)]">
+        <div className="container grid grid-cols-2 md:grid-cols-4 gap-y-6 py-8 lg:py-10">
+          {[
+            { label: "Cliente", value: project.cliente },
+            { label: "Categoria", value: project.categoria, accent: true },
+            { label: "Agência", value: "Click Creators" },
+            { label: "Ano", value: "2025" },
+          ].map((meta) => (
+            <div key={meta.label} className="flex flex-col gap-1 pr-4 border-l border-[var(--border)] pl-4 first:border-l-0 first:pl-0">
+              <span className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] text-zinc-500">
+                {meta.label}
+              </span>
+              <span
+                className={`font-display text-lg uppercase tracking-wide ${
+                  meta.accent ? "text-[var(--primary)]" : "text-white"
+                }`}
+              >
+                {meta.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Narrative */}
+      <section className="section-y">
+        <div className="container grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-5">
+            <Reveal>
+              <p className="eyebrow mb-6">About the Project</p>
+              <p className="lede">{project.descricao}</p>
+            </Reveal>
           </div>
 
-          {/* PROJECT META BAR */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 rounded-2xl glass-card border border-zinc-800 mb-10">
-            <div>
-              <span className="block text-xs font-semibold text-zinc-400 uppercase">Cliente</span>
-              <span className="text-sm font-bold text-white">{project.cliente}</span>
-            </div>
-            <div>
-              <span className="block text-xs font-semibold text-zinc-400 uppercase">Categoria</span>
-              <span className="text-sm font-bold text-lime-400">{project.categoria}</span>
-            </div>
-            <div>
-              <span className="block text-xs font-semibold text-zinc-400 uppercase">Ano</span>
-              <span className="text-sm font-bold text-white">2025</span>
-            </div>
-            <div>
-              <span className="block text-xs font-semibold text-zinc-400 uppercase">Agência</span>
-              <span className="text-sm font-bold text-white">Click Creators</span>
-            </div>
-          </div>
+          <div className="lg:col-span-7 flex flex-col gap-12 lg:pl-16">
+            <Reveal delay={1}>
+              <p className="index-num mb-3">01 — The Idea</p>
+              <h2 className="display-sm mb-4">O Objetivo</h2>
+              <p className="muted leading-relaxed max-w-2xl">{project.objetivo}</p>
+            </Reveal>
 
-          {/* MAIN HERO IMAGE */}
-          <div className="relative overflow-hidden rounded-3xl border border-zinc-800 aspect-video shadow-2xl bg-slate-900">
-            <img src={project.imagem} alt={project.title} className="w-full h-full object-cover" />
+            <Reveal delay={2}>
+              <p className="index-num mb-3">02 — The Execution</p>
+              <h2 className="display-sm mb-4">A Execução</h2>
+              <p className="muted leading-relaxed max-w-2xl">{project.solucao}</p>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* STRATEGY & RESULTS */}
-      <section className="section-padding bg-slate-900/40">
-        <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <div className="glass-card p-8 md:p-12 rounded-3xl border border-zinc-800 flex flex-col gap-4">
-              <h3 className="text-2xl font-bold text-white">O Desafio & Objetivo</h3>
-              <p className="text-zinc-300 text-sm leading-relaxed">{project.objetivo}</p>
-            </div>
-
-            <div className="glass-card p-8 md:p-12 rounded-3xl border border-zinc-800 flex flex-col gap-4">
-              <h3 className="text-2xl font-bold text-white">A Solução Criativa</h3>
-              <p className="text-zinc-300 text-sm leading-relaxed">{project.solucao}</p>
-            </div>
-          </div>
-
-          {/* RESULTS */}
-          {project.resultados && project.resultados.length > 0 && (
-            <div className="glass-card p-8 md:p-12 rounded-3xl border border-lime-400/20 bg-lime-950/10 mb-16">
-              <h3 className="text-2xl font-bold text-white mb-6">Resultados Alcançados</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {project.resultados.map((res, idx) => (
-                  <div key={idx} className="flex items-start gap-3 text-sm text-zinc-200">
-                    <CheckCircle2 size={20} className="text-lime-400 shrink-0 mt-0.5" />
-                    <span className="font-semibold">{res}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* VIDEO PLAYER (IF VIDEO EXISTS) */}
-          {project.videos && project.videos.length > 0 && (
-            <div className="mb-16">
-              <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <Video className="text-lime-400" />
-                <span>Vídeo do Projeto</span>
-              </h3>
-              <div className="overflow-hidden rounded-3xl border border-zinc-800 aspect-video bg-black shadow-2xl">
-                <video src={project.videos[0]} controls className="w-full h-full object-cover" />
-              </div>
-            </div>
-          )}
-
-          {/* IMAGE GALLERY */}
-          {project.galeria && project.galeria.length > 0 && (
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <Images className="text-lime-400" />
-                <span>Galeria de Imagens</span>
-              </h3>
-              <ImageGallery images={project.galeria} columns={3} aspectRatio="video" />
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* RELATED PROJECTS */}
-      {related.length > 0 && (
-        <section className="section-padding bg-slate-950 border-t border-zinc-800">
+      {/* Video */}
+      {project.videos && project.videos.length > 0 && (
+        <section className="pb-24">
           <div className="container">
-            <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-8">
-              Outros Projetos
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {related.map((p) => (
-                <PortfolioCard key={p.id} project={p} />
+            <Reveal className="reveal-clip">
+              <div className="media-frame aspect-video">
+                <video src={project.videos[0]} controls preload="metadata" className="!transform-none" />
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {/* Gallery */}
+      {project.galeria && project.galeria.length > 0 && (
+        <section className="pb-24">
+          <div className="container">
+            <Reveal>
+              <p className="eyebrow mb-10">Gallery</p>
+            </Reveal>
+            <ImageGallery images={project.galeria} columns={3} aspectRatio="video" />
+          </div>
+        </section>
+      )}
+
+      {/* Results */}
+      {project.resultados && project.resultados.length > 0 && (
+        <section className="hairline-t hairline-b bg-[var(--surface)] section-y">
+          <div className="container">
+            <Reveal>
+              <p className="eyebrow mb-10">Result</p>
+            </Reveal>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[var(--border)] border border-[var(--border)]">
+              {project.resultados.map((res, idx) => (
+                <Reveal
+                  key={idx}
+                  delay={(idx % 3) as 0 | 1 | 2}
+                  className="bg-[#0a0a0c] p-8 lg:p-10 flex items-start gap-4 min-h-[140px]"
+                >
+                  <span className="font-display text-3xl text-[var(--primary)] leading-none">
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <p className="text-sm font-semibold leading-relaxed pt-1">{res}</p>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      <CTASection title="Gostou deste trabalho?" subtitle="Vamos transformar a sua ideia numa história de sucesso." />
+      {/* Related work */}
+      {related.length > 0 && (
+        <section className="section-y">
+          <div className="container">
+            <Reveal>
+              <Link to="/portfolio" className="arrow-link mb-12 inline-flex">
+                <span>More Work</span>
+                <span className="arrow-line" aria-hidden="true" />
+              </Link>
+            </Reveal>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
+              {related.map((p, i) => (
+                <Reveal key={p.id} delay={(i % 3) as 0 | 1 | 2}>
+                  <WorkItem project={p} aspect="aspect-[4/3]" />
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <CTASection titleLines={["LET'S WRITE", "THE NEXT", "STORY."]} />
     </div>
   );
 };

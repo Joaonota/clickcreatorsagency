@@ -7,15 +7,14 @@ import { WhatsAppButton } from "../components/common/WhatsAppButton";
 export const MainLayout: React.FC = () => {
   const { pathname } = useLocation();
 
-  // Scroll to top on every route navigation
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-purple-600 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#0a0a0c] text-white grain">
       <Header />
-      <main className="flex-grow pt-[80px]">
+      <main key={pathname} className="flex-grow page-enter">
         <Outlet />
       </main>
       <Footer />

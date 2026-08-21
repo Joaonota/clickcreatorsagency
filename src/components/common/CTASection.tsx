@@ -1,61 +1,77 @@
 import React from "react";
-import { ArrowRight, MessageCircle } from "lucide-react";
-import { Button } from "./Button";
+import { Link } from "react-router-dom";
 import { contactConfig } from "../../config/contact";
+import { socialLinks } from "../../config/social";
 
 interface CTASectionProps {
-  title?: string;
-  subtitle?: string;
+  titleLines?: string[];
   className?: string;
 }
 
+const waUrl = (msg: string) =>
+  `https://wa.me/${contactConfig.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(msg)}`;
+
 export const CTASection: React.FC<CTASectionProps> = ({
-  title = "Vamos criar algo incrível?",
-  subtitle = "Transformamos ideias em estratégias e conteúdos audiovisuais de alto impacto que impulsionam a sua marca.",
+  titleLines = ["LET'S", "CREATE", "SOMETHING", "GREAT."],
   className = "",
 }) => {
-  const whatsappUrl = `https://wa.me/${contactConfig.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-    "Olá Click Creators! Quero iniciar um projeto com a vossa agência."
-  )}`;
-
   return (
-    <section className={`py-16 md:py-24 relative overflow-hidden ${className}`}>
-      {/* Background Decorative Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-lime-500/10 rounded-full blur-[140px] pointer-events-none" />
+    <section className={`relative overflow-hidden hairline-t ${className}`}>
+      <div className="container section-y">
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="eyebrow mb-8">Start a project</p>
+            <h2 className="display-xl">
+              {titleLines.map((line, i) => (
+                <span key={i} className={`block ${i === titleLines.length - 1 ? "text-outline" : ""}`}>
+                  {line}
+                </span>
+              ))}
+            </h2>
+          </div>
 
-      <div className="container relative z-10">
-        <div className="glass-card p-8 md:p-16 rounded-3xl border border-lime-400/30 bg-gradient-to-br from-slate-950 via-zinc-900 to-slate-950 text-center flex flex-col items-center shadow-2xl">
-          <span className="badge mb-6">Pronto para começar?</span>
-          
-          <h2 className="text-3xl md:text-6xl font-extrabold text-white mb-6 tracking-tight max-w-3xl leading-tight">
-            {title}
-          </h2>
-
-          <p className="text-base md:text-xl text-zinc-300 max-w-2xl mb-10 leading-relaxed font-normal">
-            {subtitle}
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-            <Button
-              href={whatsappUrl}
-              variant="whatsapp"
-              size="lg"
-              icon={<MessageCircle className="w-5 h-5 fill-slate-950" />}
-              iconPosition="left"
-              className="w-full sm:w-auto"
+          <div className="flex flex-col gap-6 lg:items-end lg:pb-4 shrink-0">
+            <Link to="/contactos" className="btn btn-primary btn-lg w-full sm:w-auto justify-center">
+              <span>Start a Project →</span>
+            </Link>
+            <a
+              href={waUrl("Olá Click Creators! Quero iniciar um projeto.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline btn-lg w-full sm:w-auto justify-center"
             >
-              Falar no WhatsApp
-            </Button>
+              <span>WhatsApp</span>
+            </a>
 
-            <Button
-              to="/contactos"
-              variant="outline"
-              size="lg"
-              icon={<ArrowRight className="w-5 h-5" />}
-              className="w-full sm:w-auto"
-            >
-              Ver Contactos
-            </Button>
+            <div className="flex items-center gap-5 pt-2">
+              <a
+                href={socialLinks.instagram}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Instagram"
+                className="text-[0.62rem] font-extrabold uppercase tracking-[0.22em] muted hover:text-[var(--primary)] transition-colors"
+              >
+                IG
+              </a>
+              <a
+                href={socialLinks.tiktok}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="TikTok"
+                className="text-[0.62rem] font-extrabold uppercase tracking-[0.22em] muted hover:text-[var(--primary)] transition-colors"
+              >
+                TK
+              </a>
+              <a
+                href={socialLinks.youtube}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="YouTube"
+                className="text-[0.62rem] font-extrabold uppercase tracking-[0.22em] muted hover:text-[var(--primary)] transition-colors"
+              >
+                YT
+              </a>
+            </div>
           </div>
         </div>
       </div>

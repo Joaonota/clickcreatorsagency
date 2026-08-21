@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, MessageCircle, BarChart3, Users, Award } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { ImageGallery } from "../components/common/ImageGallery";
-import { Button } from "../components/common/Button";
+import { Reveal } from "../hooks/useReveal";
 import { NotFound } from "./NotFound.tsx";
 import { apiService } from "../services/api";
 import type { Creator } from "../data/creators";
-import { InstagramIcon, YoutubeIcon } from "../components/common/SocialIcons";
 
 export const CreatorDetails: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -33,157 +32,169 @@ export const CreatorDetails: React.FC = () => {
   if (loading && slug) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-lime-400 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
-  if (!creator) {
-    return <NotFound />;
-  }
+  if (!creator) return <NotFound />;
 
   const whatsappUrl = `https://wa.me/351912345678?text=${encodeURIComponent(
     `Olá Click Creators! Gostaria de agendar uma campanha com o(a) creator ${creator.name} (${creator.username}).`
   )}`;
 
+  const socialChips = [
+    creator.redes.instagram && {
+      label: "Instagram",
+      extra: creator.followers.instagram,
+      url: creator.redes.instagram,
+    },
+    creator.redes.tiktok && {
+      label: "TikTok",
+      extra: creator.followers.tiktok,
+      url: creator.redes.tiktok,
+    },
+    creator.redes.youtube && {
+      label: "YouTube",
+      extra: creator.followers.youtube,
+      url: creator.redes.youtube,
+    },
+  ].filter(Boolean) as { label: string; extra?: string; url: string }[];
+
   return (
-    <div className="flex flex-col gap-0">
-      {/* COVER & HERO HEADER */}
-      <section className="relative bg-slate-950 border-b border-zinc-800 pb-16 pt-8">
-        <div className="container">
+    <div className="flex flex-col">
+      {/* Hero — fotografia grande */}
+      <section className="relative min-h-[90svh] flex flex-col justify-end overflow-hidden">
+        <div className="absolute inset-0 z-0 media-frame">
+          <img src={creator.coverImage || creator.image} alt={creator.name} className="kenburns" />
+        </div>
+        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/45 to-[#0a0a0c]/40" />
+
+        <div className="container relative z-10 pb-14 pt-44">
           <Link
             to="/creators"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-400 hover:text-lime-400 mb-6 transition-colors"
+            className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-white/70 hover:text-[var(--primary)] mb-8 transition-colors"
           >
             <ArrowLeft size={14} />
-            <span>Voltar aos Creators</span>
+            <span>Our Creators</span>
           </Link>
 
-          {/* COVER BANNER */}
-          <div className="relative overflow-hidden rounded-3xl h-64 md:h-80 border border-zinc-800 mb-8 bg-slate-900">
-            <img
-              src={creator.coverImage || creator.image}
-              alt={creator.name}
-              className="w-full h-full object-cover filter brightness-75"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
-          </div>
-
-          {/* PROFILE INFO ROW */}
-          <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 -mt-20 relative z-10 px-4">
-            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-6">
-              <div className="w-32 h-32 md:w-40 md:h-40 rounded-3xl overflow-hidden border-4 border-slate-950 shadow-2xl bg-slate-900 shrink-0">
-                <img src={creator.image} alt={creator.name} className="w-full h-full object-cover" />
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="badge w-fit">{creator.category}</span>
-                <h1 className="text-3xl md:text-5xl font-extrabold text-white">{creator.name}</h1>
-                <span className="text-base font-semibold text-lime-400">{creator.username}</span>
-              </div>
-            </div>
-
-            <Button
-              href={whatsappUrl}
-              variant="whatsapp"
-              size="lg"
-              icon={<MessageCircle size={20} />}
-            >
-              Trabalhar com este Creator
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* STATS & BIOGRAPHY */}
-      <section className="section-padding bg-slate-900/40">
-        <div className="container">
-          {/* STATS CARDS */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
-            <div className="glass-card p-6 rounded-2xl flex items-center gap-4 border border-zinc-800 hover:border-lime-400/50 transition-colors">
-              <div className="p-3 rounded-xl bg-lime-500/10 text-lime-400 border border-lime-400/30">
-                <BarChart3 size={24} />
-              </div>
-              <div>
-                <span className="block text-xs font-semibold text-zinc-400">Taxa de Engajamento</span>
-                <span className="text-xl font-extrabold text-white">{creator.stats.engagementRate}</span>
-              </div>
-            </div>
-
-            <div className="glass-card p-6 rounded-2xl flex items-center gap-4 border border-zinc-800 hover:border-lime-400/50 transition-colors">
-              <div className="p-3 rounded-xl bg-lime-500/10 text-lime-400 border border-lime-400/30">
-                <Users size={24} />
-              </div>
-              <div>
-                <span className="block text-xs font-semibold text-zinc-400">Alcance Mensal</span>
-                <span className="text-xl font-extrabold text-white">{creator.stats.totalReach}</span>
-              </div>
-            </div>
-
-            <div className="glass-card p-6 rounded-2xl flex items-center gap-4 border border-zinc-800 hover:border-lime-400/50 transition-colors">
-              <div className="p-3 rounded-xl bg-lime-500/10 text-lime-400 border border-lime-400/30">
-                <Award size={24} />
-              </div>
-              <div>
-                <span className="block text-xs font-semibold text-zinc-400">Campanhas Realizadas</span>
-                <span className="text-xl font-extrabold text-white">{creator.stats.completedCampaigns}+</span>
-              </div>
-            </div>
-          </div>
-
-          {/* BIO SECTION */}
-          <div className="glass-card p-8 md:p-12 rounded-3xl border border-zinc-800 mb-12">
-            <h3 className="text-2xl font-bold text-white mb-4">Sobre {creator.name}</h3>
-            <p className="text-zinc-300 text-base leading-relaxed mb-6">{creator.bio}</p>
-
-            <div className="flex items-center gap-3 flex-wrap pt-6 border-t border-zinc-800">
-              <span className="text-xs font-bold text-zinc-400 uppercase">Redes Sociais:</span>
-              {creator.redes.instagram && (
-                <a
-                  href={creator.redes.instagram}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="px-4 py-2 rounded-xl bg-white/5 hover:bg-lime-500/10 text-zinc-200 hover:text-lime-400 border border-zinc-800 hover:border-lime-400/30 text-xs font-semibold flex items-center gap-2 transition-all"
-                >
-                  <InstagramIcon size={16} />
-                  <span>Instagram ({creator.followers.instagram})</span>
-                </a>
-              )}
-              {creator.redes.youtube && (
-                <a
-                  href={creator.redes.youtube}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="px-4 py-2 rounded-xl bg-white/5 hover:bg-lime-500/10 text-zinc-200 hover:text-lime-400 border border-zinc-800 hover:border-lime-400/30 text-xs font-semibold flex items-center gap-2 transition-all"
-                >
-                  <YoutubeIcon size={16} />
-                  <span>YouTube ({creator.followers.youtube})</span>
-                </a>
-              )}
-            </div>
-          </div>
-
-          {/* GALLERY OF WORK */}
-          {creator.gallery && creator.gallery.length > 0 && (
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-6">Trabalhos & Conteúdos Recentes</h3>
-              <ImageGallery images={creator.gallery} columns={3} aspectRatio="square" />
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* CTA SECTION */}
-      <section className="section-padding bg-slate-950 border-t border-zinc-800 text-center">
-        <div className="container flex flex-col items-center">
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6">
-            Quer contratar o(a) {creator.name} para a sua marca?
-          </h2>
-          <p className="text-zinc-300 text-base max-w-2xl mb-8">
-            Entre em contacto direto com a equipa da Click Creators Agency para consultar disponibilidade e formatos de parceria.
+          <p className="eyebrow eyebrow-bare mb-5">{creator.category}</p>
+          <h1 className="display-xl">{creator.name}</h1>
+          <p className="text-lg font-bold text-[var(--primary)] tracking-wide mt-3">
+            {creator.username}
           </p>
-          <Button href={whatsappUrl} variant="whatsapp" size="lg" icon={<MessageCircle size={20} />}>
-            Falar connosco sobre {creator.name}
-          </Button>
+        </div>
+      </section>
+
+      {/* Stats bar */}
+      <section className="hairline-b bg-[var(--surface)]">
+        <div className="container grid grid-cols-2 md:grid-cols-4 gap-y-8 py-10 lg:py-12">
+          {[
+            { value: creator.stats.engagementRate, label: "Engagement", accent: true },
+            { value: creator.stats.totalReach, label: "Reach / mês" },
+            { value: `${creator.stats.completedCampaigns}+`, label: "Campanhas" },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="flex flex-col gap-1.5 md:border-l md:pl-5 border-[var(--border)]"
+            >
+              <span
+                className={`font-display text-3xl lg:text-4xl leading-none ${
+                  stat.accent ? "text-[var(--primary)]" : ""
+                }`}
+              >
+                {stat.value}
+              </span>
+              <span className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] text-zinc-500">
+                {stat.label}
+              </span>
+            </div>
+          ))}
+          <div className="col-span-2 md:col-span-1 flex items-end md:justify-end">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-sm w-full sm:w-auto justify-center"
+            >
+              <span>Work With This Creator →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* About + socials */}
+      <section className="section-y">
+        <div className="container grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-5">
+            <Reveal>
+              <p className="eyebrow mb-6">About</p>
+              <h2 className="display-sm mb-6">Sobre {creator.name.split(" ")[0]}</h2>
+              <p className="lede">{creator.bio}</p>
+            </Reveal>
+          </div>
+
+          <div className="lg:col-span-6 lg:col-start-7 flex flex-col gap-8 lg:pt-16">
+            <Reveal delay={1}>
+              <p className="index-num mb-4">Socials</p>
+              <div className="flex flex-wrap gap-3">
+                {socialChips.map((chip) => (
+                  <a
+                    key={chip.label}
+                    href={chip.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group flex items-center gap-3 border border-[var(--border-strong)] px-5 py-3 transition-colors duration-300 hover:border-[var(--primary)]"
+                  >
+                    <span className="text-[0.66rem] font-extrabold uppercase tracking-[0.18em] group-hover:text-[var(--primary)] transition-colors">
+                      {chip.label}
+                    </span>
+                    {chip.extra && (
+                      <span className="text-xs muted">{chip.extra}</span>
+                    )}
+                    <span aria-hidden="true" className="text-[var(--primary)] text-xs">↗</span>
+                  </a>
+                ))}
+              </div>
+            </Reveal>
+
+            <Reveal delay={2}>
+              <p className="index-num mb-4">Collaborations</p>
+              <p className="muted text-sm leading-relaxed max-w-lg">
+                {creator.name} já colaborou em {creator.stats.completedCampaigns} campanhas
+                com marcas nacionais e internacionais — de lançamentos de produto a
+                parcerias continuadas de conteúdo.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Selected content */}
+      {creator.gallery && creator.gallery.length > 0 && (
+        <section className="pb-24 hairline-t pt-16">
+          <div className="container">
+            <Reveal>
+              <p className="eyebrow mb-10">Selected Content</p>
+            </Reveal>
+            <ImageGallery images={creator.gallery} columns={3} aspectRatio="square" />
+          </div>
+        </section>
+      )}
+
+      {/* CTA */}
+      <section className="hairline-t bg-[var(--surface)] section-y">
+        <div className="container flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="eyebrow mb-6">Collaboration</p>
+            <h2 className="display-lg max-w-3xl">
+              QUER O(A) {creator.name.split(" ")[0].toUpperCase()} NA SUA MARCA?
+            </h2>
+          </div>
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg shrink-0">
+            <span>Start a Collaboration →</span>
+          </a>
         </div>
       </section>
     </div>

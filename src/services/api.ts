@@ -10,6 +10,8 @@ import { teamMembers } from "../data/team";
 import type { TeamMember } from "../data/team";
 import { clientBrands } from "../data/clients";
 import type { ClientBrand } from "../data/clients";
+import { partners } from "../data/partners";
+import type { Partner } from "../data/partners";
 
 // Simulated delay helper for realistic loading states
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -76,5 +78,9 @@ export const apiService = {
   async getClients(): Promise<ClientBrand[]> {
     await delay(100);
     return [...clientBrands];
+  },
+  async getPartners(): Promise<Partner[]> {
+    await delay(100);
+    return [...partners];
   },
 };

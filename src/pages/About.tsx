@@ -1,182 +1,159 @@
 import React, { useEffect, useState } from "react";
-import { Sparkles, Target, Eye, ShieldCheck, Heart, Zap, Users } from "lucide-react";
-import { SectionTitle } from "../components/common/SectionTitle";
 import { CTASection } from "../components/common/CTASection";
+import { TeamGrid } from "../components/team/TeamGrid";
+import { PartnersShowcase } from "../components/partners/PartnersShowcase";
+import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
 import type { TeamMember } from "../data/team";
-import type { ClientBrand } from "../data/clients";
+import type { Partner } from "../data/partners";
+
+const values = [
+  {
+    num: "01",
+    title: "Criatividade",
+    desc: "Pensamos fora da caixa para gerar conceitos visuais únicos e inesquecíveis.",
+  },
+  {
+    num: "02",
+    title: "Estratégia",
+    desc: "Cada frame e palavra possui um objetivo de negócio mensurável por trás.",
+  },
+  {
+    num: "03",
+    title: "Autenticidade",
+    desc: "Criamos histórias humanas e reais que geram identificação imediata.",
+  },
+  {
+    num: "04",
+    title: "Profissionalismo",
+    desc: "Entrega rigorosa nos prazos com padrões de qualidade audiovisual exigentes.",
+  },
+  {
+    num: "05",
+    title: "Colaboração",
+    desc: "Trabalhamos lado a lado com clientes e creators como uma só equipa.",
+  },
+  {
+    num: "06",
+    title: "Inovação",
+    desc: "Adotamos continuamente novas ferramentas, formatos e tendências do mercado.",
+  },
+];
 
 export const About: React.FC = () => {
   const [team, setTeam] = useState<TeamMember[]>([]);
-  const [clients, setClients] = useState<ClientBrand[]>([]);
+  const [partners, setPartners] = useState<Partner[]>([]);
 
   useEffect(() => {
     document.title = "Sobre Nós | Click Creators Agency";
-    const loadData = async () => {
-      const [tData, cData] = await Promise.all([
-        apiService.getTeam(),
-        apiService.getClients(),
-      ]);
+    Promise.all([apiService.getTeam(), apiService.getPartners()]).then(([tData, pData]) => {
       setTeam(tData);
-      setClients(cData);
-    };
-    loadData();
+      setPartners(pData);
+    });
   }, []);
 
-  const values = [
-    { title: "Criatividade", desc: "Pensamos fora da caixa para gerar conceitos visuais únicos e inesquecíveis.", icon: <Sparkles className="text-lime-400" /> },
-    { title: "Estratégia", desc: "Cada frame e palavra possui um objetivo de negócio mensurável por trás.", icon: <Target className="text-lime-400" /> },
-    { title: "Autenticidade", desc: "Criamos histórias humanas e reais que geram identificação imediata.", icon: <Heart className="text-lime-400" /> },
-    { title: "Profissionalismo", desc: "Entrega rigorosa nos prazos com padrões de qualidade audiovisual exigentes.", icon: <ShieldCheck className="text-lime-400" /> },
-    { title: "Colaboração", desc: "Trabalhamos lado a lado com os clientes e criadores como uma só equipa.", icon: <Users className="text-lime-400" /> },
-    { title: "Inovação", desc: "Adotamos continuamente novas ferramentas, formatos e tendências do mercado.", icon: <Zap className="text-lime-400" /> },
-  ];
-
   return (
-    <div className="flex flex-col gap-0">
-      {/* PAGE HERO */}
-      <section className="relative py-20 lg:py-28 bg-slate-950 overflow-hidden border-b border-zinc-800">
-        <div className="container relative z-10 text-center flex flex-col items-center">
-          <span className="badge mb-4">Conheça a Agência</span>
-          <h1 className="text-4xl md:text-7xl font-extrabold text-white tracking-tight mb-6 max-w-4xl">
-            Uma equipa movida a <br />
-            <span className="gradient-text">paixão e resultados.</span>
+    <div className="flex flex-col">
+      {/* Page hero */}
+      <section className="pt-36 pb-14 lg:pt-48 lg:pb-20">
+        <div className="container">
+          <Reveal>
+            <p className="eyebrow mb-6">The Agency</p>
+          </Reveal>
+          <h1 className="display-xl max-w-5xl">
+            <span className="block">IDEAS BECOME</span>
+            <span className="block text-outline">INFLUENCE</span>
           </h1>
-          <p className="text-base md:text-xl text-zinc-300 max-w-2xl font-normal leading-relaxed">
-            Somos uma agência de marketing digital e produção audiovisual focada em transformar ideias audaciosas em presença digital marcante.
-          </p>
+          <Reveal delay={2}>
+            <p className="lede mt-8 max-w-xl">
+              Somos uma agência criativa movida por cultura digital, storytelling e
+              resultados. Transformamos ideias audaciosas em presença digital marcante.
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      {/* QUEM SOMOS SECTION */}
-      <section className="section-padding bg-slate-900/40">
-        <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="badge mb-4">Quem Somos</span>
-              <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                A história por trás da <br />
-                <span className="gradient-text">Click Creators</span>
-              </h2>
-              <p className="text-zinc-300 text-base leading-relaxed mb-6">
-                Fundada por profissionais apaixonados por comunicação visual e marketing estratégico, a Click Creators Agency nasceu com o propósito de aproximar marcas e consumidores através de histórias reais e esteticamente impecáveis.
+      {/* Story — editorial split */}
+      <section className="section-y hairline-t">
+        <div className="container grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div className="lg:col-span-7">
+            <Reveal>
+              <p className="eyebrow mb-8">A Nossa História</p>
+            </Reveal>
+            <Reveal delay={1}>
+              <p className="lede mb-8 max-w-2xl">
+                Fundada por profissionais apaixonados por comunicação visual e marketing
+                estratégico, a Click Creators Agency nasceu com o propósito de aproximar
+                marcas e consumidores através de histórias reais e esteticamente impecáveis.
               </p>
-              <p className="text-zinc-300 text-base leading-relaxed">
-                Compreendemos que o ambiente digital de hoje exige mais do que presença constante — exige relevância, autenticidade e qualidade audiovisual que capture o olhar nos primeiros segundos.
+            </Reveal>
+            <Reveal delay={2}>
+              <p className="muted text-sm leading-relaxed max-w-xl">
+                Compreendemos que o ambiente digital de hoje exige mais do que presença
+                constante — exige relevância, autenticidade e qualidade audiovisual que
+                capture o olhar nos primeiros segundos. É aí que entramos.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="relative overflow-hidden rounded-3xl border border-zinc-800 aspect-video shadow-2xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[var(--border)] border border-[var(--border)] mt-14">
+              <Reveal className="bg-[#0a0a0c] p-8 lg:p-10">
+                <p className="index-num mb-4">Mission</p>
+                <p className="text-sm leading-relaxed text-white/85">
+                  Transformar ideias em comunicação criativa e estratégica, produzindo
+                  conteúdos de altíssimo valor que impulsionam negócios e conectam marcas
+                  aos seus públicos.
+                </p>
+              </Reveal>
+              <Reveal delay={1} className="bg-[#0a0a0c] p-8 lg:p-10">
+                <p className="index-num mb-4">Vision</p>
+                <p className="text-sm leading-relaxed text-white/85">
+                  Ser a agência criativa de referência no ecossistema de marketing digital,
+                  audiovisual e gestão de creators — inspirando inovação e excelência.
+                </p>
+              </Reveal>
+            </div>
+          </div>
+
+          <Reveal className="reveal-clip lg:col-span-5 lg:mt-16">
+            <div className="media-frame aspect-[3/4]">
               <img
                 src="/img/filmmaker-fotografo.jpeg"
                 alt="Equipa Click Creators em produção"
-                className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
-          </div>
+            <p className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] muted mt-3">
+              Bastidores — Produção Click Creators
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      {/* MISSÃO E VISÃO */}
-      <section className="section-padding bg-slate-950 border-t border-zinc-800">
+      {/* Values */}
+      <section className="section-y bg-[var(--surface)] hairline-t hairline-b">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="glass-card p-8 md:p-12 rounded-3xl border border-lime-400/20 bg-slate-900/60 flex flex-col gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-lime-400/10 border border-lime-400/30 flex items-center justify-center text-lime-400">
-                <Target size={28} />
-              </div>
-              <h3 className="text-2xl font-bold text-white">Nossa Missão</h3>
-              <p className="text-zinc-300 text-base leading-relaxed">
-                Transformar ideias em comunicação criativa e estratégica, produzindo conteúdos visuais de altíssimo valor que impulsionam o crescimento sustentável de negócios e conectam marcas aos seus públicos.
-              </p>
-            </div>
+          <Reveal>
+            <p className="eyebrow mb-6">Princípios</p>
+            <h2 className="display-lg mb-14">OUR VALUES</h2>
+          </Reveal>
 
-            <div className="glass-card p-8 md:p-12 rounded-3xl border border-lime-400/20 bg-slate-900/60 flex flex-col gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-lime-400/10 border border-lime-400/30 flex items-center justify-center text-lime-400">
-                <Eye size={28} />
-              </div>
-              <h3 className="text-2xl font-bold text-white">Nossa Visão</h3>
-              <p className="text-slate-300 text-base leading-relaxed">
-                Ser reconhecida nacional e internacionalmente como a agência criativa de referência no ecossistema de marketing digital, audiovisual e gestão de creators, inspirando inovação e excelência.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* NOSSOS VALORES */}
-      <section className="section-padding bg-slate-900/40">
-        <div className="container">
-          <SectionTitle
-            badge="Princípios"
-            title="Nossos Valores"
-            subtitle="Os pilares fundamentais que guiam cada projeto, reunião e produção da Click Creators Agency."
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {values.map((item, idx) => (
-              <div key={idx} className="glass-card p-6 md:p-8 rounded-3xl flex flex-col gap-4 border border-zinc-800 hover:border-lime-400/50">
-                <div className="w-12 h-12 rounded-xl bg-lime-400/10 border border-lime-400/20 flex items-center justify-center">
-                  {item.icon}
-                </div>
-                <h4 className="text-xl font-bold text-white">{item.title}</h4>
-                <p className="text-zinc-300 text-sm leading-relaxed">{item.desc}</p>
-              </div>
+          <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-0">
+            {values.map((v, i) => (
+              <Reveal as="li" key={v.num} delay={(i % 3) as 0 | 1 | 2} className="hairline-t py-7 flex flex-col gap-2.5">
+                <span className="font-display text-lg text-[var(--primary)]">{v.num}</span>
+                <h3 className="font-display text-2xl uppercase tracking-wide">{v.title}</h3>
+                <p className="text-xs muted leading-relaxed max-w-xs">{v.desc}</p>
+              </Reveal>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      {/* EQUIPA SECTION */}
-      <section className="section-padding bg-slate-950 border-t border-zinc-800">
-        <div className="container">
-          <SectionTitle
-            badge="Talentos"
-            title="Quem faz acontecer"
-            subtitle="Conheça os profissionais por trás das estratégias, produções e conexões da Click Creators."
-          />
+      {/* Team */}
+      <TeamGrid members={team} />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member) => (
-              <div key={member.id} className="glass-card p-6 rounded-3xl flex flex-col justify-between h-full border border-zinc-800 hover:border-lime-400/50">
-                <div>
-                  <div className="overflow-hidden rounded-2xl aspect-square mb-5 border border-zinc-800 bg-slate-900">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <h4 className="text-lg font-bold text-white">{member.name}</h4>
-                  <span className="text-xs font-bold text-lime-400 block mb-3">{member.role}</span>
-                  <p className="text-zinc-400 text-xs leading-relaxed mb-4">{member.bio}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CLIENTS LOGO SECTION */}
-      <section className="section-padding bg-slate-900/40">
-        <div className="container text-center">
-          <span className="badge mb-4">Marcas Parceiras</span>
-          <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-10">
-            Marcas que confiaram em nós
-          </h2>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-            {clients.map((c) => (
-              <div key={c.id} className="glass-card p-6 rounded-2xl flex flex-col items-center justify-center border border-zinc-800 hover:border-lime-400/50">
-                <div className="w-12 h-12 rounded-full overflow-hidden bg-slate-800 border border-zinc-700 mb-2 p-1">
-                  <img src={c.logo} alt={c.name} className="w-full h-full object-contain" />
-                </div>
-                <span className="text-xs font-bold text-white">{c.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Partners */}
+      <PartnersShowcase partners={partners} />
 
       <CTASection />
     </div>

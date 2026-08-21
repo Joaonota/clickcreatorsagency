@@ -1,92 +1,103 @@
 import React from "react";
-import { ArrowRight, Play, Sparkles } from "lucide-react";
-import { Button } from "../common/Button";
+import { Link } from "react-router-dom";
+import { siteConfig } from "../../config/site";
 
 export const HeroSection: React.FC = () => {
+  const { heroVideo, heroPoster, heroLines } = siteConfig;
+
   return (
-    <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden py-16 lg:py-24">
-      {/* Background Media Overlay */}
+    <section className="relative min-h-[100svh] flex flex-col justify-end overflow-hidden">
+      {/* Background media */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="/img/Default_img.jpeg"
-          alt="Click Creators Studio Background"
-          className="w-full h-full object-cover scale-105 filter brightness-[0.35] contrast-125 opacity-75"
-          onError={(e) => {
-            // Fallback if local image has issue
-            e.currentTarget.src = "https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&w=2000&q=80";
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/40" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-lime-950/30 via-transparent to-transparent" />
+        {heroVideo ? (
+          <video
+            className="w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={heroPoster}
+          >
+            <source src={heroVideo} type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            src={heroPoster}
+            alt="Click Creators Agency — produção audiovisual"
+            className="w-full h-full object-cover kenburns"
+            fetchPriority="high"
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/55 to-[#0a0a0c]/35" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0c]/80 via-transparent to-transparent" />
       </div>
 
-      {/* Hero Content */}
-      <div className="container relative z-10 text-center flex flex-col items-center">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-lime-500/10 backdrop-blur-md border border-lime-400/30 text-lime-400 text-xs font-extrabold uppercase tracking-wider mb-8 animate-fade-in">
-          <Sparkles size={14} className="text-lime-400 animate-pulse" />
-          <span>Agência Criativa & Audiovisual</span>
-        </div>
+      {/* Vertical side label */}
+      <span className="vertical-label hidden lg:block absolute right-10 top-1/2 -translate-y-1/2 z-10">
+        Creative Agency — Porto
+      </span>
 
-        {/* Big Creative Headline */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white uppercase max-w-5xl leading-[1.05] mb-8">
-          WE CREATE <br />
-          <span className="gradient-text">WHAT PEOPLE</span> <br />
-          REMEMBER.
+      {/* Content */}
+      <div className="container relative z-10 pb-14 pt-40 lg:pb-20">
+        <p className="eyebrow anim-hero anim-hero-1 mb-8">Click Creators Agency</p>
+
+        <h1 className="display-hero max-w-full">
+          {heroLines.map((line, i) => (
+            <span key={i} className="block overflow-hidden">
+              <span
+                className={`block anim-hero anim-hero-${Math.min(i + 2, 4)} ${
+                  i === 1 ? "text-outline" : ""
+                }`}
+              >
+                {line}
+              </span>
+            </span>
+          ))}
         </h1>
 
-        {/* Subtitle */}
-        <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl font-normal leading-relaxed mb-10 text-balance">
-          Estratégia, criatividade e conteúdo audiovisual para marcas que querem ser vistas, lembradas e relevantes no mundo digital.
-        </p>
+        <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+          <div className="anim-hero anim-hero-3 flex flex-col gap-6 max-w-xl">
+            <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-white/80">
+              Social Media <span className="text-[var(--primary)] mx-1">•</span> Content{" "}
+              <span className="text-[var(--primary)] mx-1">•</span> Creators{" "}
+              <span className="text-[var(--primary)] mx-1">•</span> Audiovisual
+            </p>
+            <div className="flex items-center gap-3">
+              <span className="pulse-dot" aria-hidden="true" />
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
+                Disponíveis para novos projetos
+              </span>
+            </div>
+          </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-          <Button
-            to="/servicos"
-            variant="primary"
-            size="lg"
-            icon={<ArrowRight size={18} />}
-          >
-            Conheça os nossos serviços
-          </Button>
-
-          <Button
-            to="/portfolio"
-            variant="glass"
-            size="lg"
-            icon={<Play size={16} className="fill-white" />}
-          >
-            Ver portfólio
-          </Button>
+          <div className="anim-hero anim-hero-4 flex flex-col sm:flex-row gap-4">
+            <Link to="/portfolio" className="btn btn-primary btn-lg">
+              <span>Explore Our Work</span>
+            </Link>
+            <Link to="/contactos" className="btn btn-outline btn-lg">
+              <span>Work With Us</span>
+            </Link>
+          </div>
         </div>
+      </div>
 
-        {/* Stats Grid Bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12 mt-16 pt-10 border-t border-zinc-800 max-w-4xl w-full text-center">
-          <div>
-            <span className="block text-2xl sm:text-4xl font-extrabold text-lime-400">
-              150+
-            </span>
-            <span className="text-xs sm:text-sm text-zinc-400 font-medium">Projetos Produzidos</span>
-          </div>
-          <div>
-            <span className="block text-2xl sm:text-4xl font-extrabold text-lime-400">
-              15M+
-            </span>
-            <span className="text-xs sm:text-sm text-zinc-400 font-medium">Visualizações Geradas</span>
-          </div>
-          <div>
-            <span className="block text-2xl sm:text-4xl font-extrabold text-lime-400">
-              98%
-            </span>
-            <span className="text-xs sm:text-sm text-zinc-400 font-medium">Satisfação dos Clientes</span>
-          </div>
-          <div>
-            <span className="block text-2xl sm:text-4xl font-extrabold text-lime-400">
-              25+
-            </span>
-            <span className="text-xs sm:text-sm text-zinc-400 font-medium">Creators Associados</span>
-          </div>
+      {/* Bottom marquee strip */}
+      <div className="relative z-10 hairline-t bg-[#0a0a0c]/80 backdrop-blur-sm overflow-hidden py-4 partner-marquee-wrap">
+        <div className="partner-marquee gap-16 pr-16" aria-hidden="true">
+          {[0, 1].map((dup) => (
+            <div key={dup} className="flex gap-16 shrink-0">
+              {["Branding", "Social Media", "Produção Audiovisual", "Gestão de Creators", "Marketing Digital", "Content Creation"].map(
+                (word) => (
+                  <span
+                    key={word}
+                    className="font-display text-lg tracking-[0.15em] uppercase text-white/50 whitespace-nowrap"
+                  >
+                    {word} <span className="text-[var(--primary)] ml-4">✦</span>
+                  </span>
+                )
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>

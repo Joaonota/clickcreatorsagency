@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { PortfolioCard } from "../components/portfolio/PortfolioCard";
+import React, { useEffect, useMemo, useState } from "react";
+import { PortfolioGrid, FilterBar } from "../components/portfolio/PortfolioGrid";
 import { CTASection } from "../components/common/CTASection";
+import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
 import type { PortfolioProject } from "../data/portfolio";
 
@@ -9,64 +10,54 @@ export const PortfolioPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState("Todos");
 
   useEffect(() => {
-    document.title = "Portfólio | Click Creators Agency";
+    document.title = "Selected Work | Click Creators Agency";
     apiService.getPortfolioProjects().then(setProjects);
   }, []);
 
-  const categories = ["Todos", "Vídeo", "Fotografia", "Social Media", "Branding", "Campanhas"];
+  const counts = useMemo(
+    () =>
+      projects.reduce<Record<string, number>>((acc, p) => {
+        acc[p.categoria] = (acc[p.categoria] ?? 0) + 1;
+        return acc;
+      }, {}),
+    [projects]
+  );
+  const allCounts = { ...counts, Todos: projects.length };
 
   const filteredProjects =
     activeCategory === "Todos"
       ? projects
-      : projects.filter((p) => p.categoria.toLowerCase() === activeCategory.toLowerCase());
+      : projects.filter((p) => p.categoria === activeCategory);
 
   return (
-    <div className="flex flex-col gap-0">
-      {/* PAGE HERO */}
-      <section className="relative py-20 lg:py-28 bg-slate-950 overflow-hidden border-b border-white/10">
-        <div className="container relative z-10 text-center flex flex-col items-center">
-          <span className="badge mb-4">Galeria de Trabalhos</span>
-          <h1 className="text-4xl md:text-7xl font-extrabold text-white tracking-tight mb-6 max-w-4xl">
-            Projetos que transformam <br />
-            <span className="gradient-text">visões em resultados.</span>
+    <div className="flex flex-col">
+      {/* Page hero */}
+      <section className="pt-36 pb-14 lg:pt-48 lg:pb-20">
+        <div className="container">
+          <Reveal>
+            <p className="eyebrow mb-6">Selected Work</p>
+          </Reveal>
+          <h1 className="display-xl max-w-5xl">
+            <span className="block">WORK THAT</span>
+            <span className="block text-outline">SPEAKS FOR</span>
+            <span className="block">
+              ITSELF<span className="text-[var(--primary)]">.</span>
+            </span>
           </h1>
-          <p className="text-base md:text-xl text-slate-300 max-w-2xl font-normal leading-relaxed mb-8">
-            Conheça o nosso portfólio de vídeos comerciais, fotografia editorial, campanhas de redes sociais e branding.
-          </p>
-
-          {/* Category Filters */}
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
-                  activeCategory === cat
-                    ? "bg-purple-600 text-white shadow-lg shadow-purple-600/40 scale-105"
-                    : "bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/10"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          <Reveal delay={2}>
+            <p className="lede mt-8 max-w-xl">
+              Vídeos comerciais, fotografia editorial, campanhas digitais e branding —
+              uma seleção do trabalho que construímos com as nossas marcas.
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      {/* PROJECTS MASONRY GRID */}
-      <section className="section-padding bg-slate-900/40">
+      {/* Grid + filters */}
+      <section className="pb-24 lg:pb-32">
         <div className="container">
-          {filteredProjects.length === 0 ? (
-            <div className="text-center py-16 text-slate-400">
-              Nenhum projeto encontrado nesta categoria.
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {filteredProjects.map((project) => (
-                <PortfolioCard key={project.id} project={project} />
-              ))}
-            </div>
-          )}
+          <FilterBar active={activeCategory} onChange={setActiveCategory} counts={allCounts} />
+          <PortfolioGrid projects={filteredProjects} />
         </div>
       </section>
 

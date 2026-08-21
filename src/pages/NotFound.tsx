@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { ArrowLeft, Sparkles } from "lucide-react";
-import { Button } from "../components/common/Button";
+import { Link } from "react-router-dom";
 
 export const NotFound: React.FC = () => {
   useEffect(() => {
@@ -8,31 +7,17 @@ export const NotFound: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-[75vh] flex items-center justify-center py-20 relative overflow-hidden">
-      {/* Background Decorative Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-lime-500/10 rounded-full blur-[140px] pointer-events-none" />
-
-      <div className="container relative z-10 text-center flex flex-col items-center max-w-xl">
-        <span className="badge mb-6 flex items-center gap-1.5">
-          <Sparkles size={14} className="text-lime-400" />
-          <span>Erro 404</span>
-        </span>
-
-        <h1 className="text-6xl sm:text-8xl font-black tracking-tight text-white mb-4 gradient-text">
-          404
-        </h1>
-
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">
-          Página não encontrada
-        </h2>
-
-        <p className="text-zinc-300 text-sm sm:text-base leading-relaxed mb-8">
-          O conteúdo que está a tentar aceder não existe, foi alterado de endereço ou está temporariamente indisponível.
+    <div className="min-h-[80svh] flex items-center py-24">
+      <div className="container">
+        <p className="eyebrow mb-8">Erro 404</p>
+        <h1 className="display-hero text-outline">404</h1>
+        <p className="lede mt-8 max-w-md">
+          O conteúdo que procura não existe, foi movido ou está temporariamente
+          indisponível.
         </p>
-
-        <Button to="/" variant="primary" size="lg" icon={<ArrowLeft size={18} />} iconPosition="left">
-          Voltar à Página Inicial
-        </Button>
+        <Link to="/" className="btn btn-primary btn-lg mt-10 self-start">
+          <span>← Back to Home</span>
+        </Link>
       </div>
     </div>
   );

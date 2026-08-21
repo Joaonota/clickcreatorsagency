@@ -1,165 +1,130 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
 import { contactConfig } from "../../config/contact";
-import { SocialLinks } from "../common/SocialLinks";
+import { socialLinks } from "../../config/social";
+
+const navLinks = [
+  { name: "Início", path: "/" },
+  { name: "Sobre", path: "/sobre" },
+  { name: "Serviços", path: "/servicos" },
+  { name: "Portfólio", path: "/portfolio" },
+  { name: "Creators", path: "/creators" },
+  { name: "Blog", path: "/blog" },
+  { name: "Contactos", path: "/contactos" },
+];
+
+const socials = [
+  { name: "Instagram", short: "IG", url: socialLinks.instagram },
+  { name: "TikTok", short: "TK", url: socialLinks.tiktok },
+  { name: "YouTube", short: "YT", url: socialLinks.youtube },
+  { name: "Facebook", short: "FB", url: socialLinks.facebook },
+];
 
 export const Footer: React.FC = () => {
-  const currentYear = new Date().getFullYear();
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-slate-950 border-t border-zinc-800 pt-16 pb-12 relative overflow-hidden">
-      {/* Background Subtle Lime Glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[250px] bg-lime-500/5 blur-[140px] pointer-events-none" />
+    <footer className="bg-[#0a0a0c] hairline-t relative overflow-hidden">
+      {/* Big headline */}
+      <div className="container pt-20 md:pt-28 pb-14 hairline-b">
+        <p className="eyebrow mb-8">Pronto para começar?</p>
+        <h2 className="display-xl mb-12">
+          <span className="block">LET'S MAKE</span>
+          <span className="block text-outline">SOMETHING</span>
+          <span className="block">
+            MEMORABLE<span className="text-[var(--primary)]">.</span>
+          </span>
+        </h2>
 
-      <div className="container relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-16">
-          {/* Column 1: Brand Info & Logo */}
-          <div className="flex flex-col gap-5">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="h-10 flex items-center">
-                <img
-                  src="/logo/logo.PNG"
-                  alt="Click Creators Agency Logo"
-                  className="h-full w-auto object-contain filter brightness-110"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-black text-xl tracking-tight text-white leading-none">
-                  CLICK<span className="text-lime-400">CREATORS</span>
-                </span>
-                <span className="text-[9px] font-extrabold tracking-widest text-zinc-400 uppercase">
-                  Agency
-                </span>
-              </div>
-            </Link>
-
-            <p className="text-zinc-400 text-sm leading-relaxed">
-              Agência especializada em Social Media, Marketing Digital e Produção Audiovisual. Transformamos ideias em conteúdo e estratégias marcantes.
-            </p>
-
-            <SocialLinks />
-          </div>
-
-          {/* Column 2: Quick Links */}
-          <div>
-            <h3 className="text-white font-bold text-base mb-5 tracking-tight flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-lime-400" />
-              Navegação
-            </h3>
-            <ul className="flex flex-col gap-2.5 text-sm text-zinc-400">
-              <li>
-                <Link to="/" className="hover:text-lime-400 transition-colors flex items-center gap-1 group">
-                  <span>Início</span>
-                  <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/sobre" className="hover:text-lime-400 transition-colors flex items-center gap-1 group">
-                  <span>Sobre Nós</span>
-                  <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/servicos" className="hover:text-lime-400 transition-colors flex items-center gap-1 group">
-                  <span>Serviços</span>
-                  <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/portfolio" className="hover:text-lime-400 transition-colors flex items-center gap-1 group">
-                  <span>Portfólio</span>
-                  <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/creators" className="hover:text-lime-400 transition-colors flex items-center gap-1 group">
-                  <span>Creators</span>
-                  <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/blog" className="hover:text-lime-400 transition-colors flex items-center gap-1 group">
-                  <span>Blog / Notícias</span>
-                  <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/contactos" className="hover:text-lime-400 transition-colors flex items-center gap-1 group">
-                  <span>Contactos</span>
-                  <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: Services */}
-          <div>
-            <h3 className="text-white font-bold text-base mb-5 tracking-tight flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-lime-400" />
-              Serviços
-            </h3>
-            <ul className="flex flex-col gap-2.5 text-sm text-zinc-400">
-              <li>
-                <Link to="/servicos/marketing-digital" className="hover:text-lime-400 transition-colors">
-                  Marketing Digital
-                </Link>
-              </li>
-              <li>
-                <Link to="/servicos/producao-audiovisual" className="hover:text-lime-400 transition-colors">
-                  Produção Audiovisual
-                </Link>
-              </li>
-              <li>
-                <Link to="/servicos/gestao-redes-sociais" className="hover:text-lime-400 transition-colors">
-                  Gestão de Redes Sociais
-                </Link>
-              </li>
-              <li>
-                <Link to="/servicos/branding" className="hover:text-lime-400 transition-colors">
-                  Branding & Identidade Visual
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4: Contact Info */}
-          <div>
-            <h3 className="text-white font-bold text-base mb-5 tracking-tight flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-lime-400" />
-              Contactos
-            </h3>
-            <ul className="flex flex-col gap-3 text-sm text-zinc-400 mb-4">
-              <li className="flex items-start gap-3">
-                <Phone className="w-4 h-4 text-lime-400 shrink-0 mt-1" />
-                <a href={`tel:${contactConfig.phone}`} className="hover:text-white transition-colors">
-                  {contactConfig.phone}
-                </a>
-              </li>
-              <li className="flex items-start gap-3">
-                <Mail className="w-4 h-4 text-lime-400 shrink-0 mt-1" />
-                <a href={`mailto:${contactConfig.email}`} className="hover:text-white transition-colors">
-                  {contactConfig.email}
-                </a>
-              </li>
-              <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-lime-400 shrink-0 mt-1" />
-                <span>{contactConfig.address}</span>
-              </li>
-            </ul>
-          </div>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Link to="/contactos" className="btn btn-primary btn-lg">
+            <span>Start a Project →</span>
+          </Link>
+          <a
+            href={`https://wa.me/${contactConfig.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
+              "Olá Click Creators! Quero falar sobre um projeto."
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-outline btn-lg"
+          >
+            <span>WhatsApp</span>
+          </a>
         </div>
+      </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
-          <p>© {currentYear} Click Creators Agency. Todos os direitos reservados.</p>
-          <p className="flex items-center gap-2">
-            <span>WE CREATE WHAT PEOPLE REMEMBER.</span>
+      {/* Grid */}
+      <div className="container py-14 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12">
+        {/* Brand */}
+        <div className="lg:col-span-2">
+          <Link to="/" className="flex items-baseline gap-1 mb-5">
+            <span className="font-display text-3xl uppercase tracking-wide leading-none">Click</span>
+            <span className="font-display text-3xl uppercase tracking-wide text-[var(--primary)] leading-none">
+              Creators
+            </span>
+          </Link>
+          <p className="text-sm muted leading-relaxed max-w-sm">
+            Agência criativa especializada em Social Media, Marketing Digital, Produção
+            Audiovisual e Gestão de Creators.
           </p>
+          <div className="flex items-center gap-6 mt-7">
+            {socials.map((s) => (
+              <a
+                key={s.name}
+                href={s.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={s.name}
+                className="link-sweep text-[0.62rem] font-extrabold uppercase tracking-[0.22em] muted hover:text-[var(--primary)] transition-colors"
+              >
+                {s.short}
+              </a>
+            ))}
+          </div>
         </div>
+
+        {/* Nav */}
+        <nav aria-label="Navegação do rodapé">
+          <p className="eyebrow eyebrow-bare mb-6 text-white/40">Navegação</p>
+          <ul className="grid grid-cols-2 md:grid-cols-1 gap-x-8 gap-y-3">
+            {navLinks.map((link) => (
+              <li key={link.path}>
+                <Link
+                  to={link.path}
+                  className="text-sm muted hover:text-[var(--primary)] transition-colors font-medium"
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Contact */}
+        <div>
+          <p className="eyebrow eyebrow-bare mb-6 text-white/40">Contacto</p>
+          <ul className="flex flex-col gap-3 text-sm muted">
+            <li>
+              <a href={`tel:${contactConfig.phone}`} className="hover:text-[var(--primary)] transition-colors">
+                {contactConfig.phoneFormatted}
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${contactConfig.email}`} className="hover:text-[var(--primary)] transition-colors">
+                {contactConfig.email}
+              </a>
+            </li>
+            <li className="leading-relaxed">{contactConfig.address}</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="container pb-8 flex flex-col md:flex-row items-center justify-between gap-3 pt-6 hairline-t">
+        <p className="text-xs text-zinc-600">© {year} Click Creators Agency — Todos os direitos reservados.</p>
+        <p className="text-[0.55rem] font-extrabold uppercase tracking-[0.3em] text-zinc-600">
+          We Create What People Remember
+        </p>
       </div>
     </footer>
   );

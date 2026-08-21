@@ -44,17 +44,17 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({
           <div
             key={idx}
             onClick={() => handleOpenImage(idx)}
-            className={`group relative overflow-hidden rounded-2xl cursor-pointer border border-white/10 bg-slate-900 ${aspectClass}`}
+            className={`group relative overflow-hidden cursor-pointer bg-[var(--surface)] ${aspectClass}`}
           >
             <img
               src={imgUrl}
               alt={`Galeria ${idx + 1}`}
               loading="lazy"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <span className="p-3 rounded-full bg-purple-600/80 text-white backdrop-blur-md transform scale-75 group-hover:scale-100 transition-transform duration-300">
-                <Maximize2 size={20} />
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <span className="p-3 bg-[var(--primary)] text-black transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                <Maximize2 size={18} />
               </span>
             </div>
           </div>

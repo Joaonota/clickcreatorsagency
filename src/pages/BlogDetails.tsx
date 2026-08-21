@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Clock, Calendar, User } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { BlogCard } from "../components/blog/BlogCard";
 import { CTASection } from "../components/common/CTASection";
+import { Reveal } from "../hooks/useReveal";
 import { NotFound } from "./NotFound.tsx";
 import { apiService } from "../services/api";
 import type { BlogPost } from "../data/blog";
@@ -27,8 +28,6 @@ export const BlogDetails: React.FC = () => {
         }
         setLoading(false);
       });
-    } else {
-      setLoading(false);
     }
     return () => {
       isMounted = false;
@@ -38,73 +37,72 @@ export const BlogDetails: React.FC = () => {
   if (loading && slug) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-lime-400 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
-  if (!post) {
-    return <NotFound />;
-  }
+  if (!post) return <NotFound />;
 
   return (
-    <div className="flex flex-col gap-0">
-      {/* ARTICLE HEADER */}
-      <section className="relative py-16 lg:py-24 bg-slate-950 border-b border-zinc-800">
+    <div className="flex flex-col">
+      {/* Article hero */}
+      <section className="pt-36 pb-12 lg:pt-48">
         <div className="container max-w-4xl">
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-400 hover:text-lime-400 mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-zinc-500 hover:text-[var(--primary)] mb-10 transition-colors"
           >
             <ArrowLeft size={14} />
-            <span>Voltar ao Blog</span>
+            <span>Notes from the Studio</span>
           </Link>
 
-          <span className="badge mb-4">{post.categoria}</span>
+          <Reveal>
+            <p className="eyebrow eyebrow-bare mb-6">{post.categoria}</p>
+            <h1 className="display-lg mb-10">{post.title}</h1>
+          </Reveal>
 
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
-            {post.title}
-          </h1>
-
-          <div className="flex items-center gap-6 text-xs text-zinc-400 pb-8 border-b border-zinc-800 mb-8 flex-wrap">
-            <span className="flex items-center gap-1.5 font-semibold text-zinc-200">
-              <User size={14} className="text-lime-400" />
-              {post.autor}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Calendar size={14} />
-              {post.data}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Clock size={14} />
-              {post.tempoLeitura}
-            </span>
-          </div>
-
-          {/* FEATURED IMAGE */}
-          <div className="relative overflow-hidden rounded-3xl border border-zinc-800 aspect-[16/9] mb-12 bg-slate-900 shadow-2xl">
-            <img src={post.imagem} alt={post.title} className="w-full h-full object-cover" />
-          </div>
-
-          {/* BODY PARAGRAPHS */}
-          <div className="prose prose-invert max-w-none text-zinc-300 text-base md:text-lg leading-relaxed flex flex-col gap-6">
-            {post.conteudo.map((paragraph, idx) => (
-              <p key={idx}>{paragraph}</p>
-            ))}
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-2 text-[0.62rem] font-extrabold uppercase tracking-[0.22em] text-zinc-500 hairline-t pt-5">
+            <span>{post.autor}</span>
+            <span>{post.data}</span>
+            <span>{post.tempoLeitura} de leitura</span>
           </div>
         </div>
       </section>
 
-      {/* RELATED ARTICLES */}
-      {related.length > 0 && (
-        <section className="section-padding bg-slate-900/40 border-t border-zinc-800">
-          <div className="container max-w-4xl">
-            <h3 className="text-2xl font-bold text-white mb-8">Artigos Relacionados</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {related.map((p) => (
-                <BlogCard key={p.id} post={p} />
-              ))}
+      {/* Featured image */}
+      <section>
+        <div className="container max-w-5xl">
+          <Reveal className="reveal-clip">
+            <div className="media-frame aspect-video">
+              <img src={post.imagem} alt={post.title} />
             </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Body */}
+      <section className="section-y">
+        <div className="container max-w-3xl flex flex-col gap-7">
+          {post.conteudo.map((paragraph, idx) => (
+            <Reveal key={idx} delay={Math.min(idx, 2) as 0 | 1 | 2}>
+              <p className={`leading-relaxed ${idx === 0 ? "lede" : "text-base muted"}`}>
+                {paragraph}
+              </p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* Related */}
+      {related.length > 0 && (
+        <section className="hairline-t section-y bg-[var(--surface)]">
+          <div className="container grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14">
+            {related.map((p, i) => (
+              <Reveal key={p.id} delay={(i % 2) as 0 | 1}>
+                <BlogCard post={p} />
+              </Reveal>
+            ))}
           </div>
         </section>
       )}
