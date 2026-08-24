@@ -22,6 +22,11 @@ export const Header: React.FC = () => {
     { name: t.nav.contact, path: "/contactos" },
   ];
 
+  const handleCloseMenu = () => {
+    (document.activeElement as HTMLElement)?.blur();
+    setOpen(false);
+  };
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
@@ -35,6 +40,10 @@ export const Header: React.FC = () => {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  useEffect(() => {
+    handleCloseMenu();
+  }, [location.pathname]);
 
   const waUrl = getWhatsAppUrl(t.whatsapp.defaultMessage);
 
@@ -127,13 +136,13 @@ export const Header: React.FC = () => {
         className={`lg:hidden fixed inset-0 z-50 flex flex-col bg-[var(--background)] transition-all duration-500 ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
-        aria-hidden={!open}
+        inert={!open ? true : undefined}
       >
         {/* Mobile Header Bar with Close */}
         <div className="container flex items-center justify-between py-4 border-b border-[var(--border)]">
           <Link
             to="/"
-            onClick={() => setOpen(false)}
+            onClick={handleCloseMenu}
             aria-label="Click Creators Agency"
             className="flex items-center"
           >
@@ -147,7 +156,7 @@ export const Header: React.FC = () => {
           <div className="flex items-center gap-3">
             <LanguageSwitcher variant="mobile" />
             <button
-              onClick={() => setOpen(false)}
+              onClick={handleCloseMenu}
               aria-label={t.common.closeMenu}
               className="w-10 h-10 flex items-center justify-center text-[var(--color-text)] cursor-pointer"
             >
@@ -165,7 +174,7 @@ export const Header: React.FC = () => {
               <div key={link.path} className="overflow-hidden border-b border-[var(--border)]">
                 <Link
                   to={link.path}
-                  onClick={() => setOpen(false)}
+                  onClick={handleCloseMenu}
                   tabIndex={open ? 0 : -1}
                   className={`font-display block py-3.5 uppercase leading-none transition-colors duration-200 ${
                     active ? "text-[var(--primary)]" : "text-[var(--color-text)]"

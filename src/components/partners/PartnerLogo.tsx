@@ -26,7 +26,7 @@ export const PartnerLogo: React.FC<PartnerLogoProps> = ({ partner, size = "md" }
           src={partner.logo}
           alt={partner.name}
           loading="lazy"
-          className={`${s.img} w-auto object-contain transition-all duration-300 opacity-65 group-hover/pl:opacity-100 dark:invert-0 light:invert`}
+          className={`${s.img} w-auto object-contain transition-all duration-300 opacity-80 group-hover/pl:opacity-100 group-hover/pl:scale-105 rounded-sm`}
         />
       ) : (
         <div className="flex flex-col items-center justify-center">

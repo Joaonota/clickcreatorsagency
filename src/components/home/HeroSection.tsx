@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Play } from "lucide-react";
 import { siteConfig } from "../../config/site";
 import { useTranslation } from "../../i18n";
+import { VideoModal } from "../common/VideoModal";
 
 export const HeroSection: React.FC = () => {
   const { heroVideo, heroPoster } = siteConfig;
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (videoRef.current && heroVideo) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [heroVideo]);
 
   return (
     <section className="relative min-h-[100svh] flex flex-col justify-end overflow-hidden force-dark">
@@ -13,6 +25,7 @@ export const HeroSection: React.FC = () => {
       <div className="absolute inset-0 z-0">
         {heroVideo ? (
           <video
+            ref={videoRef}
             className="w-full h-full object-cover"
             autoPlay
             muted
@@ -30,7 +43,7 @@ export const HeroSection: React.FC = () => {
             fetchPriority="high"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/55 to-[var(--background)]/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/60 to-[var(--background)]/40" />
         <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/80 via-transparent to-transparent" />
       </div>
 
@@ -77,8 +90,18 @@ export const HeroSection: React.FC = () => {
             </div>
           </div>
 
-          <div className="anim-hero anim-hero-4 flex flex-col sm:flex-row gap-4">
-            <Link to="/portfolio" className="btn btn-primary btn-lg">
+          <div className="anim-hero anim-hero-4 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
+            {heroVideo && (
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="btn btn-primary btn-lg flex items-center justify-center gap-3 cursor-pointer shadow-lg shadow-[var(--primary)]/15"
+              >
+                <Play size={16} fill="currentColor" />
+                <span>{lang === "pt" ? "Ver Apresentação" : "Watch Showreel"}</span>
+              </button>
+            )}
+            <Link to="/portfolio" className={`btn ${heroVideo ? "btn-outline" : "btn-primary"} btn-lg`}>
               <span>{t.hero.exploreWork}</span>
             </Link>
             <Link to="/contactos" className="btn btn-outline btn-lg">
@@ -87,6 +110,15 @@ export const HeroSection: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {heroVideo && (
+        <VideoModal
+          isOpen={isModalOpen}
+          videoSrc={heroVideo}
+          title="Apresentação Oficial — Click Creators Agency"
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
 
       {/* Bottom marquee strip */}
       <div className="relative z-10 hairline-t bg-[var(--background)]/80 backdrop-blur-sm overflow-hidden py-4 partner-marquee-wrap">

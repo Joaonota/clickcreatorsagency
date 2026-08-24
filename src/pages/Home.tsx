@@ -3,9 +3,11 @@ import { HeroSection } from "../components/home/HeroSection";
 import { Manifesto } from "../components/home/Manifesto";
 import { ImpactNumbers } from "../components/home/ImpactNumbers";
 import { ServiceList } from "../components/services/ServiceList";
+import { VideoShowcase } from "../components/home/VideoShowcase";
 import {
   PortfolioGrid,
   FilterBar,
+  normalizeCategory,
 } from "../components/portfolio/PortfolioGrid";
 import { CreatorGrid } from "../components/creators/CreatorGrid";
 import { TrustedBy } from "../components/partners/TrustedBy";
@@ -27,7 +29,7 @@ export const Home: React.FC = () => {
   const [creators, setCreators] = useState<Creator[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
   const [team, setTeam] = useState<TeamMember[]>([]);
-  const [activeCategory, setActiveCategory] = useState("Todos");
+  const [activeCategory, setActiveCategory] = useState("all");
   const { t, lang } = useTranslation();
 
   useEffect(() => {
@@ -93,6 +95,9 @@ export const Home: React.FC = () => {
           <PortfolioGrid projects={filteredProjects.slice(0, 6)} />
         </div>
       </section>
+
+      {/* VIDEO SHOWCASE & REAL PRODUCTIONS */}
+      <VideoShowcase />
 
       {/* CREATORS */}
       <CreatorGrid creators={creators} />

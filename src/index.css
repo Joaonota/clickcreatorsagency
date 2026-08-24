@@ -7,92 +7,71 @@
 
 /* ============================================================
    TOKENS CANÓNICOS — definidos por tema
-   Hierarquia: background → background-secondary → surface
-               text-primary → text-secondary → text-muted
-   Accent: verde-lima (assinatura) — mais profundo no Light p/ contraste
    ============================================================ */
 
 :root,
 [data-theme="dark"] {
   --background: #050505;
   --background-secondary: #080808;
-
   --surface: #101010;
   --surface-hover: #161616;
-
   --text-primary: #ffffff;
   --text-secondary: #a7a7a7;
   --text-muted: #8a8a8a;
-
   --border: #252525;
   --border-hover: #3a3a3a;
-
   --accent: #b7ff00;
   --accent-hover: #c6ff33;
   --accent-dim: rgba(183, 255, 0, 0.12);
   --accent-glow: rgba(183, 255, 0, 0.22);
   --on-accent: #050505;
   --border-lime: rgba(183, 255, 0, 0.4);
-
-  /* Alfas sobre fundo escuro */
   --text-faint: rgba(255, 255, 255, 0.45);
   --text-soft: rgba(255, 255, 255, 0.72);
   --outline-stroke: rgba(255, 255, 255, 0.28);
-
   color-scheme: dark;
 }
 
 [data-theme="light"] {
   --background: #f5f5f3;
   --background-secondary: #eeeeec;
-
   --surface: #ffffff;
   --surface-hover: #f0f0ee;
-
   --text-primary: #090909;
   --text-secondary: #4a4a4a;
   --text-muted: #707070;
-
   --border: #d9d9d6;
   --border-hover: #bdbdba;
-
   --accent: #7ea600;
   --accent-hover: #6c9000;
   --on-accent: #050505;
   --border-lime: rgba(126, 166, 0, 0.5);
   --accent-dim: rgba(126, 166, 0, 0.12);
   --accent-glow: rgba(126, 166, 0, 0.18);
-
-  /* Alfas sobre fundo claro */
   --text-faint: rgba(9, 9, 9, 0.45);
   --text-soft: rgba(9, 9, 9, 0.72);
   --outline-stroke: rgba(9, 9, 9, 0.25);
-
   color-scheme: light;
 }
 
 /* ============================================================
    ALIASES — compatibilidade com o design system existente.
-   Resolvem no elemento html, por isso acompanham o tema ativo.
    ============================================================ */
 :root {
   --color-background: var(--background);
   --color-background-secondary: var(--background-secondary);
   --color-surface: var(--surface);
   --color-surface-hover: var(--surface-hover);
-
   --color-text-primary: var(--text-primary);
   --color-text: var(--text-primary);
   --color-white: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-border: var(--border);
   --color-border-strong: var(--border-hover);
-
   --color-primary: var(--accent);
   --color-primary-hover: var(--accent-hover);
   --color-primary-dim: var(--accent-dim);
   --color-primary-glow: var(--accent-glow);
-
   --foreground: var(--text-primary);
   --muted: var(--text-muted);
   --primary: var(--accent);
@@ -100,7 +79,6 @@
   --primary-dim: var(--accent-dim);
   --primary-glow: var(--accent-glow);
   --border-strong: var(--border-hover);
-
   --bg-0: var(--background);
   --bg-1: var(--background-secondary);
   --bg-2: var(--surface);
@@ -111,12 +89,8 @@
   --lime-bright: var(--accent-hover);
   --lime-dim: var(--accent-dim);
   --lime-glow: var(--accent-glow);
-
-  /* Typography */
   --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
   --font-body: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-
-  /* Motion */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --t-fast: 0.2s;
@@ -125,35 +99,27 @@
 }
 
 /* ============================================================
-   FORCE-DARK — re-pina o tema dark localmente. Usado no Hero,
-   Footer e heros de detalhe que permanecem cinematográficos
-   (fotografia + overlay escuro) em ambos os temas.
+   FORCE-DARK — re-pina o tema dark localmente.
    ============================================================ */
 .force-dark {
   --background: #050505;
   --background-secondary: #080808;
   --surface: #101010;
   --surface-hover: #161616;
-
   --text-primary: #ffffff;
   --text-secondary: #a7a7a7;
   --text-muted: #8a8a8a;
-
   --border: #252525;
   --border-hover: #3a3a3a;
-
   --accent: #b7ff00;
   --accent-hover: #c6ff33;
   --accent-dim: rgba(183, 255, 0, 0.12);
   --accent-glow: rgba(183, 255, 0, 0.22);
   --on-accent: #050505;
   --border-lime: rgba(183, 255, 0, 0.4);
-
   --text-faint: rgba(255, 255, 255, 0.45);
   --text-soft: rgba(255, 255, 255, 0.72);
   --outline-stroke: rgba(255, 255, 255, 0.28);
-
-  /* Re-alias para resolverem com os valores locais */
   --color-background: var(--background);
   --color-background-secondary: var(--background-secondary);
   --color-surface: var(--surface);
@@ -177,7 +143,7 @@
   --text-2: var(--text-muted);
 }
 
-/* Transição suave na mudança de tema (apenas cor, nunca layout) */
+/* Transição suave na mudança de tema */
 html.theming *,
 html.theming *::before,
 html.theming *::after {
@@ -232,12 +198,10 @@ img, video { max-width: 100%; height: auto; display: block; }
 ::selection { background: var(--primary); color: #050505; }
 
 /* ============================================================
-   BRAND LOGO — asset oficial (public/logo/logo.PNG)
-   PNG 2670×2047 (proporção ≈ 1.3:1, quase quadrada).
-   Tamanho controlado SEMPRE por estas classes — nunca por
-   utilitários Tailwind, que perdem contra CSS não-camado.
-   O halo subtil dá legibilidade ao wordmark preto em fundos
-   escuros e é invisível em fundos claros.
+   BRAND LOGO
+   O logo tem cores originais numa PNG transparente.
+   Para ser visível em fundos escuros usamos um contentor com
+   fundo branco semi-transparente (frosted pill).
    ============================================================ */
 .header-logo,
 .footer-logo {
@@ -246,30 +210,57 @@ img, video { max-width: 100%; height: auto; display: block; }
   height: auto;
   object-fit: contain;
   flex-shrink: 0;
-  transition: filter var(--t-med) var(--ease);
-  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.38))
-    drop-shadow(0 0 7px rgba(255, 255, 255, 0.16));
 }
 
-/* HEADER — mobile primeiro, nunca ultrapassa estes limites */
-.header-logo {
-  max-width: 105px;
-  max-height: 38px;
+/* Wrapper que envolve o logo no footer */
+.footer-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.9rem;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 6px;
+  backdrop-filter: blur(8px);
+  transition: background var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
 }
-@media (min-width: 768px) {
-  .header-logo { max-width: 120px; max-height: 42px; }
-}
-@media (min-width: 1024px) {
-  .header-logo { max-width: 140px; max-height: 48px; }
+.footer-logo-wrap:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 18px rgba(183, 255, 0, 0.35);
 }
 
-/* FOOTER — ligeiramente maior, área própria */
 .footer-logo {
   max-width: 110px;
-  max-height: 46px;
+  max-height: 44px;
 }
 @media (min-width: 1024px) {
-  .footer-logo { max-width: 130px; max-height: 54px; }
+  .footer-logo { max-width: 130px; max-height: 52px; }
+}
+
+/* Wrapper que envolve o logo no header */
+.header-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.65rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  backdrop-filter: blur(6px);
+  transition: background var(--t-med) var(--ease);
+}
+[data-theme="light"] .header-logo-wrap {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.header-logo {
+  max-width: 95px;
+  max-height: 34px;
+}
+@media (min-width: 768px) {
+  .header-logo { max-width: 110px; max-height: 38px; }
+}
+@media (min-width: 1024px) {
+  .header-logo { max-width: 128px; max-height: 44px; }
 }
 
 /* ============================================================

@@ -17,51 +17,79 @@ export interface PortfolioProject {
 export const portfolio: PortfolioProject[] = [
   {
     id: "1",
-    slug: "campanha-urban-aura",
-    title: "Campanha Summer Launch UrbanAura",
-    cliente: "UrbanAura Apparel",
-    categoria: "Campanhas",
-    descricao: "Estratégia completa de branding e mídia social que transformou a presença digital da UrbanAura, aumentando a notoriedade e gerando recordes de vendas na nova coleção.",
-    objetivo: "Lançar a coleção de verão da UrbanAura junto do público jovem urbano e aumentar a taxa de conversão no e-commerce em 200%.",
-    solucao: "Desenvolvemos um conceito visual vibrante focado em streetwear, combinando gravações de vídeo em 4K no Porto, ativação com criadores de conteúdo e anúncios dinâmicos de alta performance.",
+    slug: "apresentacao-click-creators",
+    title: "Vídeo de Apresentação Oficial Click Creators",
+    cliente: "Click Creators Agency",
+    categoria: "Vídeo",
+    descricao: "Apresentação oficial da Click Creators Agency. Produção cinematográfica que resume a nossa visão, produção audiovisual de ponta, rede de criadores e impacto para marcas inovadoras.",
+    objetivo: "Apresentar a agência com estética internacional, comunicando autoridade em Social Media, Marketing Digital, Conteúdo e Audiovisual.",
+    solucao: "Conceção, captação em alta definição, edição dinâmica, color grading e sonoplastia envolvente alinhadas às tendências contemporâneas.",
     resultados: [
-      "+340% de alcance orgânico no Instagram & TikTok",
-      "Recorde de vendas nas primeiras 48h de lançamento",
-      "+2.5M de visualizações acumuladas nas redes sociais"
+      "Vídeo principal de posicionamento da marca Click Creators",
+      "Apresentação oficial para clientes e parceiros estratégicos",
+      "Estética audiovisual cinematográfica de alto impacto"
     ],
-    imagem: "/img/modelo.jpeg",
+    imagem: "/img/filmmaker-fotografo.jpeg",
+    videos: ["/Videos/apresentacao-click.mp4"],
     galeria: [
-      "/img/modelo.jpeg",
       "/img/filmmaker-fotografo.jpeg",
+      "/img/modelo.jpeg",
       "/img/Default_img.jpeg"
     ],
     destaqueHome: true,
   },
   {
     id: "2",
-    slug: "video-vortex-energy",
-    title: "Commercial Film Vortex Energy",
-    cliente: "Vortex Energy",
+    slug: "casting-global-lead-networking",
+    title: "Casting Audiovisual — Parceria Global Lead Networking",
+    cliente: "Global Lead Networking",
     categoria: "Vídeo",
-    descricao: "Produção de vídeo comercial de alto impacto com estética dinâmica e sonoplastia envolvente para o lançamento do novo sabor tropical da bebida energética.",
-    objetivo: "Capturar a energia jovem e desportiva da marca através de uma peça audiovisual com nível internacional para canais digitais.",
-    solucao: "Produção cinematográfica com câmeras de alta velocidade, efeitos de motion graphics neons e ritmo de edição frenético alinhado às tendências do TikTok e Reels.",
+    descricao: "A Click Creators Agency, em parceria com a Global Lead Networking, na preparação do casting e desenvolvimento de novas oportunidades para quem quer crescer no mundo das produções audiovisuais.",
+    objetivo: "Criar uma oportunidade única no setor audiovisual através de um processo estruturado de preparação e seleção de novos talentos.",
+    solucao: "Cobertura completa dos bastidores, registo de casting em vídeo com ritmo envolvente e campanha promocional de atração.",
     resultados: [
-      "Mais de 1.8 Milhões de Impressões no YouTube & Meta",
-      "Aumento de 85% na retenção média dos vídeos",
-      "Prémio de destaque criativo em festival audiovisual digital"
+      "Elevada participação e adesão de novos talentos audiovisuais",
+      "Parceria estratégica de formação e casting consolidada",
+      "Forte tração e partilha orgânica nas redes sociais"
     ],
-    imagem: "/img/filmmaker-fotografo.jpeg",
-    videos: ["https://www.w3schools.com/html/mov_bbb.mp4"],
+    imagem: "/img/Default_img.jpeg",
+    videos: [
+      "/Videos/casting-global-lead.mp4"
+    ],
     galeria: [
-      "/img/filmmaker-fotografo.jpeg",
       "/img/Default_img.jpeg",
+      "/img/filmmaker-fotografo.jpeg",
       "/img/modelo.jpeg"
     ],
     destaqueHome: true,
   },
   {
     id: "3",
+    slug: "white-sunset-white-sensation-beira",
+    title: "Campanha White Sunset — White Sensation Beira",
+    cliente: "White Sensation Beira",
+    categoria: "Vídeo",
+    descricao: "Contagem decrescente e cobertura dos preparativos para a WHITE SUNSET – White Sensation Beira. Cada detalhe preparado para proporcionar uma experiência memorável.",
+    objetivo: "Gerar antecipação, engajamento e dinamizar a venda de ingressos para um dos eventos mais aguardados da Beira.",
+    solucao: "Produção de vídeo teaser de contagem decrescente com montagem enérgica, efeitos sonoros e identidade visual marcante.",
+    resultados: [
+      "Grande impacto e partilha nas comunidades locais e digitais",
+      "Aumento exponencial na procura de bilhetes na fase de contagem decrescente",
+      "Produção audiovisual com registo vibrante e imersivo"
+    ],
+    imagem: "/img/modelo.jpeg",
+    videos: [
+      "/videos/white-sunset-beira.mp4"
+    ],
+    galeria: [
+      "/img/modelo.jpeg",
+      "/img/Default_img.jpeg",
+      "/img/filmmaker-fotografo.jpeg"
+    ],
+    destaqueHome: true,
+  },
+  {
+    id: "4",
     slug: "social-media-lumina",
     title: "Gestão Social Media & Estética Lumina Skin",
     cliente: "Lumina Skin",
@@ -83,7 +111,7 @@ export const portfolio: PortfolioProject[] = [
     destaqueHome: true,
   },
   {
-    id: "4",
+    id: "5",
     slug: "rebranding-nova-dining",
     title: "Rebranding Completo Nova Dining",
     cliente: "Nova Dining",
@@ -104,7 +132,7 @@ export const portfolio: PortfolioProject[] = [
     destaqueHome: true,
   },
   {
-    id: "5",
+    id: "6",
     slug: "fotografia-pulse-fit",
     title: "Ensaio Fotográfico Editorial Pulse Fit",
     cliente: "Pulse Fit Club",
@@ -124,7 +152,7 @@ export const portfolio: PortfolioProject[] = [
     destaqueHome: false,
   },
   {
-    id: "6",
+    id: "7",
     slug: "campanha-krypton-tech",
     title: "Lançamento Digital Krypton Smart App",
     cliente: "Krypton Tech",

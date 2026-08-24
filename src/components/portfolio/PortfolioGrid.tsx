@@ -4,6 +4,18 @@ import type { PortfolioProject } from "../../data/portfolio";
 import { Reveal } from "../../hooks/useReveal";
 import { useTranslation } from "../../i18n";
 
+export const normalizeCategory = (cat?: string): string => {
+  if (!cat) return "all";
+  const c = cat.toLowerCase().trim();
+  if (c === "all" || c === "todos" || c === "") return "all";
+  if (c.includes("vid")) return "video";
+  if (c.includes("fot") || c.includes("photo")) return "photo";
+  if (c.includes("soc")) return "social";
+  if (c.includes("brand")) return "branding";
+  if (c.includes("camp")) return "campaigns";
+  return c;
+};
+
 interface FilterBarProps {
   active: string;
   onChange: (cat: string) => void;
@@ -14,28 +26,34 @@ export const FilterBar: React.FC<FilterBarProps> = ({ active, onChange, counts }
   const { t } = useTranslation();
 
   const categoryKeys = [
-    { key: "all", label: t.portfolio.categories.all, dataMatch: "Todos" },
-    { key: "video", label: t.portfolio.categories.video, dataMatch: "Vídeo" },
-    { key: "photo", label: t.portfolio.categories.photo, dataMatch: "Fotografia" },
-    { key: "social", label: t.portfolio.categories.social, dataMatch: "Social Media" },
-    { key: "branding", label: t.portfolio.categories.branding, dataMatch: "Branding" },
-    { key: "campaigns", label: t.portfolio.categories.campaigns, dataMatch: "Campanhas" },
+    { key: "all", label: t.portfolio.categories.all, dataMatch: "all" },
+    { key: "video", label: t.portfolio.categories.video, dataMatch: "video" },
+    { key: "photo", label: t.portfolio.categories.photo, dataMatch: "photo" },
+    { key: "social", label: t.portfolio.categories.social, dataMatch: "social" },
+    { key: "branding", label: t.portfolio.categories.branding, dataMatch: "branding" },
+    { key: "campaigns", label: t.portfolio.categories.campaigns, dataMatch: "campaigns" },
   ];
+
+  const activeNorm = normalizeCategory(active);
 
   return (
     <div className="filter-bar mb-12 lg:mb-16 overflow-x-auto" role="tablist" aria-label="Filtrar projetos">
-      {categoryKeys.map((cat) => (
-        <button
-          key={cat.key}
-          role="tab"
-          aria-selected={active === cat.dataMatch}
-          className={`filter-btn whitespace-nowrap ${active === cat.dataMatch ? "active" : ""}`}
-          onClick={() => onChange(cat.dataMatch)}
-        >
-          {cat.label}
-          <sup>{counts[cat.dataMatch] ?? 0}</sup>
-        </button>
-      ))}
+      {categoryKeys.map((cat) => {
+        const isSelected = activeNorm === cat.dataMatch;
+        const count = counts[cat.dataMatch] ?? counts[cat.key] ?? 0;
+        return (
+          <button
+            key={cat.key}
+            role="tab"
+            aria-selected={isSelected}
+            className={`filter-btn whitespace-nowrap cursor-pointer ${isSelected ? "active" : ""}`}
+            onClick={() => onChange(cat.dataMatch)}
+          >
+            {cat.label}
+            <sup>{count}</sup>
+          </button>
+        );
+      })}
     </div>
   );
 };
@@ -56,6 +74,12 @@ export const WorkItem: React.FC<{
             {project.categoria}
           </span>
         </span>
+        {project.videos && project.videos.length > 0 && (
+          <span className="absolute bottom-4 right-4 z-10 flex items-center gap-1.5 bg-black/75 text-[var(--primary)] backdrop-blur px-3 py-1.5 text-[0.62rem] font-extrabold uppercase tracking-widest rounded-full shadow-lg group-hover:scale-110 transition-transform">
+            <span>▶</span>
+            <span className="text-white text-[0.55rem]">Vídeo</span>
+          </span>
+        )}
       </div>
       <div className="work-meta">
         <div className="flex flex-col gap-1">

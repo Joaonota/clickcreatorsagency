@@ -8,9 +8,8 @@ export const siteConfig = {
   locale: "pt-PT",
   year: new Date().getFullYear(),
 
-  /* Hero media — adicionar um vídeo aqui quando disponível.
-     Enquanto não existir, é usado o poster (imagem). */
-  heroVideo: undefined as string | undefined,
+  /* Hero media — vídeo oficial de apresentação da Click Creators */
+  heroVideo: "/videos/apresentacao-click.mp4",
   heroPoster: "/img/Default_img.jpeg",
 
   /* Headline do hero */

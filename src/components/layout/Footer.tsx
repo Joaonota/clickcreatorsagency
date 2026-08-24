@@ -64,16 +64,11 @@ export const Footer: React.FC = () => {
           <Link
             to="/"
             aria-label="Click Creators Agency — Início"
-            className="footer-logo-container mb-6 inline-flex items-center"
+            className="mb-6 inline-flex items-center group"
           >
-            <img
-              src="/logo/logo.PNG"
-              alt="Click Creators Agency"
-              width={65}
-              height={50}
-              loading="lazy"
-              className="footer-logo"
-            />
+            <span className="font-display text-2xl lg:text-3xl tracking-wider text-white group-hover:text-[var(--primary)] transition-colors">
+              CLICK CREATORS<span className="text-[var(--primary)]">.</span>
+            </span>
           </Link>
           <p className="text-sm muted leading-relaxed max-w-sm">
             {t.footer.description}

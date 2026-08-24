@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { PortfolioGrid, FilterBar } from "../components/portfolio/PortfolioGrid";
+import { PortfolioGrid, FilterBar, normalizeCategory } from "../components/portfolio/PortfolioGrid";
 import { CTASection } from "../components/common/CTASection";
 import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
@@ -8,7 +8,7 @@ import type { PortfolioProject } from "../data/portfolio";
 
 export const PortfolioPage: React.FC = () => {
   const [projects, setProjects] = useState<PortfolioProject[]>([]);
-  const [activeCategory, setActiveCategory] = useState("Todos");
+  const [activeCategory, setActiveCategory] = useState("all");
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -16,20 +16,28 @@ export const PortfolioPage: React.FC = () => {
     apiService.getPortfolioProjects().then(setProjects);
   }, [t]);
 
-  const counts = useMemo(
-    () =>
-      projects.reduce<Record<string, number>>((acc, p) => {
-        acc[p.categoria] = (acc[p.categoria] ?? 0) + 1;
-        return acc;
-      }, {}),
-    [projects]
-  );
-  const allCounts = { ...counts, Todos: projects.length };
+  const counts = useMemo(() => {
+    const res: Record<string, number> = {
+      all: projects.length,
+      video: 0,
+      photo: 0,
+      social: 0,
+      branding: 0,
+      campaigns: 0,
+    };
+    projects.forEach((p) => {
+      const key = normalizeCategory(p.categoria);
+      res[key] = (res[key] ?? 0) + 1;
+    });
+    return res;
+  }, [projects]);
 
-  const filteredProjects =
-    activeCategory === "Todos"
-      ? projects
-      : projects.filter((p) => p.categoria === activeCategory);
+  const activeNorm = normalizeCategory(activeCategory);
+
+  const filteredProjects = useMemo(() => {
+    if (activeNorm === "all") return projects;
+    return projects.filter((p) => normalizeCategory(p.categoria) === activeNorm);
+  }, [projects, activeNorm]);
 
   return (
     <div className="flex flex-col">
@@ -58,7 +66,7 @@ export const PortfolioPage: React.FC = () => {
       {/* Grid + filters */}
       <section className="pb-24 lg:pb-32">
         <div className="container">
-          <FilterBar active={activeCategory} onChange={setActiveCategory} counts={allCounts} />
+          <FilterBar active={activeCategory} onChange={setActiveCategory} counts={counts} />
           <PortfolioGrid projects={filteredProjects} />
         </div>
       </section>

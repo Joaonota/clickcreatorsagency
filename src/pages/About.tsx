@@ -76,12 +76,20 @@ export const About: React.FC = () => {
           </div>
 
           <Reveal className="reveal-clip lg:col-span-5 lg:mt-16">
-            <div className="media-frame aspect-[3/4]">
-              <img
-                src="/img/filmmaker-fotografo.jpeg"
-                alt="Click Creators — Produção Audiovisual"
-                loading="lazy"
-              />
+            <div className="media-frame aspect-[3/4] overflow-hidden rounded-sm">
+              <video
+                src="/videos/white-sunset-beira.mp4"
+                poster="/img/filmmaker-fotografo.jpeg"
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls
+                className="w-full h-full object-cover"
+              >
+                <source src="/videos/white-sunset-beira.mp4" type="video/mp4" />
+                <source src="/Videos/white-sunset-beira.mp4" type="video/mp4" />
+              </video>
             </div>
             <p className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] muted mt-3">
               {t.about.backstageCaption}
