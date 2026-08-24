@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CTASection } from "../components/common/CTASection";
 import { TeamGrid } from "../components/team/TeamGrid";
 import { PartnersShowcase } from "../components/partners/PartnersShowcase";
+import { MissionVision } from "../components/about/MissionVision";
 import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
 import { useTranslation } from "../i18n";
@@ -58,38 +59,16 @@ export const About: React.FC = () => {
                 {t.about.storyBody}
               </p>
             </Reveal>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[var(--border)] border border-[var(--border)] mt-14">
-              <Reveal className="bg-[var(--background)] p-8 lg:p-10">
-                <p className="index-num mb-4">{t.about.missionTitle}</p>
-                <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">
-                  {t.about.missionText}
-                </p>
-              </Reveal>
-              <Reveal delay={1} className="bg-[var(--background)] p-8 lg:p-10">
-                <p className="index-num mb-4">{t.about.visionTitle}</p>
-                <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">
-                  {t.about.visionText}
-                </p>
-              </Reveal>
-            </div>
           </div>
 
           <Reveal className="reveal-clip lg:col-span-5 lg:mt-16">
             <div className="media-frame aspect-[3/4] overflow-hidden rounded-sm">
-              <video
-                src="/videos/white-sunset-beira.mp4"
-                poster="/img/filmmaker-fotografo.jpeg"
-                autoPlay
-                muted
-                loop
-                playsInline
-                controls
+              <img
+                src="/img/filmmaker-fotografo.jpeg"
+                alt="Bastidores de produção audiovisual da Click Creators"
+                loading="lazy"
                 className="w-full h-full object-cover"
-              >
-                <source src="/videos/white-sunset-beira.mp4" type="video/mp4" />
-                <source src="/Videos/white-sunset-beira.mp4" type="video/mp4" />
-              </video>
+              />
             </div>
             <p className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] muted mt-3">
               {t.about.backstageCaption}
@@ -97,6 +76,9 @@ export const About: React.FC = () => {
           </Reveal>
         </div>
       </section>
+
+      {/* Mission & Vision — editorial split */}
+      <MissionVision />
 
       {/* Values */}
       <section className="section-y bg-[var(--surface)] hairline-t hairline-b">

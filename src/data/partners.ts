@@ -56,7 +56,14 @@ export const partners: Partner[] = [
     category: "Telecomunicações & Digital",
     description: "Produção audiovisual e estratégia digital para plataformas mobile.",
   },
-
+  {
+    id: "partner-gln",
+    name: "Global Lead Network",
+    logo: "/parceiros/betwiner.jpeg",
+    website: "",
+    category: "Formação & Networking",
+    description: "Parceria de casting, formação e desenvolvimento de novos criadores audiovisuais.",
+  },
 
 ];
 

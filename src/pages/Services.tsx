@@ -7,6 +7,13 @@ import { apiService } from "../services/api";
 import { useTranslation } from "../i18n";
 import type { Service } from "../data/services";
 
+const TITLE_LINES: Record<string, string[]> = {
+  "Marketing Digital": ["Marketing", "Digital"],
+  "Produção Audiovisual": ["Produção", "Audiovisual"],
+  "Gestão de Redes Sociais": ["Gestão de", "Redes Sociais"],
+  "Branding & Identidade Visual": ["Branding &", "Identidade Visual"],
+};
+
 export const ServicesPage: React.FC = () => {
   const [servicesList, setServicesList] = useState<Service[]>([]);
   const { t } = useTranslation();
@@ -40,56 +47,83 @@ export const ServicesPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Services — alternating editorial rows */}
-      <section className="pb-24 lg:pb-32 flex flex-col gap-24 lg:gap-36">
+      {/* Services — alternating editorial features */}
+      <section aria-label={t.services.eyebrow}>
         {servicesList.map((service, index) => {
           const isEven = index % 2 === 0;
+          const lines = TITLE_LINES[service.title] ?? [service.title];
           return (
-            <div key={service.id} id={service.slug} className="container scroll-mt-28">
-              <div
-                className={`grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center ${
-                  isEven ? "" : "lg:[direction:rtl]"
-                }`}
-              >
+            <article
+              key={service.id}
+              id={service.slug}
+              className="svc-feature container scroll-mt-28 py-16 lg:py-24"
+            >
+              <div className="svc-feature-grid">
+                {/* Number + Title */}
+                <div className="svc-head lg:col-span-5">
+                  <Reveal>
+                    <span className="svc-num-xl">{service.number} /</span>
+                  </Reveal>
+                  <Reveal delay={1}>
+                    <h2 className="display-md svc-title-xl mt-4">
+                      {lines.map((line, i) => (
+                        <span key={i} className="block">
+                          {line}
+                        </span>
+                      ))}
+                    </h2>
+                  </Reveal>
+                </div>
+
                 {/* Media */}
-                <Reveal className="reveal-clip lg:col-span-7 lg:[direction:ltr]">
-                  <Link to={`/servicos/${service.slug}`} className="media-frame aspect-[16/10] group block">
-                    <img src={service.image} alt={service.title} loading="lazy" />
-                    <span className="absolute top-5 left-5 font-display text-2xl text-white bg-black/60 backdrop-blur px-3 py-1 leading-none">
-                      {service.number}
-                    </span>
-                  </Link>
+                <Reveal
+                  delay={2}
+                  className={`reveal-clip svc-media-wrap ${
+                    isEven ? "lg:col-span-7" : "lg:col-span-7 lg:order-first"
+                  }`}
+                >
+                  <figure className="svc-media media-frame aspect-[4/3] rounded-sm">
+                    <img
+                      src={service.image}
+                      alt={`${service.title} — Click Creators`}
+                      loading="lazy"
+                      width={1200}
+                      height={900}
+                    />
+                  </figure>
                 </Reveal>
 
-                {/* Content */}
-                <div className={`lg:col-span-5 flex flex-col items-start lg:[direction:ltr] ${isEven ? "" : "lg:justify-self-end"}`}>
+                {/* Description + Deliverables + CTA */}
+                <div className={`svc-body ${isEven ? "lg:col-span-5 lg:col-start-1" : "lg:col-span-5 lg:col-start-8"}`}>
                   <Reveal>
-                    <span className="index-num block mb-4">{service.number} /</span>
-                    <h2 className="display-md mb-5">{service.title}</h2>
-                    <p className="muted text-sm leading-relaxed mb-8 max-w-md">
+                    <p className="muted text-sm md:text-base leading-relaxed max-w-[600px]">
                       {service.shortDescription}
                     </p>
+                  </Reveal>
 
-                    <ul className="flex flex-col gap-2.5 mb-9 w-full">
+                  <Reveal delay={1}>
+                    <ul className="svc-lines mt-8 mb-10">
                       {service.deliverables.slice(0, 4).map((item, idx) => (
-                        <li
-                          key={idx}
-                          className="flex items-start gap-3 text-xs font-medium text-[var(--color-text-secondary)] hairline-t py-2.5"
-                        >
-                          <span className="text-[var(--primary)] shrink-0">+</span>
+                        <li key={idx} className="svc-line">
+                          <span className="svc-plus" aria-hidden="true">
+                            +
+                          </span>
                           <span>{item}</span>
                         </li>
                       ))}
                     </ul>
+                  </Reveal>
 
-                    <Link to={`/servicos/${service.slug}`} className="arrow-link">
+                  <Reveal delay={2}>
+                    <Link to={`/servicos/${service.slug}`} className="arrow-link svc-cta">
                       <span>{t.common.viewDetails}</span>
-                      <ArrowUpRight size={16} strokeWidth={2} />
+                      <span className="arrow-line" aria-hidden="true" />
+                      <ArrowUpRight size={16} strokeWidth={2} aria-hidden="true" />
                     </Link>
                   </Reveal>
                 </div>
               </div>
-            </div>
+            </article>
           );
         })}
       </section>

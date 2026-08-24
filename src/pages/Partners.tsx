@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PartnersShowcase } from "../components/partners/PartnersShowcase";
+import { PillarNarrative } from "../components/partners/PillarNarrative";
 import { CTASection } from "../components/common/CTASection";
 import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
@@ -38,22 +39,7 @@ export const PartnersPage: React.FC = () => {
           </Reveal>
 
           {/* Narrativa Work / Partners / Creators */}
-          <Reveal delay={3}>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[var(--border)] border border-[var(--border)] mt-16 max-w-4xl">
-              {[
-                { k: t.partners.narrativeWork, v: t.partners.narrativeWorkDesc },
-                { k: t.partners.narrativePartners, v: t.partners.narrativePartnersDesc },
-                { k: t.partners.narrativeCreators, v: t.partners.narrativeCreatorsDesc },
-              ].map((item) => (
-                <div key={item.k} className="bg-[var(--background)] p-6 lg:p-8">
-                  <p className="font-display text-xl uppercase tracking-wide text-[var(--primary)]">
-                    {item.k}
-                  </p>
-                  <p className="text-xs muted mt-1.5">{item.v}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
+          <PillarNarrative />
         </div>
       </section>
 

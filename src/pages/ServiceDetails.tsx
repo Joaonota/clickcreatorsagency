@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { CTASection } from "../components/common/CTASection";
 import { WorkItem } from "../components/portfolio/PortfolioGrid";
+import { DeliverablesBenefits } from "../components/services/DeliverablesBenefits";
 import { Reveal } from "../hooks/useReveal";
 import { NotFound } from "./NotFound";
 import { apiService } from "../services/api";
@@ -91,37 +92,10 @@ export const ServiceDetails: React.FC = () => {
       </section>
 
       {/* Deliverables & Benefits */}
-      <section className="section-y">
-        <div className="container grid grid-cols-1 lg:grid-cols-2 gap-px bg-[var(--border)] border border-[var(--border)]">
-          <Reveal className="bg-[var(--background)] p-8 lg:p-14">
-            <p className="index-num mb-6">{t.services.deliverablesTitle}</p>
-            <ul className="flex flex-col">
-              {service.deliverables.map((item, idx) => (
-                <li key={idx} className="flex items-start gap-4 hairline-t py-4 text-sm font-medium text-[var(--color-text-secondary)]">
-                  <span className="text-[var(--primary)] shrink-0 font-display text-lg leading-none pt-0.5">
-                    +
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-
-          <Reveal delay={1} className="bg-[var(--background)] p-8 lg:p-14">
-            <p className="index-num mb-6">{t.services.benefitsTitle}</p>
-            <ul className="flex flex-col">
-              {service.benefits.map((item, idx) => (
-                <li key={idx} className="flex items-start gap-4 hairline-t py-4 text-sm font-medium text-[var(--color-text-secondary)]">
-                  <span className="text-[var(--primary)] shrink-0 font-display text-lg leading-none pt-0.5">
-                    ↳
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
-      </section>
+      <DeliverablesBenefits
+        deliverables={service.deliverables}
+        benefits={service.benefits}
+      />
 
       {/* Process */}
       <section className="section-y bg-[var(--surface)] hairline-t hairline-b">

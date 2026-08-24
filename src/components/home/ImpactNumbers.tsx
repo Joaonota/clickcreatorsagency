@@ -6,28 +6,28 @@ export const ImpactNumbers: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="relative hairline-t hairline-b">
+    <section className="hairline-t hairline-b" aria-label={t.impact.numbers.map((n) => `${n.value} ${n.label}`).join(", ")}>
       <div className="container">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--border)] border-x border-[var(--border)]">
-          {t.impact.numbers.map((item, i) => (
-            <Reveal
-              key={item.id}
-              delay={(i % 4) as 0 | 1 | 2 | 3}
-              className="flex flex-col justify-between gap-8 py-10 lg:py-16 px-6 sm:px-10 bg-[var(--background)]"
-            >
-              <span className="display-lg text-[var(--primary)] leading-none">{item.value}</span>
-              <span className="flex flex-col">
-                <span className="font-display text-xl lg:text-2xl uppercase tracking-wide">
-                  {item.label}
-                </span>
-                {item.sublabel && (
-                  <span className="text-[0.62rem] font-bold uppercase tracking-[0.24em] muted mt-1">
-                    {item.sublabel}
-                  </span>
-                )}
-              </span>
-            </Reveal>
-          ))}
+        <div className="stats-band">
+          {t.impact.numbers.map((item, i) => {
+            const hasPlus = item.value.endsWith("+");
+            const digits = hasPlus ? item.value.slice(0, -1) : item.value;
+            return (
+              <Reveal
+                key={item.id}
+                delay={(i % 4) as 0 | 1 | 2 | 3}
+                className="stat"
+              >
+                <span className="stat-tick" aria-hidden="true" />
+                <p className="stat-num">
+                  {digits}
+                  {hasPlus && <span className="stat-plus">+</span>}
+                </p>
+                <p className="stat-label">{item.label}</p>
+                {item.sublabel && <p className="stat-sublabel">{item.sublabel}</p>}
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>

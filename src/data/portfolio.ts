@@ -9,7 +9,6 @@ export interface PortfolioProject {
   solucao: string;
   resultados: string[];
   imagem: string;
-  videos?: string[];
   galeria: string[];
   destaqueHome?: boolean;
 }
@@ -30,7 +29,6 @@ export const portfolio: PortfolioProject[] = [
       "Estética audiovisual cinematográfica de alto impacto"
     ],
     imagem: "/img/filmmaker-fotografo.jpeg",
-    videos: ["/Videos/apresentacao-click.mp4"],
     galeria: [
       "/img/filmmaker-fotografo.jpeg",
       "/img/modelo.jpeg",
@@ -53,9 +51,6 @@ export const portfolio: PortfolioProject[] = [
       "Forte tração e partilha orgânica nas redes sociais"
     ],
     imagem: "/img/Default_img.jpeg",
-    videos: [
-      "/Videos/casting-global-lead.mp4"
-    ],
     galeria: [
       "/img/Default_img.jpeg",
       "/img/filmmaker-fotografo.jpeg",
@@ -78,9 +73,6 @@ export const portfolio: PortfolioProject[] = [
       "Produção audiovisual com registo vibrante e imersivo"
     ],
     imagem: "/img/modelo.jpeg",
-    videos: [
-      "/videos/white-sunset-beira.mp4"
-    ],
     galeria: [
       "/img/modelo.jpeg",
       "/img/Default_img.jpeg",

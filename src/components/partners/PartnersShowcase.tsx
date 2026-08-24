@@ -25,7 +25,7 @@ export const PartnersShowcase: React.FC<{ partners: Partner[] }> = ({ partners }
             {[0, 1].map((dup) => (
               <div key={dup} className="flex gap-24 shrink-0 pr-24">
                 {partners.map((p) => (
-                  <PartnerLogo key={`${dup}-${p.id}`} partner={{ ...p, website: undefined }} />
+                  <PartnerLogo key={`${dup}-${p.id}`} partner={{ ...p, website: undefined }} size="sm" />
                 ))}
               </div>
             ))}
@@ -33,12 +33,12 @@ export const PartnersShowcase: React.FC<{ partners: Partner[] }> = ({ partners }
         </div>
 
         {/* Grid — estrutura minimalista com hairlines */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px bg-[var(--border)] border border-[var(--border)]">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-px bg-[var(--border)] border border-[var(--border)]">
           {partners.map((p, i) => (
             <Reveal
               key={p.id}
-              delay={(i % 4) as 0 | 1 | 2 | 3}
-              className="bg-[var(--background)] p-8 lg:p-12 flex items-center justify-center min-h-[130px] lg:min-h-[160px]"
+              delay={(i % 3) as 0 | 1 | 2}
+              className="bg-[var(--background)] px-6 py-10 lg:px-10 lg:py-14 flex items-center justify-center min-h-[140px] lg:min-h-[190px]"
             >
               <PartnerLogo partner={p} />
             </Reveal>

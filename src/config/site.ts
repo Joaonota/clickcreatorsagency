@@ -8,8 +8,7 @@ export const siteConfig = {
   locale: "pt-PT",
   year: new Date().getFullYear(),
 
-  /* Hero media — vídeo oficial de apresentação da Click Creators */
-  heroVideo: "/videos/apresentacao-click.mp4",
+  /* Hero media */
   heroPoster: "/img/Default_img.jpeg",
 
   /* Headline do hero */

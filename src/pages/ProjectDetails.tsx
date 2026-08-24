@@ -95,35 +95,6 @@ export const ProjectDetails: React.FC = () => {
         </div>
       </section>
 
-      {/* Video Principal */}
-      {project.videos && project.videos.length > 0 && (
-        <section className="pt-12 pb-16 bg-black/40 hairline-b">
-          <div className="container">
-            <Reveal>
-              <div className="flex items-center justify-between gap-4 mb-6">
-                <p className="eyebrow">Produção Audiovisual Oficial</p>
-                <span className="text-[0.62rem] font-bold uppercase tracking-widest text-[var(--primary)] bg-black/60 px-3 py-1 border border-[var(--primary)]/30 rounded">
-                  Vídeo HD 1080p
-                </span>
-              </div>
-            </Reveal>
-            <Reveal className="reveal-clip">
-              <div className="aspect-video bg-black flex items-center justify-center rounded-lg overflow-hidden border border-white/15 shadow-2xl">
-                <video
-                  src={project.videos[0]}
-                  controls
-                  playsInline
-                  preload="metadata"
-                  className="w-full h-full object-contain"
-                >
-                  <source src={project.videos[0]} type="video/mp4" />
-                </video>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-      )}
-
       {/* Narrative */}
       <section className="section-y">
         <div className="container grid grid-cols-1 lg:grid-cols-12 gap-12">

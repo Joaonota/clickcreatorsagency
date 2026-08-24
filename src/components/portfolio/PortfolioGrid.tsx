@@ -65,7 +65,10 @@ export const WorkItem: React.FC<{
   const { t } = useTranslation();
 
   return (
-    <Link to={`/portfolio/${project.slug}`} className="work-item group">
+    <Link
+      to={`/portfolio/${project.slug}`}
+      className="work-item group"
+    >
       <div className={`media-frame ${aspect}`}>
         <img src={project.imagem} alt={project.title} loading="lazy" />
         <span className="absolute top-4 left-4 z-10 flex items-center gap-2 text-[0.58rem] font-extrabold uppercase tracking-[0.22em]">
@@ -74,12 +77,6 @@ export const WorkItem: React.FC<{
             {project.categoria}
           </span>
         </span>
-        {project.videos && project.videos.length > 0 && (
-          <span className="absolute bottom-4 right-4 z-10 flex items-center gap-1.5 bg-black/75 text-[var(--primary)] backdrop-blur px-3 py-1.5 text-[0.62rem] font-extrabold uppercase tracking-widest rounded-full shadow-lg group-hover:scale-110 transition-transform">
-            <span>▶</span>
-            <span className="text-white text-[0.55rem]">Vídeo</span>
-          </span>
-        )}
       </div>
       <div className="work-meta">
         <div className="flex flex-col gap-1">
