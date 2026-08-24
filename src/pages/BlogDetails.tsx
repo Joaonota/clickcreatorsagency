@@ -4,8 +4,9 @@ import { ArrowLeft } from "lucide-react";
 import { BlogCard } from "../components/blog/BlogCard";
 import { CTASection } from "../components/common/CTASection";
 import { Reveal } from "../hooks/useReveal";
-import { NotFound } from "./NotFound.tsx";
+import { NotFound } from "./NotFound";
 import { apiService } from "../services/api";
+import { useTranslation } from "../i18n";
 import type { BlogPost } from "../data/blog";
 
 export const BlogDetails: React.FC = () => {
@@ -13,6 +14,7 @@ export const BlogDetails: React.FC = () => {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [related, setRelated] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     let isMounted = true;
@@ -54,7 +56,7 @@ export const BlogDetails: React.FC = () => {
             className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-[var(--text-faint)] hover:text-[var(--primary)] mb-10 transition-colors"
           >
             <ArrowLeft size={14} />
-            <span>Notes from the Studio</span>
+            <span>{t.blog.backToBlog}</span>
           </Link>
 
           <Reveal>
@@ -65,7 +67,7 @@ export const BlogDetails: React.FC = () => {
           <div className="flex flex-wrap items-center gap-x-8 gap-y-2 text-[0.62rem] font-extrabold uppercase tracking-[0.22em] text-[var(--text-faint)] hairline-t pt-5">
             <span>{post.autor}</span>
             <span>{post.data}</span>
-            <span>{post.tempoLeitura} de leitura</span>
+            <span>{post.tempoLeitura} {t.blog.readTime}</span>
           </div>
         </div>
       </section>

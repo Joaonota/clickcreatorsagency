@@ -14,6 +14,7 @@ import { SocialFeed } from "../components/common/SocialFeed";
 import { CTASection } from "../components/common/CTASection";
 import { SectionHeader } from "../components/common/SectionHeader";
 import { apiService } from "../services/api";
+import { useTranslation } from "../i18n";
 import type { Service } from "../data/services";
 import type { PortfolioProject } from "../data/portfolio";
 import type { Creator } from "../data/creators";
@@ -27,9 +28,14 @@ export const Home: React.FC = () => {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [activeCategory, setActiveCategory] = useState("Todos");
+  const { t, lang } = useTranslation();
 
   useEffect(() => {
-    document.title = "Click Creators Agency | Creative Agency — Social Media, Content & Audiovisual";
+    document.title =
+      lang === "pt"
+        ? "Click Creators Agency | Agência Criativa — Social Media, Conteúdo & Audiovisual"
+        : "Click Creators Agency | Creative Agency — Social Media, Content & Audiovisual";
+
     const loadData = async () => {
       const [sData, pData, cData, paData, tData] = await Promise.all([
         apiService.getServices(),
@@ -45,7 +51,7 @@ export const Home: React.FC = () => {
       setTeam(tData);
     };
     loadData();
-  }, []);
+  }, [lang]);
 
   const counts = projects.reduce<Record<string, number>>((acc, p) => {
     acc[p.categoria] = (acc[p.categoria] ?? 0) + 1;
@@ -76,12 +82,12 @@ export const Home: React.FC = () => {
       <section className="section-y bg-[var(--surface)] hairline-t hairline-b">
         <div className="container">
           <SectionHeader
-            index="(02)"
-            eyebrow="Selected Work"
-            titleLines={["SELECTED", "WORK"]}
-            description="Projetos que provam o que dizemos. Vídeo, fotografia, social e branding para marcas que querem mais."
+            index={t.portfolio.index}
+            eyebrow={t.portfolio.eyebrow}
+            titleLines={t.portfolio.titleLines}
+            description={t.portfolio.description}
             linkTo="/portfolio"
-            linkLabel="Todos os projetos"
+            linkLabel={t.portfolio.linkLabel}
           />
           <FilterBar active={activeCategory} onChange={setActiveCategory} counts={counts} />
           <PortfolioGrid projects={filteredProjects.slice(0, 6)} />
@@ -91,7 +97,7 @@ export const Home: React.FC = () => {
       {/* CREATORS */}
       <CreatorGrid creators={creators} />
 
-      {/* PARTNERS — compacto */}
+      {/* PARTNERS — compacto com logos em marquee */}
       <TrustedBy partners={partners} />
 
       {/* TEAM */}

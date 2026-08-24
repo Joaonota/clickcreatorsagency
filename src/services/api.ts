@@ -8,8 +8,6 @@ import { blog } from "../data/blog";
 import type { BlogPost } from "../data/blog";
 import { teamMembers } from "../data/team";
 import type { TeamMember } from "../data/team";
-import { clientBrands } from "../data/clients";
-import type { ClientBrand } from "../data/clients";
 import { partners } from "../data/partners";
 import type { Partner } from "../data/partners";
 
@@ -74,10 +72,6 @@ export const apiService = {
   async getTeam(): Promise<TeamMember[]> {
     await delay(100);
     return [...teamMembers];
-  },
-  async getClients(): Promise<ClientBrand[]> {
-    await delay(100);
-    return [...clientBrands];
   },
   async getPartners(): Promise<Partner[]> {
     await delay(100);

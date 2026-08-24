@@ -3,14 +3,17 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { ImageGallery } from "../components/common/ImageGallery";
 import { Reveal } from "../hooks/useReveal";
-import { NotFound } from "./NotFound.tsx";
+import { NotFound } from "./NotFound";
 import { apiService } from "../services/api";
+import { getWhatsAppUrl } from "../config/contact";
+import { useTranslation } from "../i18n";
 import type { Creator } from "../data/creators";
 
 export const CreatorDetails: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [creator, setCreator] = useState<Creator | null>(null);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     let isMounted = true;
@@ -39,9 +42,8 @@ export const CreatorDetails: React.FC = () => {
 
   if (!creator) return <NotFound />;
 
-  const whatsappUrl = `https://wa.me/351912345678?text=${encodeURIComponent(
-    `Olá Click Creators! Gostaria de agendar uma campanha com o(a) creator ${creator.name} (${creator.username}).`
-  )}`;
+  const whatsappMessage = `Olá Click Creators! Gostaria de agendar uma campanha com o(a) creator ${creator.name} (${creator.username}).`;
+  const whatsappUrl = getWhatsAppUrl(whatsappMessage);
 
   const socialChips = [
     creator.redes.instagram && {
@@ -64,7 +66,7 @@ export const CreatorDetails: React.FC = () => {
   return (
     <div className="flex flex-col">
       {/* Hero — fotografia grande */}
-      <section className="relative min-h-\[90svh\] flex flex-col justify-end overflow-hidden force-dark">
+      <section className="relative min-h-[90svh] flex flex-col justify-end overflow-hidden force-dark">
         <div className="absolute inset-0 z-0 media-frame">
           <img src={creator.coverImage || creator.image} alt={creator.name} className="kenburns" />
         </div>
@@ -76,7 +78,7 @@ export const CreatorDetails: React.FC = () => {
             className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-[var(--text-soft)] hover:text-[var(--primary)] mb-8 transition-colors"
           >
             <ArrowLeft size={14} />
-            <span>Our Creators</span>
+            <span>{t.creators.pageHeroEyebrow}</span>
           </Link>
 
           <p className="eyebrow eyebrow-bare mb-5">{creator.category}</p>
@@ -91,9 +93,9 @@ export const CreatorDetails: React.FC = () => {
       <section className="hairline-b bg-[var(--surface)]">
         <div className="container grid grid-cols-2 md:grid-cols-4 gap-y-8 py-10 lg:py-12">
           {[
-            { value: creator.stats.engagementRate, label: "Engagement", accent: true },
-            { value: creator.stats.totalReach, label: "Reach / mês" },
-            { value: `${creator.stats.completedCampaigns}+`, label: "Campanhas" },
+            { value: creator.stats.engagementRate, label: t.creators.engagement, accent: true },
+            { value: creator.stats.totalReach, label: t.creators.reachPerMonth },
+            { value: `${creator.stats.completedCampaigns}+`, label: t.creators.campaigns },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -118,7 +120,7 @@ export const CreatorDetails: React.FC = () => {
               rel="noopener noreferrer"
               className="btn btn-primary btn-sm w-full sm:w-auto justify-center"
             >
-              <span>Work With This Creator →</span>
+              <span>{t.creators.workWithCreator} →</span>
             </a>
           </div>
         </div>
@@ -129,15 +131,15 @@ export const CreatorDetails: React.FC = () => {
         <div className="container grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-5">
             <Reveal>
-              <p className="eyebrow mb-6">About</p>
-              <h2 className="display-sm mb-6">Sobre {creator.name.split(" ")[0]}</h2>
+              <p className="eyebrow mb-6">{t.creators.aboutCreator}</p>
+              <h2 className="display-sm mb-6">{t.creators.aboutCreator} {creator.name.split(" ")[0]}</h2>
               <p className="lede">{creator.bio}</p>
             </Reveal>
           </div>
 
           <div className="lg:col-span-6 lg:col-start-7 flex flex-col gap-8 lg:pt-16">
             <Reveal delay={1}>
-              <p className="index-num mb-4">Socials</p>
+              <p className="index-num mb-4">{t.creators.socials}</p>
               <div className="flex flex-wrap gap-3">
                 {socialChips.map((chip) => (
                   <a
@@ -160,11 +162,9 @@ export const CreatorDetails: React.FC = () => {
             </Reveal>
 
             <Reveal delay={2}>
-              <p className="index-num mb-4">Collaborations</p>
+              <p className="index-num mb-4">{t.creators.collaborations}</p>
               <p className="muted text-sm leading-relaxed max-w-lg">
-                {creator.name} já colaborou em {creator.stats.completedCampaigns} campanhas
-                com marcas nacionais e internacionais — de lançamentos de produto a
-                parcerias continuadas de conteúdo.
+                {creator.name} {t.creators.collabText}
               </p>
             </Reveal>
           </div>
@@ -176,7 +176,7 @@ export const CreatorDetails: React.FC = () => {
         <section className="pb-24 hairline-t pt-16">
           <div className="container">
             <Reveal>
-              <p className="eyebrow mb-10">Selected Content</p>
+              <p className="eyebrow mb-10">{t.creators.selectedContent}</p>
             </Reveal>
             <ImageGallery images={creator.gallery} columns={3} aspectRatio="square" />
           </div>
@@ -187,13 +187,13 @@ export const CreatorDetails: React.FC = () => {
       <section className="hairline-t bg-[var(--surface)] section-y">
         <div className="container flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="eyebrow mb-6">Collaboration</p>
+            <p className="eyebrow mb-6">{t.creators.collaborations}</p>
             <h2 className="display-lg max-w-3xl">
-              QUER O(A) {creator.name.split(" ")[0].toUpperCase()} NA SUA MARCA?
+              {t.creators.ctaQuestion}
             </h2>
           </div>
           <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg shrink-0">
-            <span>Start a Collaboration →</span>
+            <span>{t.creators.ctaStart} →</span>
           </a>
         </div>
       </section>

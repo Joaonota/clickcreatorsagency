@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { siteConfig } from "../../config/site";
+import { useTranslation } from "../../i18n";
 
 export const HeroSection: React.FC = () => {
-  const { heroVideo, heroPoster, heroLines } = siteConfig;
+  const { heroVideo, heroPoster } = siteConfig;
+  const { t } = useTranslation();
 
   return (
-    <section className="relative min-h-\[100svh\] flex flex-col justify-end overflow-hidden force-dark">
+    <section className="relative min-h-[100svh] flex flex-col justify-end overflow-hidden force-dark">
       {/* Background media */}
       <div className="absolute inset-0 z-0">
         {heroVideo ? (
@@ -23,7 +25,7 @@ export const HeroSection: React.FC = () => {
         ) : (
           <img
             src={heroPoster}
-            alt="Click Creators Agency — produção audiovisual"
+            alt="Click Creators Agency"
             className="w-full h-full object-cover kenburns"
             fetchPriority="high"
           />
@@ -34,15 +36,15 @@ export const HeroSection: React.FC = () => {
 
       {/* Vertical side label */}
       <span className="vertical-label hidden lg:block absolute right-10 top-1/2 -translate-y-1/2 z-10">
-        Creative Agency — Porto
+        {t.hero.sideLabel}
       </span>
 
       {/* Content */}
       <div className="container relative z-10 pb-14 pt-40 lg:pb-20">
-        <p className="eyebrow anim-hero anim-hero-1 mb-8">Click Creators Agency</p>
+        <p className="eyebrow anim-hero anim-hero-1 mb-8">{t.hero.agency}</p>
 
         <h1 className="display-hero max-w-full">
-          {heroLines.map((line, i) => (
+          {t.hero.lines.map((line, i) => (
             <span key={i} className="block overflow-hidden">
               <span
                 className={`block anim-hero anim-hero-${Math.min(i + 2, 4)} ${
@@ -65,24 +67,22 @@ export const HeroSection: React.FC = () => {
         <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
           <div className="anim-hero anim-hero-3 flex flex-col gap-6 max-w-xl">
             <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-[var(--text-soft)]">
-              Social Media <span className="text-[var(--primary)] mx-1">•</span> Content{" "}
-              <span className="text-[var(--primary)] mx-1">•</span> Creators{" "}
-              <span className="text-[var(--primary)] mx-1">•</span> Audiovisual
+              {t.hero.subtext}
             </p>
             <div className="flex items-center gap-3">
               <span className="pulse-dot" aria-hidden="true" />
               <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-soft)]">
-                Disponíveis para novos projetos
+                {t.hero.available}
               </span>
             </div>
           </div>
 
           <div className="anim-hero anim-hero-4 flex flex-col sm:flex-row gap-4">
             <Link to="/portfolio" className="btn btn-primary btn-lg">
-              <span>Explore Our Work</span>
+              <span>{t.hero.exploreWork}</span>
             </Link>
             <Link to="/contactos" className="btn btn-outline btn-lg">
-              <span>Work With Us</span>
+              <span>{t.hero.workWithUs}</span>
             </Link>
           </div>
         </div>
@@ -93,16 +93,14 @@ export const HeroSection: React.FC = () => {
         <div className="partner-marquee gap-16 pr-16" aria-hidden="true">
           {[0, 1].map((dup) => (
             <div key={dup} className="flex gap-16 shrink-0">
-              {["Branding", "Social Media", "Produção Audiovisual", "Gestão de Creators", "Marketing Digital", "Content Creation"].map(
-                (word) => (
-                  <span
-                    key={word}
-                    className="font-display text-lg tracking-[0.15em] uppercase text-[var(--text-faint)] whitespace-nowrap"
-                  >
-                    {word} <span className="text-[var(--primary)] ml-4">✦</span>
-                  </span>
-                )
-              )}
+              {t.hero.marquee.map((word) => (
+                <span
+                  key={word}
+                  className="font-display text-lg tracking-[0.15em] uppercase text-[var(--text-faint)] whitespace-nowrap"
+                >
+                  {word} <span className="text-[var(--primary)] ml-4">✦</span>
+                </span>
+              ))}
             </div>
           ))}
         </div>

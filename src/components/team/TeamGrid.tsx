@@ -2,6 +2,7 @@ import React from "react";
 import type { TeamMember } from "../../data/team";
 import { SectionHeader } from "../common/SectionHeader";
 import { Reveal } from "../../hooks/useReveal";
+import { useTranslation } from "../../i18n";
 
 const TeamCard: React.FC<{ member: TeamMember }> = ({ member }) => (
   <div className="team-card aspect-[3/4]">
@@ -37,22 +38,26 @@ const TeamCard: React.FC<{ member: TeamMember }> = ({ member }) => (
   </div>
 );
 
-export const TeamGrid: React.FC<{ members: TeamMember[] }> = ({ members }) => (
-  <section className="section-y bg-[var(--surface)] hairline-t hairline-b">
-    <div className="container">
-      <SectionHeader
-        index="(05)"
-        eyebrow="The Team"
-        titleLines={["THE PEOPLE", "BEHIND", "THE WORK"]}
-      />
+export const TeamGrid: React.FC<{ members: TeamMember[] }> = ({ members }) => {
+  const { t } = useTranslation();
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-        {members.map((m, i) => (
-          <Reveal key={m.id} delay={(i % 4) as 0 | 1 | 2 | 3} className={i % 2 === 1 ? "lg:mt-12" : ""}>
-            <TeamCard member={m} />
-          </Reveal>
-        ))}
+  return (
+    <section className="section-y bg-[var(--surface)] hairline-t hairline-b">
+      <div className="container">
+        <SectionHeader
+          index={t.team.index}
+          eyebrow={t.team.eyebrow}
+          titleLines={t.team.titleLines}
+        />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          {members.map((m, i) => (
+            <Reveal key={m.id} delay={(i % 4) as 0 | 1 | 2 | 3} className={i % 2 === 1 ? "lg:mt-12" : ""}>
+              <TeamCard member={m} />
+            </Reveal>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};

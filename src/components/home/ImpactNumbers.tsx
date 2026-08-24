@@ -1,13 +1,15 @@
 import React from "react";
 import { Reveal } from "../../hooks/useReveal";
-import { impactNumbers } from "../../data/impact";
+import { useTranslation } from "../../i18n";
 
 export const ImpactNumbers: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="relative hairline-t hairline-b">
       <div className="container">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--border)] border-x border-[var(--border)]">
-          {impactNumbers.map((item, i) => (
+          {t.impact.numbers.map((item, i) => (
             <Reveal
               key={item.id}
               delay={(i % 4) as 0 | 1 | 2 | 3}

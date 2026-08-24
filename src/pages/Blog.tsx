@@ -3,15 +3,17 @@ import { BlogCard } from "../components/blog/BlogCard";
 import { CTASection } from "../components/common/CTASection";
 import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
+import { useTranslation } from "../i18n";
 import type { BlogPost } from "../data/blog";
 
 export const BlogPage: React.FC = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
-    document.title = "Blog & Insights | Click Creators Agency";
+    document.title = t.blog.pageTitle;
     apiService.getBlogPosts().then(setPosts);
-  }, []);
+  }, [t]);
 
   return (
     <div className="flex flex-col">
@@ -19,16 +21,15 @@ export const BlogPage: React.FC = () => {
       <section className="pt-36 pb-14 lg:pt-48 lg:pb-20">
         <div className="container">
           <Reveal>
-            <p className="eyebrow mb-6">Blog & Insights</p>
+            <p className="eyebrow mb-6">{t.blog.pageHeroEyebrow}</p>
           </Reveal>
           <h1 className="display-xl max-w-5xl">
-            <span className="block">NOTES FROM</span>
-            <span className="block text-outline">THE STUDIO</span>
+            <span className="block">{t.blog.pageHeroLines[0]}</span>
+            <span className="block text-outline">{t.blog.pageHeroLines[1]}</span>
           </h1>
           <Reveal delay={2}>
             <p className="lede mt-8 max-w-xl">
-              Estratégias, tendências e bastidores — escritos pela equipa que vive o
-              digital todos os dias.
+              {t.blog.pageHeroLede}
             </p>
           </Reveal>
         </div>

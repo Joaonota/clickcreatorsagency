@@ -4,10 +4,12 @@ import { ArrowUpRight } from "lucide-react";
 import type { Service } from "../../data/services";
 import { SectionHeader } from "../common/SectionHeader";
 import { Reveal } from "../../hooks/useReveal";
+import { useTranslation } from "../../i18n";
 
 export const ServiceList: React.FC<{ services: Service[] }> = ({ services }) => {
   const previewRef = useRef<HTMLDivElement>(null);
   const [activeImage, setActiveImage] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const el = previewRef.current;
@@ -19,12 +21,12 @@ export const ServiceList: React.FC<{ services: Service[] }> = ({ services }) => 
     <section className="section-y" onMouseMove={handleMouseMove}>
       <div className="container">
         <SectionHeader
-          index="(01)"
-          eyebrow="What We Do"
-          titleLines={["WHAT", "WE DO"]}
-          description="Quatro disciplinas integradas. Uma só equipa. Da estratégia à produção, cuidamos de tudo o que faz a sua marca ser vista."
+          index={t.services.index}
+          eyebrow={t.services.eyebrow}
+          titleLines={t.services.titleLines}
+          description={t.services.description}
           linkTo="/servicos"
-          linkLabel="Todos os serviços"
+          linkLabel={t.services.linkLabel}
         />
 
         <div className="svc-list">

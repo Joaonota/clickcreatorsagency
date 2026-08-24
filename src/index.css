@@ -5,57 +5,112 @@
    PREMIUM / EDITORIAL / CREATIVE / CINEMATIC
    ============================================================ */
 
-:root {
-  /* ============================================================
-     IDENTIDADE OFICIAL — CLICK CREATORS
-     BLACK + WHITE + LIME  (70 / 20 / 10)
-     ============================================================ */
-  --color-primary: #b7ff00;
-  --color-primary-hover: #c7ff33;
-  --color-primary-dim: rgba(183, 255, 0, 0.12);
-  --color-primary-glow: rgba(183, 255, 0, 0.22);
+/* ============================================================
+   TOKENS CANÓNICOS — definidos por tema
+   Hierarquia: background → background-secondary → surface
+               text-primary → text-secondary → text-muted
+   Accent: verde-lima (assinatura) — mais profundo no Light p/ contraste
+   ============================================================ */
 
-  --color-background: #050505;
-  --color-background-secondary: #0a0a0a;
-  --color-surface: #101010;
-  --color-surface-hover: #161616;
+:root,
+[data-theme="dark"] {
+  --background: #050505;
+  --background-secondary: #080808;
 
-  --color-white: #ffffff;
-  --color-text-primary: #ffffff;
-  --color-text: #ffffff;
-  --color-text-secondary: #a1a1a1;
-  --color-border: #242424;
-  --color-border-strong: #343434;
+  --surface: #101010;
+  --surface-hover: #161616;
 
-  /* Texto sobre fundos escuros fixos (ex.: gradientes sobre fotografia) */
+  --text-primary: #ffffff;
+  --text-secondary: #a7a7a7;
+  --text-muted: #8a8a8a;
+
+  --border: #252525;
+  --border-hover: #3a3a3a;
+
+  --accent: #b7ff00;
+  --accent-hover: #c6ff33;
+  --accent-dim: rgba(183, 255, 0, 0.12);
+  --accent-glow: rgba(183, 255, 0, 0.22);
+  --on-accent: #050505;
+  --border-lime: rgba(183, 255, 0, 0.4);
+
+  /* Alfas sobre fundo escuro */
   --text-faint: rgba(255, 255, 255, 0.45);
   --text-soft: rgba(255, 255, 255, 0.72);
   --outline-stroke: rgba(255, 255, 255, 0.28);
 
-  /* Aliases usados pelo design system v3 */
-  --background: var(--color-background);
-  --surface: var(--color-surface);
-  --foreground: var(--color-white);
-  --muted: var(--color-text-secondary);
-  --primary: var(--color-primary);
-  --primary-bright: var(--color-primary-hover);
-  --primary-dim: var(--color-primary-dim);
-  --primary-glow: var(--color-primary-glow);
-  --border: var(--color-border);
-  --border-strong: var(--color-border-strong);
-  --border-lime: rgba(183, 255, 0, 0.35);
+  color-scheme: dark;
+}
 
-  /* Legacy aliases (compatibilidade) */
-  --bg-0: var(--color-background);
-  --bg-1: var(--color-background-secondary);
-  --bg-2: var(--color-surface);
-  --text-0: var(--color-white);
-  --text-1: var(--color-text-secondary);
-  --text-2: #6b6b6b;
-  --lime: var(--color-primary);
-  --lime-bright: var(--color-primary-hover);
-  --lime-dim: var(--color-primary-dim);
-  --lime-glow: var(--color-primary-glow);
+[data-theme="light"] {
+  --background: #f5f5f3;
+  --background-secondary: #eeeeec;
+
+  --surface: #ffffff;
+  --surface-hover: #f0f0ee;
+
+  --text-primary: #090909;
+  --text-secondary: #4a4a4a;
+  --text-muted: #707070;
+
+  --border: #d9d9d6;
+  --border-hover: #bdbdba;
+
+  --accent: #7ea600;
+  --accent-hover: #6c9000;
+  --on-accent: #050505;
+  --border-lime: rgba(126, 166, 0, 0.5);
+  --accent-dim: rgba(126, 166, 0, 0.12);
+  --accent-glow: rgba(126, 166, 0, 0.18);
+
+  /* Alfas sobre fundo claro */
+  --text-faint: rgba(9, 9, 9, 0.45);
+  --text-soft: rgba(9, 9, 9, 0.72);
+  --outline-stroke: rgba(9, 9, 9, 0.25);
+
+  color-scheme: light;
+}
+
+/* ============================================================
+   ALIASES — compatibilidade com o design system existente.
+   Resolvem no elemento html, por isso acompanham o tema ativo.
+   ============================================================ */
+:root {
+  --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+
+  --color-text-primary: var(--text-primary);
+  --color-text: var(--text-primary);
+  --color-white: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-hover);
+
+  --color-primary: var(--accent);
+  --color-primary-hover: var(--accent-hover);
+  --color-primary-dim: var(--accent-dim);
+  --color-primary-glow: var(--accent-glow);
+
+  --foreground: var(--text-primary);
+  --muted: var(--text-muted);
+  --primary: var(--accent);
+  --primary-bright: var(--accent-hover);
+  --primary-dim: var(--accent-dim);
+  --primary-glow: var(--accent-glow);
+  --border-strong: var(--border-hover);
+
+  --bg-0: var(--background);
+  --bg-1: var(--background-secondary);
+  --bg-2: var(--surface);
+  --text-0: var(--text-primary);
+  --text-1: var(--text-secondary);
+  --text-2: var(--text-muted);
+  --lime: var(--accent);
+  --lime-bright: var(--accent-hover);
+  --lime-dim: var(--accent-dim);
+  --lime-glow: var(--accent-glow);
 
   /* Typography */
   --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
@@ -70,55 +125,56 @@
 }
 
 /* ============================================================
-   LIGHT MODE — mesma identidade, fundo claro
-   ============================================================ */
-[data-theme="light"] {
-  --color-background: #f7f7f5;
-  --color-background-secondary: #efefec;
-  --color-surface: #ffffff;
-  --color-surface-hover: #f0f0ee;
-
-  --color-text-primary: #0d0d0d;
-  --color-text: #0d0d0d;
-  --color-text-secondary: #5f5f5f;
-  --color-border: #e2e2de;
-  --color-border-strong: #cfcfca;
-
-  --text-faint: rgba(13, 13, 13, 0.45);
-  --text-soft: rgba(13, 13, 13, 0.72);
-  --outline-stroke: rgba(13, 13, 13, 0.25);
-
-  --text-2: #9a9a95;
-
-  color-scheme: light;
-}
-
-/* Bloco que re-pina o tema dark localmente — usado no Hero,
+   FORCE-DARK — re-pina o tema dark localmente. Usado no Hero,
    Footer e heros de detalhe que permanecem cinematográficos
-   (fotografia + overlay escuro) em ambos os temas. */
+   (fotografia + overlay escuro) em ambos os temas.
+   ============================================================ */
 .force-dark {
-  --color-background: #050505;
-  --color-background-secondary: #0a0a0a;
-  --color-surface: #101010;
-  --color-surface-hover: #161616;
-  --color-white: #ffffff;
-  --color-text-primary: #ffffff;
-  --color-text: #ffffff;
-  --color-text-secondary: #a1a1aa;
-  --color-border: #242424;
-  --color-border-strong: #343434;
+  --background: #050505;
+  --background-secondary: #080808;
+  --surface: #101010;
+  --surface-hover: #161616;
+
+  --text-primary: #ffffff;
+  --text-secondary: #a7a7a7;
+  --text-muted: #8a8a8a;
+
+  --border: #252525;
+  --border-hover: #3a3a3a;
+
+  --accent: #b7ff00;
+  --accent-hover: #c6ff33;
+  --accent-dim: rgba(183, 255, 0, 0.12);
+  --accent-glow: rgba(183, 255, 0, 0.22);
+  --on-accent: #050505;
+  --border-lime: rgba(183, 255, 0, 0.4);
+
   --text-faint: rgba(255, 255, 255, 0.45);
   --text-soft: rgba(255, 255, 255, 0.72);
   --outline-stroke: rgba(255, 255, 255, 0.28);
-  --text-2: #6b6b6b;
 
   /* Re-alias para resolverem com os valores locais */
-  --background: var(--color-background);
-  --surface: var(--color-surface);
-  --foreground: var(--color-text);
-  --muted: var(--color-text-secondary);
-  --border: var(--color-border);
-  --border-strong: var(--color-border-strong);
+  --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-text-primary: var(--text-primary);
+  --color-text: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-hover);
+  --color-primary: var(--accent);
+  --color-primary-hover: var(--accent-hover);
+  --color-primary-dim: var(--accent-dim);
+  --color-primary-glow: var(--accent-glow);
+  --foreground: var(--text-primary);
+  --muted: var(--text-muted);
+  --primary: var(--accent);
+  --primary-bright: var(--accent-hover);
+  --primary-dim: var(--accent-dim);
+  --primary-glow: var(--accent-glow);
+  --border-strong: var(--border-hover);
+  --text-2: var(--text-muted);
 }
 
 /* Transição suave na mudança de tema (apenas cor, nunca layout) */
@@ -176,6 +232,47 @@ img, video { max-width: 100%; height: auto; display: block; }
 ::selection { background: var(--primary); color: #050505; }
 
 /* ============================================================
+   BRAND LOGO — asset oficial (public/logo/logo.PNG)
+   PNG 2670×2047 (proporção ≈ 1.3:1, quase quadrada).
+   Tamanho controlado SEMPRE por estas classes — nunca por
+   utilitários Tailwind, que perdem contra CSS não-camado.
+   O halo subtil dá legibilidade ao wordmark preto em fundos
+   escuros e é invisível em fundos claros.
+   ============================================================ */
+.header-logo,
+.footer-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  transition: filter var(--t-med) var(--ease);
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.38))
+    drop-shadow(0 0 7px rgba(255, 255, 255, 0.16));
+}
+
+/* HEADER — mobile primeiro, nunca ultrapassa estes limites */
+.header-logo {
+  max-width: 105px;
+  max-height: 38px;
+}
+@media (min-width: 768px) {
+  .header-logo { max-width: 120px; max-height: 42px; }
+}
+@media (min-width: 1024px) {
+  .header-logo { max-width: 140px; max-height: 48px; }
+}
+
+/* FOOTER — ligeiramente maior, área própria */
+.footer-logo {
+  max-width: 110px;
+  max-height: 46px;
+}
+@media (min-width: 1024px) {
+  .footer-logo { max-width: 130px; max-height: 54px; }
+}
+
+/* ============================================================
    FILM GRAIN — subtle cinematic texture
    ============================================================ */
 .grain::before {
@@ -195,6 +292,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   60% { transform: translate(-3%, -2%); }
   80% { transform: translate(4%, 4%); }
 }
+[data-theme="light"] .grain::before { opacity: 0.02; }
 
 /* ============================================================
    TYPOGRAPHY — DISPLAY
@@ -409,13 +507,13 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 .btn-primary {
   background: var(--primary);
-  color: #070707;
+  color: var(--on-accent);
   border-color: var(--primary);
   padding: 1.05rem 2.1rem;
   font-size: 0.72rem;
 }
 .btn-primary::before { background: var(--foreground); }
-.btn-primary:hover { border-color: var(--foreground); color: #f7f7f5; }
+.btn-primary:hover { border-color: var(--foreground); color: var(--background); }
 
 .btn-outline {
   background: transparent;
@@ -425,7 +523,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   font-size: 0.72rem;
 }
 .btn-outline::before { background: var(--primary); }
-.btn-outline:hover { color: #070707; border-color: var(--primary); }
+.btn-outline:hover { color: var(--on-accent); border-color: var(--primary); }
 
 .btn-lg { padding: 1.25rem 2.75rem; font-size: 0.78rem; }
 .btn-sm { padding: 0.7rem 1.4rem; font-size: 0.64rem; }

@@ -3,41 +3,42 @@ import type { Partner } from "../../data/partners";
 
 interface PartnerLogoProps {
   partner: Partner;
-  /* Tamanho do logo real quando existir */
   size?: "sm" | "md" | "lg";
 }
 
 const sizes = {
-  sm: { img: "max-h-9 max-w-[110px]", name: "text-xl" },
-  md: { img: "max-h-11 max-w-[150px]", name: "pw-name" },
+  sm: { img: "max-h-9 max-w-[120px]", name: "text-xl" },
+  md: { img: "max-h-12 max-w-[160px]", name: "pw-name" },
   lg: { img: "max-h-16 max-w-[220px]", name: "text-3xl lg:text-4xl" },
 };
 
 /* Apresenta um parceiro:
-   - com logo real (SVG/PNG/WebP/JPG) — grayscale → cor no hover
-   - sem logo — fallback em wordmark tipográfico
-   - com website — envolvido em link externo acessível */
+   - com logo real SVG/PNG/WebP/JPG em public/images/partners/ — renderização nítida com grayscale / opacidade suave → brilho no hover
+   - sem logo — fallback em wordmark tipográfico elegante
+   - com website — link acessível */
 export const PartnerLogo: React.FC<PartnerLogoProps> = ({ partner, size = "md" }) => {
   const s = sizes[size];
 
   const inner = (
-    <span className="partner-wordmark group/pl">
+    <span className="partner-wordmark group/pl flex items-center justify-center">
       {partner.logo ? (
         <img
           src={partner.logo}
           alt={partner.name}
           loading="lazy"
-          className={s.img}
+          className={`${s.img} w-auto object-contain transition-all duration-300 opacity-65 group-hover/pl:opacity-100 dark:invert-0 light:invert`}
         />
       ) : (
-        <>
-          <span className={`${s.name} font-display uppercase tracking-[0.06em] whitespace-nowrap`}>
+        <div className="flex flex-col items-center justify-center">
+          <span className={`${s.name} font-display uppercase tracking-[0.08em] whitespace-nowrap text-[var(--color-text)] group-hover/pl:text-[var(--primary)] transition-colors duration-300`}>
             {partner.name}
           </span>
           {partner.category && (
-            <span className="pw-cat">{partner.category}</span>
+            <span className="pw-cat text-[0.55rem] font-bold uppercase tracking-widest text-[var(--text-faint)] mt-0.5">
+              {partner.category}
+            </span>
           )}
-        </>
+        </div>
       )}
     </span>
   );
@@ -48,8 +49,8 @@ export const PartnerLogo: React.FC<PartnerLogoProps> = ({ partner, size = "md" }
         href={partner.website}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`${partner.name} — visitar website`}
-        className="block"
+        aria-label={`${partner.name} — website`}
+        className="block group"
       >
         {inner}
       </a>

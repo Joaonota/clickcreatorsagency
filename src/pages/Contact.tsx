@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { contactConfig } from "../config/contact";
+import { contactConfig, getWhatsAppUrl } from "../config/contact";
 import { socialLinks } from "../config/social";
 import { Reveal } from "../hooks/useReveal";
+import { useTranslation } from "../i18n";
 
 export const Contact: React.FC = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -12,19 +13,19 @@ export const Contact: React.FC = () => {
     service: "marketing-digital",
     message: "",
   });
+  const { t } = useTranslation();
 
   useEffect(() => {
-    document.title = "Contactos | Click Creators Agency";
-  }, []);
+    document.title = t.contact.pageTitle;
+  }, [t]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormSubmitted(true);
   };
 
-  const whatsappUrl = `https://wa.me/${contactConfig.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-    `Olá Click Creators! O meu nome é ${formData.name || "visitante"} e gostaria de falar sobre ${formData.service}.`
-  )}`;
+  const whatsappMessage = `Olá Click Creators! O meu nome é ${formData.name || "visitante"} e gostaria de falar sobre ${formData.service}.`;
+  const whatsappUrl = getWhatsAppUrl(whatsappMessage);
 
   const channels = [
     {
@@ -47,14 +48,14 @@ export const Contact: React.FC = () => {
       <section className="pt-36 pb-14 lg:pt-48 lg:pb-20">
         <div className="container">
           <Reveal>
-            <p className="eyebrow mb-6">Contact</p>
+            <p className="eyebrow mb-6">{t.contact.pageHeroEyebrow}</p>
           </Reveal>
           <h1 className="display-xl max-w-5xl">
-            <span className="block">LET'S</span>
-            <span className="block text-outline">CREATE</span>
-            <span className="block">SOMETHING</span>
+            <span className="block">{t.contact.pageHeroLines[0]}</span>
+            <span className="block text-outline">{t.contact.pageHeroLines[1]}</span>
             <span className="block">
-              GREAT<span className="text-[var(--primary)]">.</span>
+              {t.contact.pageHeroLines[2].replace(".", "")}
+              <span className="text-[var(--primary)]">.</span>
             </span>
           </h1>
         </div>
@@ -68,7 +69,7 @@ export const Contact: React.FC = () => {
             <Reveal>
               <p className="eyebrow eyebrow-bare mb-2 text-[var(--text-faint)] flex items-center gap-3">
                 <span className="pulse-dot" aria-hidden="true" />
-                Disponíveis para novos projetos
+                {t.contact.availableNow}
               </p>
             </Reveal>
 
@@ -95,7 +96,7 @@ export const Contact: React.FC = () => {
             <Reveal delay={2}>
               <div className="hairline-t pt-6">
                 <p className="text-[0.58rem] font-extrabold uppercase tracking-[0.26em] text-[var(--text-faint)] mb-2">
-                  Estúdio
+                  {t.contact.studio}
                 </p>
                 <p className="text-sm muted leading-relaxed">{contactConfig.address}</p>
                 <p className="text-xs muted mt-2">{contactConfig.workingHours}</p>
@@ -106,22 +107,21 @@ export const Contact: React.FC = () => {
           {/* Form */}
           <div className="lg:col-span-7 lg:col-start-6">
             <Reveal delay={1}>
-              <p className="index-num mb-8">Start a Project →</p>
+              <p className="index-num mb-8">{t.contact.startProjectTitle}</p>
 
               {formSubmitted ? (
                 <div className="hairline-t pt-12 pb-8 flex flex-col gap-4">
                   <p className="font-display text-4xl uppercase text-[var(--primary)]">
-                    Mensagem recebida.
+                    {t.contact.successTitle}
                   </p>
                   <p className="muted text-sm max-w-md leading-relaxed">
-                    Obrigado pelo seu contacto, {formData.name.split(" ")[0] || "obrigado"}. A
-                    nossa equipa responderá em menos de 24 horas úteis.
+                    {t.contact.successMsg}
                   </p>
                   <button
                     onClick={() => setFormSubmitted(false)}
-                    className="arrow-link mt-4 self-start"
+                    className="arrow-link mt-4 self-start cursor-pointer"
                   >
-                    <span>Enviar outra mensagem</span>
+                    <span>{t.contact.sendAnother}</span>
                     <span className="arrow-line" aria-hidden="true" />
                   </button>
                 </div>
@@ -129,71 +129,71 @@ export const Contact: React.FC = () => {
                 <form onSubmit={handleSubmit} className="flex flex-col gap-9">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-9">
                     <label className="block">
-                      <span className="field-label">Nome *</span>
+                      <span className="field-label">{t.contact.nameLabel}</span>
                       <input
                         type="text"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="O seu nome"
+                        placeholder={t.contact.namePlaceholder}
                         className={inputClass}
                       />
                     </label>
 
                     <label className="block">
-                      <span className="field-label">Email *</span>
+                      <span className="field-label">{t.contact.emailLabel}</span>
                       <input
                         type="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="nome@empresa.com"
+                        placeholder={t.contact.emailPlaceholder}
                         className={inputClass}
                       />
                     </label>
 
                     <label className="block">
-                      <span className="field-label">Telefone / WhatsApp</span>
+                      <span className="field-label">{t.contact.phoneLabel}</span>
                       <input
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="+351 912 345 678"
+                        placeholder={t.contact.phonePlaceholder}
                         className={inputClass}
                       />
                     </label>
 
                     <label className="block">
-                      <span className="field-label">Serviço</span>
+                      <span className="field-label">{t.contact.serviceLabel}</span>
                       <select
                         value={formData.service}
                         onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                        className={`${inputClass} bg-transparent [&>option]:bg-[var(--surface)]`}
+                        className={`${inputClass} bg-transparent [&>option]:bg-[var(--surface)] [&>option]:text-[var(--color-text)]`}
                       >
-                        <option value="marketing-digital">Marketing Digital</option>
-                        <option value="producao-audiovisual">Produção Audiovisual</option>
-                        <option value="gestao-redes-sociais">Gestão de Redes Sociais</option>
-                        <option value="branding">Branding & Identidade Visual</option>
-                        <option value="creators">Campanha com Creators</option>
-                        <option value="outro">Outro assunto</option>
+                        <option value="marketing-digital">{t.contact.serviceOptions.marketing}</option>
+                        <option value="producao-audiovisual">{t.contact.serviceOptions.audiovisual}</option>
+                        <option value="gestao-redes-sociais">{t.contact.serviceOptions.social}</option>
+                        <option value="branding">{t.contact.serviceOptions.branding}</option>
+                        <option value="creators">{t.contact.serviceOptions.creators}</option>
+                        <option value="outro">{t.contact.serviceOptions.other}</option>
                       </select>
                     </label>
                   </div>
 
                   <label className="block">
-                    <span className="field-label">A sua ideia *</span>
+                    <span className="field-label">{t.contact.ideaLabel}</span>
                     <textarea
                       required
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Conte-nos sobre a sua marca, objetivos e orçamento estimado..."
+                      placeholder={t.contact.ideaPlaceholder}
                       className={`${inputClass} min-h-[120px]`}
                     />
                   </label>
 
-                  <button type="submit" className="btn btn-primary btn-lg self-start mt-2">
-                    <span>Send Message →</span>
+                  <button type="submit" className="btn btn-primary btn-lg self-start mt-2 cursor-pointer">
+                    <span>{t.contact.sendMessage} →</span>
                   </button>
                 </form>
               )}

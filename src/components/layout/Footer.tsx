@@ -1,18 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { contactConfig } from "../../config/contact";
+import { contactConfig, getWhatsAppUrl } from "../../config/contact";
 import { socialLinks } from "../../config/social";
-
-const navLinks = [
-  { name: "Início", path: "/" },
-  { name: "Sobre", path: "/sobre" },
-  { name: "Serviços", path: "/servicos" },
-  { name: "Portfólio", path: "/portfolio" },
-  { name: "Creators", path: "/creators" },
-  { name: "Parceiros", path: "/partners" },
-  { name: "Blog", path: "/blog" },
-  { name: "Contactos", path: "/contactos" },
-];
+import { useTranslation } from "../../i18n";
 
 const socials = [
   { name: "Instagram", short: "IG", url: socialLinks.instagram },
@@ -23,33 +13,46 @@ const socials = [
 
 export const Footer: React.FC = () => {
   const year = new Date().getFullYear();
+  const { t } = useTranslation();
+
+  const navLinks = [
+    { name: t.nav.home, path: "/" },
+    { name: t.nav.about, path: "/sobre" },
+    { name: t.nav.services, path: "/servicos" },
+    { name: t.nav.portfolio, path: "/portfolio" },
+    { name: t.nav.creators, path: "/creators" },
+    { name: t.nav.partners, path: "/partners" },
+    { name: t.nav.blog, path: "/blog" },
+    { name: t.nav.contact, path: "/contactos" },
+  ];
+
+  const waUrl = getWhatsAppUrl(t.whatsapp.defaultMessage);
 
   return (
-    <footer className="bg-\[var\(--background\)\] hairline-t relative overflow-hidden force-dark">
+    <footer className="bg-[var(--background)] hairline-t relative overflow-hidden force-dark">
       {/* Big headline */}
       <div className="container pt-20 md:pt-28 pb-14 hairline-b">
-        <p className="eyebrow mb-8">Pronto para começar?</p>
+        <p className="eyebrow mb-8">{t.footer.readyEyebrow}</p>
         <h2 className="display-xl mb-12">
-          <span className="block">LET'S MAKE</span>
-          <span className="block text-outline">SOMETHING</span>
+          <span className="block">{t.footer.titleLine1}</span>
+          <span className="block text-outline">{t.footer.titleLine2}</span>
           <span className="block">
-            MEMORABLE<span className="text-[var(--primary)]">.</span>
+            {t.footer.titleLine3.replace(".", "")}
+            <span className="text-[var(--primary)]">.</span>
           </span>
         </h2>
 
         <div className="flex flex-col sm:flex-row gap-4">
           <Link to="/contactos" className="btn btn-primary btn-lg">
-            <span>Start a Project →</span>
+            <span>{t.footer.startProject} →</span>
           </Link>
           <a
-            href={`https://wa.me/${contactConfig.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
-              "Olá Click Creators! Quero falar sobre um projeto."
-            )}`}
+            href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-outline btn-lg"
           >
-            <span>WhatsApp</span>
+            <span>{t.footer.whatsapp}</span>
           </a>
         </div>
       </div>
@@ -58,15 +61,22 @@ export const Footer: React.FC = () => {
       <div className="container py-14 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12">
         {/* Brand */}
         <div className="lg:col-span-2">
-          <Link to="/" className="flex items-baseline gap-1 mb-5">
-            <span className="font-display text-3xl uppercase tracking-wide leading-none">Click</span>
-            <span className="font-display text-3xl uppercase tracking-wide text-[var(--primary)] leading-none">
-              Creators
-            </span>
+          <Link
+            to="/"
+            aria-label="Click Creators Agency — Início"
+            className="footer-logo-container mb-6 inline-flex items-center"
+          >
+            <img
+              src="/logo/logo.PNG"
+              alt="Click Creators Agency"
+              width={65}
+              height={50}
+              loading="lazy"
+              className="footer-logo"
+            />
           </Link>
           <p className="text-sm muted leading-relaxed max-w-sm">
-            Agência criativa especializada em Social Media, Marketing Digital, Produção
-            Audiovisual e Gestão de Creators.
+            {t.footer.description}
           </p>
           <div className="flex items-center gap-6 mt-7">
             {socials.map((s) => (
@@ -85,8 +95,8 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Nav */}
-        <nav aria-label="Navegação do rodapé">
-          <p className="eyebrow eyebrow-bare mb-6 text-[var(--text-faint)]">Navegação</p>
+        <nav aria-label={t.footer.navigationTitle}>
+          <p className="eyebrow eyebrow-bare mb-6 text-[var(--text-faint)]">{t.footer.navigationTitle}</p>
           <ul className="grid grid-cols-2 md:grid-cols-1 gap-x-8 gap-y-3">
             {navLinks.map((link) => (
               <li key={link.path}>
@@ -103,10 +113,10 @@ export const Footer: React.FC = () => {
 
         {/* Contact */}
         <div>
-          <p className="eyebrow eyebrow-bare mb-6 text-[var(--text-faint)]">Contacto</p>
+          <p className="eyebrow eyebrow-bare mb-6 text-[var(--text-faint)]">{t.footer.contactTitle}</p>
           <ul className="flex flex-col gap-3 text-sm muted">
             <li>
-              <a href={`tel:${contactConfig.phone}`} className="hover:text-[var(--primary)] transition-colors">
+              <a href={`tel:${contactConfig.phone.replace(/\s+/g, "")}`} className="hover:text-[var(--primary)] transition-colors">
                 {contactConfig.phoneFormatted}
               </a>
             </li>
@@ -122,9 +132,11 @@ export const Footer: React.FC = () => {
 
       {/* Bottom bar */}
       <div className="container pb-8 flex flex-col md:flex-row items-center justify-between gap-3 pt-6 hairline-t">
-        <p className="text-xs text-[var(--text-faint)]">© {year} Click Creators Agency — Todos os direitos reservados.</p>
+        <p className="text-xs text-[var(--text-faint)]">
+          © {year} {t.footer.allRightsReserved}
+        </p>
         <p className="text-[0.55rem] font-extrabold uppercase tracking-[0.3em] text-[var(--text-faint)]">
-          We Create What People Remember
+          {t.footer.tagline}
         </p>
       </div>
     </footer>

@@ -1,29 +1,31 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { contactConfig } from "../../config/contact";
+import { getWhatsAppUrl } from "../../config/contact";
 import { socialLinks } from "../../config/social";
+import { useTranslation } from "../../i18n";
 
 interface CTASectionProps {
   titleLines?: string[];
   className?: string;
 }
 
-const waUrl = (msg: string) =>
-  `https://wa.me/${contactConfig.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(msg)}`;
-
 export const CTASection: React.FC<CTASectionProps> = ({
-  titleLines = ["LET'S", "CREATE", "SOMETHING", "GREAT."],
+  titleLines,
   className = "",
 }) => {
+  const { t } = useTranslation();
+  const effectiveLines = titleLines || t.cta.titleLines;
+  const waUrl = getWhatsAppUrl(t.whatsapp.defaultMessage);
+
   return (
     <section className={`relative overflow-hidden hairline-t ${className}`}>
       <div className="container section-y">
         <div className="flex flex-col gap-12 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="eyebrow mb-8">Start a project</p>
+            <p className="eyebrow mb-8">{t.cta.eyebrow}</p>
             <h2 className="display-xl">
-              {titleLines.map((line, i) => (
-                <span key={i} className={`block ${i === titleLines.length - 1 ? "text-outline" : ""}`}>
+              {effectiveLines.map((line, i) => (
+                <span key={i} className={`block ${i === effectiveLines.length - 1 ? "text-outline" : ""}`}>
                   {line}
                 </span>
               ))}
@@ -32,15 +34,15 @@ export const CTASection: React.FC<CTASectionProps> = ({
 
           <div className="flex flex-col gap-6 lg:items-end lg:pb-4 shrink-0">
             <Link to="/contactos" className="btn btn-primary btn-lg w-full sm:w-auto justify-center">
-              <span>Start a Project →</span>
+              <span>{t.cta.startProject} →</span>
             </Link>
             <a
-              href={waUrl("Olá Click Creators! Quero iniciar um projeto.")}
+              href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-outline btn-lg w-full sm:w-auto justify-center"
             >
-              <span>WhatsApp</span>
+              <span>{t.cta.whatsapp}</span>
             </a>
 
             <div className="flex items-center gap-5 pt-2">

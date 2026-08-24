@@ -4,15 +4,17 @@ import { ArrowUpRight } from "lucide-react";
 import { CTASection } from "../components/common/CTASection";
 import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
+import { useTranslation } from "../i18n";
 import type { Service } from "../data/services";
 
 export const ServicesPage: React.FC = () => {
   const [servicesList, setServicesList] = useState<Service[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
-    document.title = "What We Do | Click Creators Agency";
+    document.title = t.services.pageTitle;
     apiService.getServices().then(setServicesList);
-  }, []);
+  }, [t]);
 
   return (
     <div className="flex flex-col">
@@ -20,19 +22,19 @@ export const ServicesPage: React.FC = () => {
       <section className="pt-36 pb-14 lg:pt-48 lg:pb-20">
         <div className="container">
           <Reveal>
-            <p className="eyebrow mb-6">What We Do</p>
+            <p className="eyebrow mb-6">{t.services.pageHeroEyebrow}</p>
           </Reveal>
           <h1 className="display-xl max-w-5xl">
-            <span className="block">EVERYTHING</span>
-            <span className="block text-outline">YOUR BRAND</span>
+            <span className="block">{t.services.pageHeroLines[0]}</span>
+            <span className="block text-outline">{t.services.pageHeroLines[1]}</span>
             <span className="block">
-              NEEDS<span className="text-[var(--primary)]">.</span>
+              {t.services.pageHeroLines[2].replace(".", "")}
+              <span className="text-[var(--primary)]">.</span>
             </span>
           </h1>
           <Reveal delay={2}>
             <p className="lede mt-8 max-w-xl">
-              Da estratégia à produção cinematográfica, da gestão de comunidades ao
-              branding — quatro disciplinas, uma só equipa.
+              {t.services.pageHeroLede}
             </p>
           </Reveal>
         </div>
@@ -81,7 +83,7 @@ export const ServicesPage: React.FC = () => {
                     </ul>
 
                     <Link to={`/servicos/${service.slug}`} className="arrow-link">
-                      <span>Ver detalhes</span>
+                      <span>{t.common.viewDetails}</span>
                       <ArrowUpRight size={16} strokeWidth={2} />
                     </Link>
                   </Reveal>

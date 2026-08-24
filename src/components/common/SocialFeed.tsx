@@ -2,10 +2,8 @@ import React from "react";
 import { SectionHeader } from "../common/SectionHeader";
 import { Reveal } from "../../hooks/useReveal";
 import { socialLinks } from "../../config/social";
+import { useTranslation } from "../../i18n";
 
-/* Estrutura pronta para integração futura com a API do Instagram.
-   Enquanto não existe integração, são usados conteúdos de demonstração
-   que apontam para os perfis reais da agência. */
 const feed = [
   {
     id: "post-1",
@@ -35,34 +33,38 @@ const feed = [
   },
 ];
 
-export const SocialFeed: React.FC = () => (
-  <section className="section-y">
-    <div className="container">
-      <SectionHeader
-        index="(05)"
-        eyebrow="Social Media"
-        titleLines={["FOLLOW", "THE WORK"]}
-        description="Bastidores, lançamentos e conteúdo em tempo real."
-        linkTo={socialLinks.instagram}
-        linkLabel="@clickcreatorsagency"
-      />
+export const SocialFeed: React.FC = () => {
+  const { t } = useTranslation();
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-        {feed.map((post, i) => (
-          <Reveal key={post.id} delay={(i % 4) as 0 | 1 | 2 | 3}>
-            <a
-              href={post.url}
-              target="_blank"
-              rel="noreferrer"
-              className="social-tile"
-              aria-label={`Ver post no ${post.platform}`}
-            >
-              <img src={post.image} alt="" loading="lazy" />
-              <span className="st-platform">{post.platform}</span>
-            </a>
-          </Reveal>
-        ))}
+  return (
+    <section className="section-y">
+      <div className="container">
+        <SectionHeader
+          index={t.socialFeed.index}
+          eyebrow={t.socialFeed.eyebrow}
+          titleLines={t.socialFeed.titleLines}
+          description={t.socialFeed.description}
+          linkTo={socialLinks.instagram}
+          linkLabel="@clickcreatorsagency"
+        />
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          {feed.map((post, i) => (
+            <Reveal key={post.id} delay={(i % 4) as 0 | 1 | 2 | 3}>
+              <a
+                href={post.url}
+                target="_blank"
+                rel="noreferrer"
+                className="social-tile"
+                aria-label={`${t.socialFeed.viewOn} ${post.platform}`}
+              >
+                <img src={post.image} alt="" loading="lazy" />
+                <span className="st-platform">{post.platform}</span>
+              </a>
+            </Reveal>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};

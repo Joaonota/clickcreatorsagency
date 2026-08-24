@@ -1,32 +1,83 @@
 export interface Partner {
   id: string;
   name: string;
-  /* Caminho do logo real — ex.: "/images/partners/empresa-x.svg"
-     Aceita SVG, PNG, WebP ou JPG. Enquanto estiver vazio,
-     é renderizado um wordmark tipográfico elegante. */
   logo?: string;
   website?: string;
-  description?: string;
   category?: string;
+  description?: string;
 }
 
 /* ============================================================
-   PARCEIROS — PLACEHOLDERS DE DESENVOLVIMENTO
-   (marcas fictícias alinhadas ao portfólio mockado)
-
-   COMO ADICIONAR LOGOS REAIS:
-   1. Colocar o ficheiro em: public/images/partners/
-   2. Preencher `logo` abaixo (ex.: "/images/partners/vortex.svg")
-   3. Opcionalmente preencher `website` e `description`
-   Não é preciso alterar nenhum componente visual.
+   PARCEIROS — CLICK CREATORS AGENCY
+   
+   COMO ADICIONAR NOVOS PARCEIROS E LOGOTIPOS:
+   1. Coloque o ficheiro SVG / PNG / WebP em: public/images/partners/
+      (Ex.: public/images/partners/empresa-01.svg)
+   2. Adicione ou edite o parceiro abaixo com o caminho do logo:
+      {
+        id: "partner-01",
+        name: "Nome da Empresa",
+        logo: "/images/partners/empresa-01.svg",
+        website: "https://empresa.com",
+      }
+   3. Se `logo` não for fornecido ou estiver vazio, será automaticamente
+      renderizado um wordmark tipográfico elegante com o nome da marca.
    ============================================================ */
 export const partners: Partner[] = [
-  { id: "p01", name: "Vortex Energy",  category: "Bebidas & Desporto" },
-  { id: "p02", name: "UrbanAura",      category: "Fashion & Lifestyle" },
-  { id: "p03", name: "Lumina Skin",    category: "Beleza & Bem-Estar" },
-  { id: "p04", name: "Pulse Fit Club", category: "Fitness & Saúde" },
-  { id: "p05", name: "Nova Dining",    category: "Gastronomia" },
-  { id: "p06", name: "Krypton Tech",   category: "Tecnologia" },
-  { id: "p07", name: "Aura Studio",    category: "Entretenimento" },
-  { id: "p08", name: "Norde Market",   category: "Retalho & E-Commerce" },
+  {
+    id: "partner-01",
+    name: "Vortex Brands",
+    logo: "/images/partners/partner-01.svg",
+    website: "",
+    category: "Bebidas & Lifestyle",
+  },
+  {
+    id: "partner-02",
+    name: "UrbanAura",
+    logo: "/images/partners/partner-02.svg",
+    website: "",
+    category: "Moda & Cultura Urbana",
+  },
+  {
+    id: "partner-03",
+    name: "Lumina Skin",
+    logo: "/images/partners/partner-03.svg",
+    website: "",
+    category: "Beleza & Cosmética",
+  },
+  {
+    id: "partner-04",
+    name: "Pulse Fit Club",
+    logo: "/images/partners/partner-04.svg",
+    website: "",
+    category: "Desporto & Bem-Estar",
+  },
+  {
+    id: "partner-05",
+    name: "Nova Hospitality",
+    logo: "/images/partners/partner-05.svg",
+    website: "",
+    category: "Hotelaria & Gastronomia",
+  },
+  {
+    id: "partner-06",
+    name: "Krypton Tech",
+    logo: "/images/partners/partner-06.svg",
+    website: "",
+    category: "Tecnologia & Inovação",
+  },
+  {
+    id: "partner-07",
+    name: "Aura Media Group",
+    logo: "/images/partners/partner-07.svg",
+    website: "",
+    category: "Entretenimento & Mídia",
+  },
+  {
+    id: "partner-08",
+    name: "Norde Retail",
+    logo: "/images/partners/partner-08.svg",
+    website: "",
+    category: "Retalho & E-Commerce",
+  },
 ];

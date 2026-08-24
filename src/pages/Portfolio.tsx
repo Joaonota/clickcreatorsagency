@@ -3,16 +3,18 @@ import { PortfolioGrid, FilterBar } from "../components/portfolio/PortfolioGrid"
 import { CTASection } from "../components/common/CTASection";
 import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
+import { useTranslation } from "../i18n";
 import type { PortfolioProject } from "../data/portfolio";
 
 export const PortfolioPage: React.FC = () => {
   const [projects, setProjects] = useState<PortfolioProject[]>([]);
   const [activeCategory, setActiveCategory] = useState("Todos");
+  const { t } = useTranslation();
 
   useEffect(() => {
-    document.title = "Selected Work | Click Creators Agency";
+    document.title = t.portfolio.pageTitle;
     apiService.getPortfolioProjects().then(setProjects);
-  }, []);
+  }, [t]);
 
   const counts = useMemo(
     () =>
@@ -35,19 +37,19 @@ export const PortfolioPage: React.FC = () => {
       <section className="pt-36 pb-14 lg:pt-48 lg:pb-20">
         <div className="container">
           <Reveal>
-            <p className="eyebrow mb-6">Selected Work</p>
+            <p className="eyebrow mb-6">{t.portfolio.pageHeroEyebrow}</p>
           </Reveal>
           <h1 className="display-xl max-w-5xl">
-            <span className="block">WORK THAT</span>
-            <span className="block text-outline">SPEAKS FOR</span>
+            <span className="block">{t.portfolio.pageHeroLines[0]}</span>
+            <span className="block text-outline">{t.portfolio.pageHeroLines[1]}</span>
             <span className="block">
-              ITSELF<span className="text-[var(--primary)]">.</span>
+              {t.portfolio.pageHeroLines[2].replace(".", "")}
+              <span className="text-[var(--primary)]">.</span>
             </span>
           </h1>
           <Reveal delay={2}>
             <p className="lede mt-8 max-w-xl">
-              Vídeos comerciais, fotografia editorial, campanhas digitais e branding —
-              uma seleção do trabalho que construímos com as nossas marcas.
+              {t.portfolio.pageHeroLede}
             </p>
           </Reveal>
         </div>

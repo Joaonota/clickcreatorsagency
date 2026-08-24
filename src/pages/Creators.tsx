@@ -3,15 +3,17 @@ import { CreatorCard } from "../components/creators/CreatorGrid";
 import { CTASection } from "../components/common/CTASection";
 import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
+import { useTranslation } from "../i18n";
 import type { Creator } from "../data/creators";
 
 export const CreatorsPage: React.FC = () => {
   const [creators, setCreators] = useState<Creator[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
-    document.title = "Our Creators | Click Creators Agency";
+    document.title = t.creators.pageTitle;
     apiService.getCreators().then(setCreators);
-  }, []);
+  }, [t]);
 
   return (
     <div className="flex flex-col">
@@ -19,16 +21,15 @@ export const CreatorsPage: React.FC = () => {
       <section className="pt-36 pb-14 lg:pt-48 lg:pb-20">
         <div className="container">
           <Reveal>
-            <p className="eyebrow mb-6">Our Creators</p>
+            <p className="eyebrow mb-6">{t.creators.pageHeroEyebrow}</p>
           </Reveal>
           <h1 className="display-xl max-w-5xl">
-            <span className="block">FACES OF</span>
-            <span className="block text-outline">INFLUENCE</span>
+            <span className="block">{t.creators.pageHeroLines[0]}</span>
+            <span className="block text-outline">{t.creators.pageHeroLines[1]}</span>
           </h1>
           <Reveal delay={2}>
             <p className="lede mt-8 max-w-xl">
-              Pessoas, histórias, comunidades e influência. Gerimos carreiras,
-              construímos audiências e conectamos creators às marcas certas.
+              {t.creators.pageHeroLede}
             </p>
           </Reveal>
         </div>
@@ -45,7 +46,7 @@ export const CreatorsPage: React.FC = () => {
         </div>
       </section>
 
-      <CTASection titleLines={["WANT THIS", "FACE ON", "YOUR BRAND?"]} />
+      <CTASection titleLines={t.creators.pageCtaLines} />
     </div>
   );
 };

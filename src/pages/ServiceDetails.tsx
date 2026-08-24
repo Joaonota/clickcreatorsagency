@@ -4,8 +4,9 @@ import { ArrowLeft } from "lucide-react";
 import { CTASection } from "../components/common/CTASection";
 import { WorkItem } from "../components/portfolio/PortfolioGrid";
 import { Reveal } from "../hooks/useReveal";
-import { NotFound } from "./NotFound.tsx";
+import { NotFound } from "./NotFound";
 import { apiService } from "../services/api";
+import { useTranslation } from "../i18n";
 import type { Service } from "../data/services";
 import type { PortfolioProject } from "../data/portfolio";
 
@@ -14,6 +15,7 @@ export const ServiceDetails: React.FC = () => {
   const [service, setService] = useState<Service | null>(null);
   const [relatedProjects, setRelatedProjects] = useState<PortfolioProject[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     let isMounted = true;
@@ -48,7 +50,7 @@ export const ServiceDetails: React.FC = () => {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative min-h-\[75svh\] flex flex-col justify-end overflow-hidden force-dark">
+      <section className="relative min-h-[75svh] flex flex-col justify-end overflow-hidden force-dark">
         <div className="absolute inset-0 z-0 media-frame">
           <img src={service.image} alt={service.title} className="kenburns" />
         </div>
@@ -60,10 +62,12 @@ export const ServiceDetails: React.FC = () => {
             className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-[var(--text-soft)] hover:text-[var(--primary)] mb-8 transition-colors"
           >
             <ArrowLeft size={14} />
-            <span>What We Do</span>
+            <span>{t.services.pageHeroEyebrow}</span>
           </Link>
 
-          <p className="eyebrow eyebrow-bare mb-5">Serviço {service.number}</p>
+          <p className="eyebrow eyebrow-bare mb-5">
+            {t.services.serviceNumber} {service.number}
+          </p>
           <h1 className="display-xl max-w-5xl">{service.title}</h1>
         </div>
       </section>
@@ -73,9 +77,9 @@ export const ServiceDetails: React.FC = () => {
         <div className="container grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-5">
             <Reveal>
-              <p className="eyebrow mb-6">Overview</p>
-              <h2 className="display-sm text-outline">O QUE</h2>
-              <h2 className="display-sm mb-6">FAZEMOS</h2>
+              <p className="eyebrow mb-6">{t.services.overviewEyebrow}</p>
+              <h2 className="display-sm text-outline">{t.services.overviewTitle1}</h2>
+              <h2 className="display-sm mb-6">{t.services.overviewTitle2}</h2>
             </Reveal>
           </div>
           <div className="lg:col-span-7 lg:pl-16">
@@ -90,7 +94,7 @@ export const ServiceDetails: React.FC = () => {
       <section className="section-y">
         <div className="container grid grid-cols-1 lg:grid-cols-2 gap-px bg-[var(--border)] border border-[var(--border)]">
           <Reveal className="bg-[var(--background)] p-8 lg:p-14">
-            <p className="index-num mb-6">01 — Deliverables</p>
+            <p className="index-num mb-6">{t.services.deliverablesTitle}</p>
             <ul className="flex flex-col">
               {service.deliverables.map((item, idx) => (
                 <li key={idx} className="flex items-start gap-4 hairline-t py-4 text-sm font-medium text-[var(--color-text-secondary)]">
@@ -104,7 +108,7 @@ export const ServiceDetails: React.FC = () => {
           </Reveal>
 
           <Reveal delay={1} className="bg-[var(--background)] p-8 lg:p-14">
-            <p className="index-num mb-6">02 — Benefits</p>
+            <p className="index-num mb-6">{t.services.benefitsTitle}</p>
             <ul className="flex flex-col">
               {service.benefits.map((item, idx) => (
                 <li key={idx} className="flex items-start gap-4 hairline-t py-4 text-sm font-medium text-[var(--color-text-secondary)]">
@@ -123,8 +127,8 @@ export const ServiceDetails: React.FC = () => {
       <section className="section-y bg-[var(--surface)] hairline-t hairline-b">
         <div className="container">
           <Reveal>
-            <p className="eyebrow mb-6">Process</p>
-            <h2 className="display-lg mb-14">HOW WE WORK</h2>
+            <p className="eyebrow mb-6">{t.services.processEyebrow}</p>
+            <h2 className="display-lg mb-14">{t.services.processTitle}</h2>
           </Reveal>
 
           <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
@@ -144,7 +148,7 @@ export const ServiceDetails: React.FC = () => {
         <section className="section-y">
           <div className="container">
             <Reveal>
-              <p className="eyebrow mb-12">Selected Work</p>
+              <p className="eyebrow mb-12">{t.services.relatedTitle}</p>
             </Reveal>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
               {relatedProjects.map((p, i) => (
@@ -157,7 +161,7 @@ export const ServiceDetails: React.FC = () => {
         </section>
       )}
 
-      <CTASection titleLines={["READY TO", "WORK", "TOGETHER?"]} />
+      <CTASection titleLines={t.services.ctaTitleLines} />
     </div>
   );
 };
