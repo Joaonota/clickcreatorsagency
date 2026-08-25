@@ -5,7 +5,17 @@ import { SectionHeader } from "../common/SectionHeader";
 import { Reveal } from "../../hooks/useReveal";
 import { useTranslation } from "../../i18n";
 
-/* Grelha premium de parceiros — desktop 4 / tablet 3 / mobile 2 */
+/* Grelha premium de parceiros — desktop 3 / tablet 3 / mobile 2.
+   Última linha sempre completa: com 5 parceiros → 3 + 2 largos (desktop),
+   2 + 2 + 1 em largura total (mobile). Sem células vazias. */
+const cellSpan = (i: number, total: number): string => {
+  const classes: string[] = [];
+  if (total % 2 === 1 && i === total - 1) classes.push("col-span-2");
+  if (total % 3 === 2 && i >= total - 2) classes.push("md:col-span-3");
+  if (total % 3 === 1 && i === total - 1) classes.push("md:col-span-6");
+  return classes.join(" ");
+};
+
 export const PartnersShowcase: React.FC<{ partners: Partner[] }> = ({ partners }) => {
   const { t } = useTranslation();
 
@@ -32,13 +42,13 @@ export const PartnersShowcase: React.FC<{ partners: Partner[] }> = ({ partners }
           </div>
         </div>
 
-        {/* Grid — estrutura minimalista com hairlines */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-px bg-[var(--border)] border border-[var(--border)]">
+        {/* Grid — estrutura editorial minimalista com hairlines discretas */}
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-px bg-[var(--border)] border border-[var(--border)]">
           {partners.map((p, i) => (
             <Reveal
               key={p.id}
               delay={(i % 3) as 0 | 1 | 2}
-              className="bg-[var(--background)] px-6 py-10 lg:px-10 lg:py-14 flex items-center justify-center min-h-[140px] lg:min-h-[190px]"
+              className={`bg-[var(--background)] ${cellSpan(i, partners.length)} px-4 py-8 sm:px-6 lg:px-10 lg:py-10 flex items-center justify-center min-h-[130px] lg:min-h-[210px]`}
             >
               <PartnerLogo partner={p} />
             </Reveal>

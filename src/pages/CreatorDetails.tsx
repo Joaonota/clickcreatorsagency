@@ -68,7 +68,11 @@ export const CreatorDetails: React.FC = () => {
       {/* Hero — fotografia grande */}
       <section className="relative min-h-[90svh] flex flex-col justify-end overflow-hidden force-dark">
         <div className="absolute inset-0 z-0 media-frame">
-          <img src={creator.coverImage || creator.image} alt={creator.name} className="kenburns" />
+          {creator.coverImage || creator.image ? (
+            <img src={creator.coverImage || creator.image} alt={creator.name} className="kenburns" />
+          ) : (
+            <div className="w-full h-full creator-photo-fallback" aria-hidden="true" />
+          )}
         </div>
         <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[var(--background)] via-[var(--background)]/45 to-[var(--background)]/40" />
 
@@ -89,31 +93,36 @@ export const CreatorDetails: React.FC = () => {
         </div>
       </section>
 
-      {/* Stats bar */}
+      {/* Stats bar — só mostra valores reais */}
       <section className="hairline-b bg-[var(--surface)]">
-        <div className="container grid grid-cols-2 md:grid-cols-4 gap-y-8 py-10 lg:py-12">
+        <div className="container flex flex-col sm:flex-row sm:items-end gap-y-8 py-10 lg:py-12">
           {[
             { value: creator.stats.engagementRate, label: t.creators.engagement, accent: true },
             { value: creator.stats.totalReach, label: t.creators.reachPerMonth },
-            { value: `${creator.stats.completedCampaigns}+`, label: t.creators.campaigns },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              className="flex flex-col gap-1.5 md:border-l md:pl-5 border-[var(--border)]"
-            >
-              <span
-                className={`font-display text-3xl lg:text-4xl leading-none ${
-                  stat.accent ? "text-[var(--primary)]" : ""
-                }`}
+            {
+              value: creator.stats.completedCampaigns > 0 ? `${creator.stats.completedCampaigns}+` : "",
+              label: t.creators.campaigns,
+            },
+          ]
+            .filter((stat) => stat.value)
+            .map((stat) => (
+              <div
+                key={stat.label}
+                className="flex flex-col gap-2 sm:border-l sm:pl-8 first:border-l-0 first:pl-0 border-[var(--border)]"
               >
-                {stat.value}
-              </span>
-              <span className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] text-[var(--text-faint)]">
-                {stat.label}
-              </span>
-            </div>
-          ))}
-          <div className="col-span-2 md:col-span-1 flex items-end md:justify-end">
+                <span
+                  className={`font-display text-4xl lg:text-5xl leading-none ${
+                    stat.accent ? "text-[var(--primary)]" : ""
+                  }`}
+                >
+                  {stat.value}
+                </span>
+                <span className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] text-[var(--text-faint)]">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          <div className="flex sm:ml-auto sm:pl-8">
             <a
               href={whatsappUrl}
               target="_blank"

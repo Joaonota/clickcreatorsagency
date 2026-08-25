@@ -32,7 +32,7 @@ export const pt = {
     available: "Disponíveis para novos projetos",
     exploreWork: "Ver Portfólio",
     workWithUs: "Trabalhe Connosco",
-    sideLabel: "Agência Criativa — Maputo & Global",
+    sideLabel: "Agência Criativa — Beira & Global",
     marquee: [
       "Branding",
       "Social Media",
@@ -53,8 +53,8 @@ export const pt = {
     numbers: [
       { id: "imp-1", value: "01", label: "Agência", sublabel: "Criativa" },
       { id: "imp-2", value: "04", label: "Áreas", sublabel: "Especializadas" },
-      { id: "imp-3", value: "50+", label: "Creators", sublabel: "Na nossa rede" },
-      { id: "imp-4", value: "120+", label: "Projetos", sublabel: "Entregues a marcas" },
+      { id: "imp-3", value: "04", label: "Creators", sublabel: "Na nossa rede" },
+      { id: "imp-4", value: "150+", label: "Projetos", sublabel: "Entregues a marcas" },
     ],
   },
   services: {
@@ -83,7 +83,7 @@ export const pt = {
   portfolio: {
     index: "(02)",
     eyebrow: "Trabalhos Selecionados",
-    titleLines: ["SELECTED", "WORK"],
+    titleLines: ["TRABALHOS", "SELECIONADOS"],
     description:
       "Projetos que comprovam o que dizemos. Vídeo, fotografia, redes sociais e branding para marcas que procuram impacto real.",
     linkLabel: "Todos os projetos",
@@ -260,7 +260,7 @@ export const pt = {
     emailLabel: "Email Corporativo *",
     emailPlaceholder: "exemplo@empresa.com",
     phoneLabel: "Telefone / WhatsApp",
-    phonePlaceholder: "+258 84 000 0000",
+    phonePlaceholder: "+258 86 169 3504",
     serviceLabel: "Serviço Pretendido",
     serviceOptions: {
       marketing: "Marketing Digital & Anúncios",

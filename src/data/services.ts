@@ -19,7 +19,7 @@ export const services: Service[] = [
     title: "Marketing Digital",
     shortDescription: "Criamos estratégias para fortalecer a presença das marcas no ambiente digital, gerando resultados mensuráveis e crescimento sustentável.",
     fullDescription: "Desenvolvemos planos estratégicos de performance, gestão de campanhas de anúncios (Meta Ads, Google Ads, TikTok Ads) e otimização de funis de conversão. O nosso foco é transformar visitantes casuais em clientes fiéis através de comunicação altamente orientada a resultados.",
-    image: "/img/Default_img.jpeg",
+    image: "/img/marketing-digital.jpeg",
     deliverables: [
       "Estratégia de Campanhas Meta & Google Ads",
       "Funis de Vendas & Conversão",

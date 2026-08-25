@@ -3,15 +3,15 @@ export const contactConfig = {
   tagline: "Criatividade que conecta marcas, pessoas e histórias.",
   /* Número configurável — se estiver vazio ou preenchido posteriormente, 
      o sistema gera o link wa.me devidamente formatado */
-  whatsapp: "+258840000000",
-  whatsappFormatted: "+258 84 000 0000",
+  whatsapp: "+258861693504",
+  whatsappFormatted: "+258 86 169 3504",
   whatsappMessage: "Olá, Click Creators! Gostaria de saber mais sobre os vossos serviços.",
-  phone: "+258 84 000 0000",
-  phoneFormatted: "+258 84 000 0000",
-  email: "contacto@clickcreators.agency",
-  address: "Maputo, Moçambique",
+  phone: "+258 86 169 3504",
+  phoneFormatted: "+258 86 169 3504",
+  email: "info@clickcreatorsagency.com",
+  address: "Beira, Moçambique",
   workingHours: "Segunda a Sexta: 08h30 - 18h00",
-  googleMapsUrl: "https://maps.google.com/?q=Maputo+Mozambique",
+  googleMapsUrl: "https://www.google.com/maps/dir/-19.8180864,34.832384/-19.81725,34.85328/@-19.8169388,34.8249973,14z/data=!3m1!4b1!4m4!4m3!1m1!4e1!1m0",
 };
 
 export const getWhatsAppUrl = (customMessage?: string) => {

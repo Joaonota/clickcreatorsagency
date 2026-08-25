@@ -1,6 +1,7 @@
 import React from "react";
 import type { TeamMember } from "../../data/team";
 import { SectionHeader } from "../common/SectionHeader";
+import { SocialIcon } from "../common/SocialIcon";
 import { Reveal } from "../../hooks/useReveal";
 import { useTranslation } from "../../i18n";
 
@@ -17,9 +18,9 @@ const TeamCard: React.FC<{ member: TeamMember }> = ({ member }) => (
             target="_blank"
             rel="noreferrer"
             aria-label={`Instagram de ${member.name}`}
-            className="text-[0.6rem] font-extrabold uppercase tracking-[0.2em] text-white/60 hover:text-[var(--primary)] transition-colors"
+            className="text-white/60 hover:text-[var(--primary)] transition-colors"
           >
-            IG
+            <SocialIcon name="instagram" size={16} />
           </a>
         )}
         {member.socials.linkedin && (
@@ -28,9 +29,9 @@ const TeamCard: React.FC<{ member: TeamMember }> = ({ member }) => (
             target="_blank"
             rel="noreferrer"
             aria-label={`LinkedIn de ${member.name}`}
-            className="text-[0.6rem] font-extrabold uppercase tracking-[0.2em] text-white/60 hover:text-[var(--primary)] transition-colors"
+            className="text-white/60 hover:text-[var(--primary)] transition-colors"
           >
-            IN
+            <SocialIcon name="linkedin" size={16} />
           </a>
         )}
       </div>

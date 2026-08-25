@@ -7,38 +7,40 @@ interface PartnerLogoProps {
 }
 
 const sizes = {
-  sm: { img: "max-h-12 max-w-[140px]", name: "text-xl" },
-  md: { img: "max-h-[92px] max-w-[220px]", name: "pw-name" },
-  lg: { img: "max-h-[120px] max-w-[260px]", name: "text-3xl lg:text-4xl" },
+  sm: { img: "max-h-14 max-w-[160px]", name: "text-xl" },
+  md: { img: "max-h-[110px] max-w-[240px]", name: "pw-name" },
+  lg: { img: "max-h-[140px] max-w-[260px]", name: "text-3xl lg:text-4xl" },
 };
 
-/* Peso visual equilibrado por parceiro — calibrado com a proporção real de cada asset
-   (2M vertical 90×190 · Yango 240×240 · Nova Era 2000×2000 · GLN 1080×1080 · Move 1080×308) */
+/* Peso visual equilibrado por parceiro — calibrado com a proporção REAL de cada asset
+   (2M 346×190 horizontal · Yango 240×240 · Nova Era 2000×2000 · GLN 1200×800 · Move 1080×308 ultra-larga).
+   Logos quadradas/verticais ficam limitadas pela altura; horizontais pela largura,
+   garantindo peso visual aproximado entre todas. */
 const fitOverrides: Record<string, Record<"sm" | "md" | "lg", string>> = {
   "partner-2m": {
-    sm: "max-h-16 max-w-[84px]",
-    md: "max-h-[112px] max-w-[120px]",
-    lg: "max-h-[130px] max-w-[140px]",
+    sm: "max-h-[54px] max-w-[110px]",
+    md: "max-h-[124px] max-w-[230px]",
+    lg: "max-h-[138px] max-w-[252px]",
   },
   "partner-yango": {
-    sm: "max-h-16 max-w-[100px]",
-    md: "max-h-[112px] max-w-[160px]",
-    lg: "max-h-[130px] max-w-[180px]",
+    sm: "max-h-[58px] max-w-[92px]",
+    md: "max-h-[122px] max-w-[170px]",
+    lg: "max-h-[138px] max-w-[192px]",
   },
   "partner-novaera": {
-    sm: "max-h-[72px] max-w-[110px]",
-    md: "max-h-[124px] max-w-[190px]",
-    lg: "max-h-[136px] max-w-[210px]",
+    sm: "max-h-[62px] max-w-[98px]",
+    md: "max-h-[128px] max-w-[180px]",
+    lg: "max-h-[142px] max-w-[202px]",
   },
   "partner-gln": {
-    sm: "max-h-16 max-w-[100px]",
-    md: "max-h-[112px] max-w-[160px]",
-    lg: "max-h-[130px] max-w-[180px]",
+    sm: "max-h-[54px] max-w-[130px]",
+    md: "max-h-[118px] max-w-[210px]",
+    lg: "max-h-[134px] max-w-[222px]",
   },
   "partner-move": {
-    sm: "max-h-9 max-w-[140px]",
-    md: "max-h-[64px] max-w-[220px]",
-    lg: "max-h-[76px] max-w-[250px]",
+    sm: "max-h-[44px] max-w-[152px]",
+    md: "max-h-[74px] max-w-[248px]",
+    lg: "max-h-[82px] max-w-[262px]",
   },
 };
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import type { Creator } from "../../data/creators";
 import { SectionHeader } from "../common/SectionHeader";
+import { SocialIcon } from "../common/SocialIcon";
 import { Reveal } from "../../hooks/useReveal";
 import { useTranslation } from "../../i18n";
 
@@ -14,7 +15,13 @@ export const CreatorCard: React.FC<{ creator: Creator; aspect?: string }> = ({
   return (
     <Link to={`/creators/${creator.slug}`} className="creator-card">
       <div className={`media-frame ${aspect} h-full`}>
-        <img src={creator.image} alt={creator.name} loading="lazy" className="creator-photo" />
+        {creator.image ? (
+          <img src={creator.image} alt={creator.name} loading="lazy" className="creator-photo" />
+        ) : (
+          <div className="creator-photo-fallback" aria-hidden="true">
+            <span>{creator.category}</span>
+          </div>
+        )}
       </div>
       <div className="creator-overlay">
         <span className="creator-cat mb-2">{creator.category}</span>
@@ -22,18 +29,18 @@ export const CreatorCard: React.FC<{ creator: Creator; aspect?: string }> = ({
         <span className="creator-user">{creator.username}</span>
         <div className="creator-socials">
           {creator.followers.instagram && (
-            <span className="text-[0.65rem] font-bold uppercase tracking-widest text-white/80">
-              IG {creator.followers.instagram}
+            <span className="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-widest text-white/80">
+              <SocialIcon name="instagram" size={14} /> {creator.followers.instagram}
             </span>
           )}
           {creator.followers.tiktok && (
-            <span className="text-[0.65rem] font-bold uppercase tracking-widest text-white/80">
-              TK {creator.followers.tiktok}
+            <span className="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-widest text-white/80">
+              <SocialIcon name="tiktok" size={14} /> {creator.followers.tiktok}
             </span>
           )}
           {creator.followers.youtube && (
-            <span className="text-[0.65rem] font-bold uppercase tracking-widest text-white/80">
-              YT {creator.followers.youtube}
+            <span className="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-widest text-white/80">
+              <SocialIcon name="youtube" size={14} /> {creator.followers.youtube}
             </span>
           )}
           <span className="text-[0.65rem] font-extrabold uppercase tracking-[0.2em] text-[var(--primary)] ml-auto">

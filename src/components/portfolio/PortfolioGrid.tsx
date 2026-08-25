@@ -100,30 +100,25 @@ export const PortfolioGrid: React.FC<{ projects: PortfolioProject[] }> = ({ proj
     );
   }
 
-  /* Editorial rhythm: full-width feature → offset pair → alternating sizes */
-  const [first, ...rest] = projects;
+  /* Editorial rhythm: par deslocado + grelha alternada — sem bloco gigante vazio */
+  const featured = projects.slice(0, 2);
+  const remaining = projects.slice(2);
 
   return (
     <div className="flex flex-col gap-16 lg:gap-24">
-      {first && (
-        <Reveal className="reveal-clip">
-          <WorkItem project={first} aspect="aspect-video lg:aspect-[21/9]" />
-        </Reveal>
-      )}
-
-      {rest.length > 0 && (
+      {featured.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14 items-start">
-          {rest.slice(0, 2).map((p, i) => (
-            <Reveal key={p.id} delay={(i + 1) as 1 | 2} className={i === 1 ? "md:mt-16" : ""}>
-              <WorkItem project={p} aspect="aspect-[4/5]" />
+          {featured.map((p, i) => (
+            <Reveal key={p.id} delay={(i % 3) as 0 | 1 | 2} className={i === 1 ? "md:mt-16" : ""}>
+              <WorkItem project={p} aspect="aspect-[4/3]" />
             </Reveal>
           ))}
         </div>
       )}
 
-      {rest.length > 2 && (
+      {remaining.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
-          {rest.slice(2).map((p, i) => (
+          {remaining.map((p, i) => (
             <Reveal key={p.id} delay={(i % 3) as 0 | 1 | 2}>
               <WorkItem project={p} aspect={i % 2 === 0 ? "aspect-square" : "aspect-[4/5]"} />
             </Reveal>

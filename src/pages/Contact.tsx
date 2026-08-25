@@ -35,8 +35,7 @@ export const Contact: React.FC = () => {
       external: true,
     },
     { label: "Email", value: contactConfig.email, href: `mailto:${contactConfig.email}` },
-    { label: "Instagram", value: "@clickcreatorsagency", href: socialLinks.instagram, external: true },
-    { label: "TikTok", value: "@clickcreatorsagency", href: socialLinks.tiktok, external: true },
+    { label: "Instagram", value: "@clickcreators_agency", href: socialLinks.instagram, external: true },
   ];
 
   const inputClass =
@@ -98,7 +97,14 @@ export const Contact: React.FC = () => {
                 <p className="text-[0.58rem] font-extrabold uppercase tracking-[0.26em] text-[var(--text-faint)] mb-2">
                   {t.contact.studio}
                 </p>
-                <p className="text-sm muted leading-relaxed">{contactConfig.address}</p>
+                <a
+                  href={contactConfig.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm muted leading-relaxed hover:text-[var(--primary)] transition-colors"
+                >
+                  {contactConfig.address}
+                </a>
                 <p className="text-xs muted mt-2">{contactConfig.workingHours}</p>
               </div>
             </Reveal>

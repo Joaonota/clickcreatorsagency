@@ -52,7 +52,26 @@ export const ProjectDetails: React.FC = () => {
       {/* Cinematic hero */}
       <section className="relative min-h-[85svh] flex flex-col justify-end overflow-hidden force-dark">
         <div className="absolute inset-0 z-0 media-frame !overflow-hidden">
-          <img src={project.imagem} alt={project.title} className="kenburns" />
+          {project.video ? (
+            <video
+              ref={(el) => {
+                if (el) {
+                  el.muted = true;
+                  el.play().catch(() => {});
+                }
+              }}
+              src={project.video}
+              poster={project.imagem}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <img src={project.imagem} alt={project.title} className="kenburns" />
+          )}
         </div>
         <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[var(--background)] via-[var(--background)]/50 to-[var(--background)]/40" />
 
@@ -133,27 +152,22 @@ export const ProjectDetails: React.FC = () => {
         </section>
       )}
 
-      {/* Results */}
+      {/* Results — editorial list */}
       {project.resultados && project.resultados.length > 0 && (
-        <section className="hairline-t hairline-b bg-[var(--surface)] section-y">
+        <section className="hairline-t section-y">
           <div className="container">
             <Reveal>
-              <p className="eyebrow mb-10">{t.portfolio.details.results}</p>
+              <p className="eyebrow mb-12 lg:mb-16">{t.portfolio.details.results}</p>
             </Reveal>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[var(--border)] border border-[var(--border)]">
+            <ol className="results-list">
               {project.resultados.map((res, idx) => (
-                <Reveal
-                  key={idx}
-                  delay={(idx % 3) as 0 | 1 | 2}
-                  className="bg-[var(--background)] p-8 lg:p-10 flex items-start gap-4 min-h-[140px]"
-                >
-                  <span className="font-display text-3xl text-[var(--primary)] leading-none">
-                    {String(idx + 1).padStart(2, "0")}
-                  </span>
-                  <p className="text-sm font-semibold leading-relaxed pt-1">{res}</p>
+                <Reveal as="li" key={idx} delay={(idx % 3) as 0 | 1 | 2} className="result-row">
+                  <span className="result-num text-outline">{String(idx + 1).padStart(2, "0")}</span>
+                  <p className="result-text">{res}</p>
+                  <span className="result-line" aria-hidden="true" />
                 </Reveal>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
       )}

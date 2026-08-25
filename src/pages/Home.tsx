@@ -6,6 +6,7 @@ import { ServiceList } from "../components/services/ServiceList";
 import {
   PortfolioGrid,
   FilterBar,
+  normalizeCategory,
 } from "../components/portfolio/PortfolioGrid";
 import { CreatorGrid } from "../components/creators/CreatorGrid";
 import { TrustedBy } from "../components/partners/TrustedBy";
@@ -54,15 +55,16 @@ export const Home: React.FC = () => {
   }, [lang]);
 
   const counts = projects.reduce<Record<string, number>>((acc, p) => {
-    acc[p.categoria] = (acc[p.categoria] ?? 0) + 1;
+    const key = normalizeCategory(p.categoria);
+    acc[key] = (acc[key] ?? 0) + 1;
     return acc;
   }, {});
-  counts["Todos"] = projects.length;
+  counts["all"] = projects.length;
 
   const filteredProjects =
-    activeCategory === "Todos"
+    activeCategory === "all"
       ? projects
-      : projects.filter((p) => p.categoria === activeCategory);
+      : projects.filter((p) => normalizeCategory(p.categoria) === activeCategory);
 
   return (
     <div className="flex flex-col">

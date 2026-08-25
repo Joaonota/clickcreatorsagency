@@ -9,6 +9,7 @@ export interface PortfolioProject {
   solucao: string;
   resultados: string[];
   imagem: string;
+  video?: string;
   galeria: string[];
   destaqueHome?: boolean;
 }
@@ -29,6 +30,7 @@ export const portfolio: PortfolioProject[] = [
       "Estética audiovisual cinematográfica de alto impacto"
     ],
     imagem: "/img/filmmaker-fotografo.jpeg",
+    video: "https://firebasestorage.googleapis.com/v0/b/lamapp-b1125.firebasestorage.app/o/clik%2Fapresentacao-click.mp4?alt=media&token=95b1ee0b-527e-4fba-88a6-04537cb6319c",
     galeria: [
       "/img/filmmaker-fotografo.jpeg",
       "/img/modelo.jpeg",
@@ -51,6 +53,7 @@ export const portfolio: PortfolioProject[] = [
       "Forte tração e partilha orgânica nas redes sociais"
     ],
     imagem: "/img/Default_img.jpeg",
+    video: "/Videos/casting-global-lead.mp4",
     galeria: [
       "/img/Default_img.jpeg",
       "/img/filmmaker-fotografo.jpeg",
@@ -73,6 +76,7 @@ export const portfolio: PortfolioProject[] = [
       "Produção audiovisual com registo vibrante e imersivo"
     ],
     imagem: "/img/modelo.jpeg",
+    video: "/Videos/white-sunset-beira.mp4",
     galeria: [
       "/img/modelo.jpeg",
       "/img/Default_img.jpeg",

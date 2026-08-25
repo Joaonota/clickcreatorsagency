@@ -2,13 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { contactConfig, getWhatsAppUrl } from "../../config/contact";
 import { socialLinks } from "../../config/social";
+import { SocialIcon, type SocialIconName } from "../common/SocialIcon";
 import { useTranslation } from "../../i18n";
 
-const socials = [
-  { name: "Instagram", short: "IG", url: socialLinks.instagram },
-  { name: "TikTok", short: "TK", url: socialLinks.tiktok },
-  { name: "YouTube", short: "YT", url: socialLinks.youtube },
-  { name: "Facebook", short: "FB", url: socialLinks.facebook },
+const socials: { name: string; icon: SocialIconName; url: string }[] = [
+  { name: "Instagram", icon: "instagram", url: socialLinks.instagram },
+  { name: "Facebook", icon: "facebook", url: socialLinks.facebook },
 ];
 
 export const Footer: React.FC = () => {
@@ -81,9 +80,9 @@ export const Footer: React.FC = () => {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={s.name}
-                className="link-sweep text-[0.62rem] font-extrabold uppercase tracking-[0.22em] muted hover:text-[var(--primary)] transition-colors"
+                className="muted hover:text-[var(--primary)] transition-colors"
               >
-                {s.short}
+                <SocialIcon name={s.icon} size={19} />
               </a>
             ))}
           </div>

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { getWhatsAppUrl } from "../../config/contact";
 import { socialLinks } from "../../config/social";
+import { SocialIcon } from "./SocialIcon";
 import { useTranslation } from "../../i18n";
 
 interface CTASectionProps {
@@ -45,33 +46,24 @@ export const CTASection: React.FC<CTASectionProps> = ({
               <span>{t.cta.whatsapp}</span>
             </a>
 
-            <div className="flex items-center gap-5 pt-2">
+            <div className="flex items-center gap-6 pt-2">
               <a
                 href={socialLinks.instagram}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Instagram"
-                className="text-[0.62rem] font-extrabold uppercase tracking-[0.22em] muted hover:text-[var(--primary)] transition-colors"
+                className="muted hover:text-[var(--primary)] transition-colors"
               >
-                IG
+                <SocialIcon name="instagram" size={19} />
               </a>
               <a
-                href={socialLinks.tiktok}
+                href={socialLinks.facebook}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="TikTok"
-                className="text-[0.62rem] font-extrabold uppercase tracking-[0.22em] muted hover:text-[var(--primary)] transition-colors"
+                aria-label="Facebook"
+                className="muted hover:text-[var(--primary)] transition-colors"
               >
-                TK
-              </a>
-              <a
-                href={socialLinks.youtube}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="YouTube"
-                className="text-[0.62rem] font-extrabold uppercase tracking-[0.22em] muted hover:text-[var(--primary)] transition-colors"
-              >
-                YT
+                <SocialIcon name="facebook" size={19} />
               </a>
             </div>
           </div>

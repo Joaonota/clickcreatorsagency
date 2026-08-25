@@ -32,7 +32,7 @@ export const en = {
     available: "Available for new projects",
     exploreWork: "Explore Our Work",
     workWithUs: "Work With Us",
-    sideLabel: "Creative Agency — Maputo & Global",
+    sideLabel: "Creative Agency — Beira & Global",
     marquee: [
       "Branding",
       "Social Media",
@@ -54,7 +54,7 @@ export const en = {
       { id: "imp-1", value: "01", label: "Creative", sublabel: "Agency" },
       { id: "imp-2", value: "04", label: "Core", sublabel: "Disciplines" },
       { id: "imp-3", value: "50+", label: "Creators", sublabel: "In our network" },
-      { id: "imp-4", value: "120+", label: "Projects", sublabel: "Delivered to brands" },
+      { id: "imp-4", value: "150+", label: "Projects", sublabel: "Delivered to brands" },
     ],
   },
   services: {
@@ -260,7 +260,7 @@ export const en = {
     emailLabel: "Corporate Email *",
     emailPlaceholder: "name@company.com",
     phoneLabel: "Phone / WhatsApp",
-    phonePlaceholder: "+258 84 000 0000",
+    phonePlaceholder: "+258 86 169 3504",
     serviceLabel: "Requested Service",
     serviceOptions: {
       marketing: "Digital Marketing & Ads",

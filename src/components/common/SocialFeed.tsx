@@ -45,7 +45,7 @@ export const SocialFeed: React.FC = () => {
           titleLines={t.socialFeed.titleLines}
           description={t.socialFeed.description}
           linkTo={socialLinks.instagram}
-          linkLabel="@clickcreatorsagency"
+          linkLabel="@clickcreators_agency"
         />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
