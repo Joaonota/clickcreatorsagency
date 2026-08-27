@@ -36,7 +36,7 @@ export const teamMembers: TeamMember[] = [
   },
   {
     id: "team-3",
-    name: "Carlos Ferreira",
+    name: "Alex Homo",
     role: "Diretor de Fotografia & Vídeo",
     bio: "Filmmaker e fotógrafo profissional. Especialista em contar histórias através de lentes de alta precisão e iluminação cinematográfica.",
     image: "/img/filmmaker-fotografo.jpeg",
