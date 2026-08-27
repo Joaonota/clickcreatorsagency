@@ -3,6 +3,7 @@ import { CTASection } from "../components/common/CTASection";
 import { TeamGrid } from "../components/team/TeamGrid";
 import { PartnersShowcase } from "../components/partners/PartnersShowcase";
 import { MissionVision } from "../components/about/MissionVision";
+import { HistoryTimeline } from "../components/about/HistoryTimeline";
 import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
 import { useTranslation } from "../i18n";
@@ -42,40 +43,8 @@ export const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Story — editorial split */}
-      <section className="section-y hairline-t">
-        <div className="container grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          <div className="lg:col-span-7">
-            <Reveal>
-              <p className="eyebrow mb-8">{t.about.storyEyebrow}</p>
-            </Reveal>
-            <Reveal delay={1}>
-              <p className="lede mb-8 max-w-2xl">
-                {t.about.storyLede}
-              </p>
-            </Reveal>
-            <Reveal delay={2}>
-              <p className="muted text-sm leading-relaxed max-w-xl">
-                {t.about.storyBody}
-              </p>
-            </Reveal>
-          </div>
-
-          <Reveal className="reveal-clip lg:col-span-5 lg:mt-16">
-            <div className="media-frame aspect-[3/4] overflow-hidden rounded-sm">
-              <img
-                src="/img/filmmaker-fotografo.jpeg"
-                alt="Bastidores de produção audiovisual da Click Creators"
-                loading="lazy"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <p className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] muted mt-3">
-              {t.about.backstageCaption}
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      {/* Story — editorial timeline */}
+      <HistoryTimeline />
 
       {/* Mission & Vision — editorial split */}
       <MissionVision />
