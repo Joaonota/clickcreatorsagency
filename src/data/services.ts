@@ -93,31 +93,5 @@ export const services: Service[] = [
       "Presença digital ativa 365 dias por ano"
     ]
   },
-  {
-    id: "4",
-    number: "04",
-    slug: "branding",
-    title: "Branding & Identidade Visual",
-    shortDescription: "Desenvolvemos elementos que ajudam a construir uma identidade forte e reconhecível para cada marca, diferenciando-a da concorrência.",
-    fullDescription: "Criamos a alma visual da sua empresa. Do naming e logotipo ao manual de marca, tipografia, paleta de cores e aplicações físicas/digitais. Asseguramos que o seu negócio seja inesquecível e transmita valor premium em todos os pontos de contacto.",
-    image: "/img/Default_img.jpeg",
-    deliverables: [
-      "Manual de Identidade Visual Completo",
-      "Logotipo & Variações Responsivas",
-      "Paleta de Cores & Tipografia Exclusiva",
-      "Design de Embalagens & Stationery",
-      "Brand Guidelines para Mídias Digitais"
-    ],
-    process: [
-      { step: "01", title: "Imersão de Marca", desc: "Entendimento dos valores, propósito e essência." },
-      { step: "02", title: "Moodboard & Conceitos", desc: "Exploração de caminhos visuais contemporâneos." },
-      { step: "03", title: "Design & Refinamento", desc: "Construção dos símbolos, tipos e padrões gráficos." },
-      { step: "04", title: "Brand Book Final", desc: "Entrega dos manuais e todos os ficheiros vetoriais." }
-    ],
-    benefits: [
-      "Diferenciação imediata da concorrência",
-      "Percepção de alto valor de mercado",
-      "Consistência em todos os canais"
-    ]
-  }
+
 ];

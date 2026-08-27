@@ -9,14 +9,14 @@ const feed = [
     id: "post-1",
     platform: "Instagram",
     image:
-      "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80",
+      "/img/filmmaker-fotografo.jpeg",
     url: socialLinks.instagram,
   },
   {
     id: "post-2",
-    platform: "TikTok",
+    platform: "Facebook",
     image: "/img/filmmaker-fotografo.jpeg",
-    url: socialLinks.tiktok,
+    url: socialLinks.facebook,
   },
   {
     id: "post-3",
@@ -26,10 +26,10 @@ const feed = [
   },
   {
     id: "post-4",
-    platform: "YouTube",
+    platform: "Facebook",
     image:
-      "https://images.unsplash.com/photo-1579965342575-16428a7c8881?auto=format&fit=crop&w=800&q=80",
-    url: socialLinks.youtube,
+      "/img/filmmaker-fotografo.jpeg",
+    url: socialLinks.facebook,
   },
 ];
 
