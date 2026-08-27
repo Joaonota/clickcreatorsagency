@@ -94,11 +94,11 @@ export const Header: React.FC = () => {
           </nav>
 
           {/* Controls: Language Selector + Theme + WhatsApp CTA + Burger */}
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2.5 sm:gap-4">
             {/* Seletor de Idioma Desktop Minimalista PT / EN */}
             <LanguageSwitcher className="hidden sm:inline-flex" />
 
-            <ThemeToggle className="hidden md:flex" />
+            <ThemeToggle />
 
             <a
               href={waUrl}
@@ -153,6 +153,7 @@ export const Header: React.FC = () => {
             />
           </Link>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <LanguageSwitcher variant="mobile" />
             <button
               onClick={handleCloseMenu}

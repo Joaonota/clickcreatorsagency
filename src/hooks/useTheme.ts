@@ -11,7 +11,7 @@ function readStoredTheme(): Theme {
   } catch {
     /* storage indisponível */
   }
-  return "dark";
+  return "light";
 }
 
 let currentTheme: Theme = readStoredTheme();
@@ -19,11 +19,7 @@ const listeners = new Set<(theme: Theme) => void>();
 
 function applyToDocument(theme: Theme) {
   const root = document.documentElement;
-  if (theme === "light") {
-    root.setAttribute("data-theme", "light");
-  } else {
-    root.removeAttribute("data-theme");
-  }
+  root.setAttribute("data-theme", theme);
 }
 
 /* Transição suave: ativa .theming durante a troca e remove de seguida,

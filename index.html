@@ -22,14 +22,16 @@
     <meta name="twitter:description" content="Agência de Marketing Digital, Produção Audiovisual e Gestão de Criadores de Conteúdo." />
     <meta name="twitter:image" content="/img/Default_img.jpeg" />
 
-    <!-- Anti-FOUC: aplica o tema guardado antes do primeiro paint (default: dark) -->
+    <!-- Anti-FOUC: aplica o tema guardado antes do primeiro paint (default: light) -->
     <script>
       (function () {
         try {
-          if (localStorage.getItem("clickcreators-theme") === "light") {
-            document.documentElement.setAttribute("data-theme", "light");
-          }
-        } catch (e) {}
+          var saved = localStorage.getItem("clickcreators-theme");
+          var theme = saved === "dark" || saved === "light" ? saved : "light";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
       })();
     </script>
 
