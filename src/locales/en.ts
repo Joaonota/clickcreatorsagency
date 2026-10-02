@@ -94,6 +94,12 @@ export const en = {
       "Commercial videos, editorial photography, digital campaigns, and branding — a curated selection of our work with partner brands.",
     empty: "No projects found in this category.",
     viewCase: "View case",
+    campaignsEyebrow: "Video Campaigns",
+    campaignsTitleLines: ["CAMPAIGNS"],
+    campaignsDesc:
+      "Real campaign videos produced by Click Creators. Hit play to watch with sound — full volume, seek and fullscreen controls included.",
+    campaignsBadge: "Campaign",
+    campaignsHint: "Hit play to watch with sound",
     categories: {
       all: "All",
       video: "Video",

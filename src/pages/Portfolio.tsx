@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { PortfolioGrid, FilterBar, normalizeCategory } from "../components/portfolio/PortfolioGrid";
+import { CampaignsSection } from "../components/portfolio/CampaignsSection";
 import { CTASection } from "../components/common/CTASection";
 import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
@@ -70,6 +71,9 @@ export const PortfolioPage: React.FC = () => {
           <PortfolioGrid projects={filteredProjects} />
         </div>
       </section>
+
+      {/* Campanhas em vídeo — ficheiros reais de public/Videos */}
+      <CampaignsSection />
 
       <CTASection />
     </div>

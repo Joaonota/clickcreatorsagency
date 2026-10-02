@@ -94,6 +94,12 @@ export const pt = {
       "Vídeos comerciais, fotografia editorial, campanhas digitais e branding — uma seleção do que construímos com as nossas marcas parceiras.",
     empty: "Nenhum projeto encontrado nesta categoria.",
     viewCase: "Ver caso",
+    campaignsEyebrow: "Campanhas em Vídeo",
+    campaignsTitleLines: ["CAMPANHAS"],
+    campaignsDesc:
+      "Vídeos reais de campanhas produzidas pela Click Creators. Prime play para ver com som — com controlos completos de volume, progresso e fullscreen.",
+    campaignsBadge: "Campanha",
+    campaignsHint: "Clica em Play para ver com som",
     categories: {
       all: "Todos",
       video: "Vídeo",
