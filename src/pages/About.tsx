@@ -3,6 +3,7 @@ import { CTASection } from "../components/common/CTASection";
 import { TeamGrid } from "../components/team/TeamGrid";
 import { PartnersShowcase } from "../components/partners/PartnersShowcase";
 import { MissionVision } from "../components/about/MissionVision";
+import { AgencyIntro } from "../components/about/AgencyIntro";
 import { HistoryTimeline } from "../components/about/HistoryTimeline";
 import { Reveal } from "../hooks/useReveal";
 import { apiService } from "../services/api";
@@ -44,6 +45,8 @@ export const About: React.FC = () => {
       </section>
 
       {/* Story — editorial timeline */}
+      <AgencyIntro />
+
       <HistoryTimeline />
 
       {/* Mission & Vision — editorial split */}

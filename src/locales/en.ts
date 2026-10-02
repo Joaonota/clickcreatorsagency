@@ -213,6 +213,58 @@ export const en = {
     visionText:
       "To be the premier creative agency in digital marketing, audiovisual production, and creator management — inspiring excellence and innovation.",
     backstageCaption: "Backstage — Click Creators Production",
+    agencyIntroEyebrow: "Who We Are",
+    agencyIntroTitle: "WE TURN BRANDS INTO MEMORABLE EXPERIENCES",
+    agencyIntroBody: [
+      "At Click Creators Agency, we are a team of passionate and creative professionals, specialized in transforming brands into memorable experiences.",
+      "With extensive experience in the industry, we bring together talents in marketing, design and communication to deliver innovative solutions that stand out in the market.",
+    ],
+    whoWeAreTitle: "What Are We?",
+    whoWeAreLede:
+      "Click Creators Agency is more than just a marketing agency. We are a strategic partner that understands the unique needs of each client. We offer a full range of services, including:",
+    whoWeAreItems: [
+      {
+        title: "Brand Management",
+        desc: "We create and promote your brand identity.",
+      },
+      {
+        title: "Digital Marketing",
+        desc: "We develop effective campaigns on social media and digital platforms.",
+      },
+      {
+        title: "Content Creation",
+        desc: "We produce engaging and relevant content that captures your target audience's attention.",
+      },
+      {
+        title: "Strategic Consulting",
+        desc: "We analyze the market and propose tailored strategies to maximize your impact.",
+      },
+    ],
+    whyUsTitle: "Why Choose Us?",
+    whyUsLede:
+      "Choosing Click Creators Agency means opting for a personalized, results-driven approach. Our commitment to excellence and innovation ensures your brand stands out in a competitive market.",
+    whyUsItems: [
+      {
+        title: "Creativity",
+        desc: "We believe every brand has a unique story, and we are here to tell it in a creative and impactful way.",
+      },
+      {
+        title: "Experience",
+        desc: "Our team is made up of specialists with a proven track record of success across diverse marketing fields.",
+      },
+      {
+        title: "Results",
+        desc: "We focus on measurable results, ensuring every campaign delivers a meaningful return on investment.",
+      },
+      {
+        title: "Global Presence",
+        desc: "With offices in Zimbabwe and Mozambique, we offer a diverse perspective adapted to local markets.",
+      },
+    ],
+    visionBlockEyebrow: "Our Vision",
+    visionBlockTitle: "THE BENCHMARK AGENCY FOR CREATIVITY AND INNOVATION",
+    visionBlockText:
+      "At Click Creators Agency, our vision is to be the benchmark agency in marketing and talent management, recognized for our creativity and innovation. We want to help brands reach their full potential by creating experiences that emotionally connect with audiences.",
     valuesEyebrow: "Principles",
     valuesTitle: "OUR CORE VALUES",
     values: [

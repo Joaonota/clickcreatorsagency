@@ -213,6 +213,58 @@ export const pt = {
     visionText:
       "Ser a agência criativa de referência no ecossistema de marketing digital, audiovisual e gestão de creators — inspirando inovação e excelência.",
     backstageCaption: "Bastidores — Produção Click Creators",
+    agencyIntroEyebrow: "Quem Somos",
+    agencyIntroTitle: "TRANSFORMAMOS MARCAS EM EXPERIÊNCIAS MEMORÁVEIS",
+    agencyIntroBody: [
+      "Na Click Creators Agency, somos uma equipa de profissionais apaixonados e criativos, especializados em transformar marcas em experiências memoráveis.",
+      "Com uma vasta experiência no setor, unimos talentos em marketing, design e comunicação para oferecer soluções inovadoras que se destacam no mercado.",
+    ],
+    whoWeAreTitle: "O Que Somos?",
+    whoWeAreLede:
+      "A Click Creators Agency é mais do que uma simples agência de marketing. Somos um parceiro estratégico que compreende as necessidades únicas de cada cliente. Oferecemos uma gama completa de serviços, incluindo:",
+    whoWeAreItems: [
+      {
+        title: "Gestão de Marca",
+        desc: "Criamos e promovemos a identidade da sua marca.",
+      },
+      {
+        title: "Marketing Digital",
+        desc: "Desenvolvemos campanhas eficazes nas redes sociais e em plataformas digitais.",
+      },
+      {
+        title: "Criação de Conteúdo",
+        desc: "Produzimos conteúdos envolventes e relevantes que capturam a atenção do seu público-alvo.",
+      },
+      {
+        title: "Consultoria Estratégica",
+        desc: "Analisamos o mercado e propomos estratégias personalizadas para maximizar o seu impacto.",
+      },
+    ],
+    whyUsTitle: "Por Que Nós?",
+    whyUsLede:
+      "Escolher a Click Creators Agency é optar por uma abordagem personalizada e focada nos resultados. O nosso compromisso com a excelência e a inovação garante que a sua marca se destaque no mercado competitivo.",
+    whyUsItems: [
+      {
+        title: "Criatividade",
+        desc: "Acreditamos que cada marca tem uma história única, e estamos aqui para contá-la de forma criativa e impactante.",
+      },
+      {
+        title: "Experiência",
+        desc: "A nossa equipa é composta por especialistas com um histórico comprovado de sucesso em diversas áreas do marketing.",
+      },
+      {
+        title: "Resultados",
+        desc: "Focamos em resultados mensuráveis, garantindo que cada campanha gere um retorno significativo sobre o investimento.",
+      },
+      {
+        title: "Presença Global",
+        desc: "Com sedes no Zimbabwe e em Moçambique, oferecemos uma perspetiva diversificada e adaptada aos mercados locais.",
+      },
+    ],
+    visionBlockEyebrow: "A Nossa Visão",
+    visionBlockTitle: "A AGÊNCIA DE REFERÊNCIA EM CRIATIVIDADE E INOVAÇÃO",
+    visionBlockText:
+      "Na Click Creators Agency, a nossa visão é ser a agência de referência em marketing e agenciamento, reconhecida pela nossa criatividade e inovação. Queremos ajudar as marcas a alcançar todo o seu potencial, criando experiências que conectem emocionalmente com o público.",
     valuesEyebrow: "Princípios",
     valuesTitle: "OS NOSSOS VALORES",
     values: [
