@@ -225,7 +225,9 @@ export const CampaignsSection: React.FC = () => {
       <Lightbox
         isOpen={activePhoto !== null}
         images={campaignPhotos.map((photo) => photo.src)}
+        titles={campaignPhotos.map((photo) => photo.title)}
         currentIndex={activePhoto ?? 0}
+        onSelect={setActivePhoto}
         onClose={() => setActivePhoto(null)}
         onPrev={() =>
           setActivePhoto((prev) =>

@@ -65,6 +65,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({
         isOpen={lightboxOpen}
         images={images}
         currentIndex={activeImageIndex}
+        onSelect={setActiveImageIndex}
         onClose={() => setLightboxOpen(false)}
         onPrev={() =>
           setActiveImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
