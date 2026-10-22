@@ -3,11 +3,7 @@ import { HeroSection } from "../components/home/HeroSection";
 import { Manifesto } from "../components/home/Manifesto";
 import { ImpactNumbers } from "../components/home/ImpactNumbers";
 import { ServiceList } from "../components/services/ServiceList";
-import {
-  PortfolioGrid,
-  FilterBar,
-  normalizeCategory,
-} from "../components/portfolio/PortfolioGrid";
+import { PortfolioGrid } from "../components/portfolio/PortfolioGrid";
 import { CreatorGrid } from "../components/creators/CreatorGrid";
 import { TrustedBy } from "../components/partners/TrustedBy";
 import { TeamGrid } from "../components/team/TeamGrid";
@@ -28,7 +24,6 @@ export const Home: React.FC = () => {
   const [creators, setCreators] = useState<Creator[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
   const [team, setTeam] = useState<TeamMember[]>([]);
-  const [activeCategory, setActiveCategory] = useState("all");
   const { t, lang } = useTranslation();
 
   useEffect(() => {
@@ -53,18 +48,6 @@ export const Home: React.FC = () => {
     };
     loadData();
   }, [lang]);
-
-  const counts = projects.reduce<Record<string, number>>((acc, p) => {
-    const key = normalizeCategory(p.categoria);
-    acc[key] = (acc[key] ?? 0) + 1;
-    return acc;
-  }, {});
-  counts["all"] = projects.length;
-
-  const filteredProjects =
-    activeCategory === "all"
-      ? projects
-      : projects.filter((p) => normalizeCategory(p.categoria) === activeCategory);
 
   return (
     <div className="flex flex-col">
@@ -91,8 +74,7 @@ export const Home: React.FC = () => {
             linkTo="/portfolio"
             linkLabel={t.portfolio.linkLabel}
           />
-          <FilterBar active={activeCategory} onChange={setActiveCategory} counts={counts} />
-          <PortfolioGrid projects={filteredProjects.slice(0, 6)} />
+          <PortfolioGrid projects={projects.slice(0, 6)} />
         </div>
       </section>
 
