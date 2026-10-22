@@ -26,7 +26,7 @@ export const CreatorCard: React.FC<{ creator: Creator; aspect?: string }> = ({
       <div className="creator-overlay">
         <span className="creator-cat mb-2">{creator.category}</span>
         <h3 className="creator-name">{creator.name}</h3>
-        <span className="creator-user">{creator.username}</span>
+        {creator.username && <span className="creator-user">{creator.username}</span>}
         <div className="creator-socials">
           {creator.followers.instagram && (
             <span className="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-widest text-white/80">
@@ -71,22 +71,28 @@ export const CreatorGrid: React.FC<{ creators: Creator[] }> = ({ creators }) => 
       {/* Mobile: horizontal rail / Desktop: editorial grid */}
       <div className="container h-scroll-rail lg:grid-cols-12 gap-5 lg:gap-6">
         {creators.map((creator, i) => {
-          const spans = [
-            "lg:col-span-4",
-            "lg:col-span-3 lg:-mt-10",
-            "lg:col-span-5 lg:mt-14",
-            "lg:col-span-3",
-            "lg:col-span-4 lg:mt-8",
-            "lg:col-span-5 lg:-mt-6",
-          ];
-          const aspects = [
-            "aspect-[3/4]",
-            "aspect-[3/4] lg:aspect-[3/4.6]",
-            "aspect-square lg:aspect-[4/3.4]",
-            "aspect-[3/4]",
-            "aspect-[3/4] lg:aspect-[3/4.4]",
-            "aspect-square lg:aspect-[4/3.6]",
-          ];
+          const spans =
+            creators.length === 2
+              ? ["lg:col-span-6", "lg:col-span-6"]
+              : [
+                  "lg:col-span-4",
+                  "lg:col-span-3 lg:-mt-10",
+                  "lg:col-span-5 lg:mt-14",
+                  "lg:col-span-3",
+                  "lg:col-span-4 lg:mt-8",
+                  "lg:col-span-5 lg:-mt-6",
+                ];
+          const aspects =
+            creators.length === 2
+              ? ["aspect-[3/4] lg:aspect-[4/5]", "aspect-[3/4] lg:aspect-[4/5]"]
+              : [
+                  "aspect-[3/4]",
+                  "aspect-[3/4] lg:aspect-[3/4.6]",
+                  "aspect-square lg:aspect-[4/3.4]",
+                  "aspect-[3/4]",
+                  "aspect-[3/4] lg:aspect-[3/4.4]",
+                  "aspect-square lg:aspect-[4/3.6]",
+                ];
           return (
             <Reveal
               key={creator.id}
