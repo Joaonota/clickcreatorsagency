@@ -18,7 +18,7 @@ export const portfolio: PortfolioProject[] = [
   {
     id: "1",
     slug: "apresentacao-click-creators",
-    title: "Ana Joyce no evento Ell concerto da Nova Era Entretenimento",
+    title: "Vídeo de Apresentação Oficial Click Creators",
     cliente: "Click Creators Agency",
     categoria: "Vídeo",
     descricao: "Apresentação oficial da Click Creators Agency. Produção cinematográfica que resume a nossa visão, produção audiovisual de ponta, rede de criadores e impacto para marcas inovadoras.",
@@ -30,7 +30,7 @@ export const portfolio: PortfolioProject[] = [
       "Estética audiovisual cinematográfica de alto impacto"
     ],
     imagem: "/img/filmmaker-fotografo.jpeg",
-    video: "https://firebasestorage.googleapis.com/v0/b/lamapp-b1125.firebasestorage.app/o/clik%2FAna%20yoice%201.MOV?alt=media&token=623378c4-db86-4646-b4a6-32d876d7a3f8",
+    video: "/Videos/apresentacao-click.mp4",
     galeria: [
       "/img/filmmaker-fotografo.jpeg",
       "/img/modelo.jpeg",
@@ -41,7 +41,7 @@ export const portfolio: PortfolioProject[] = [
   {
     id: "2",
     slug: "casting-global-lead-networking",
-    title: "Campanha da 2M “Somos de Quem Ganha”",
+    title: "Casting Audiovisual — Parceria Global Lead Networking",
     cliente: "Global Lead Networking",
     categoria: "Vídeo",
     descricao: "A Click Creators Agency, em parceria com a Global Lead Networking, na preparação do casting e desenvolvimento de novas oportunidades para quem quer crescer no mundo das produções audiovisuais.",
@@ -53,7 +53,7 @@ export const portfolio: PortfolioProject[] = [
       "Forte tração e partilha orgânica nas redes sociais"
     ],
     imagem: "/img/Default_img.jpeg",
-    video: "https://firebasestorage.googleapis.com/v0/b/lamapp-b1125.firebasestorage.app/o/clik%2FCampanha_da_2m_2.MP4?alt=media&token=cbfcd8f1-d8ab-4145-8eae-a2c246e91383",
+    video: "/Videos/casting-global-lead2.MP4",
     galeria: [
       "/img/Default_img.jpeg",
       "/img/filmmaker-fotografo.jpeg",
