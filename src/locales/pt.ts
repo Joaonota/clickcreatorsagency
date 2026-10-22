@@ -94,6 +94,8 @@ export const pt = {
       "Vídeos comerciais, fotografia editorial, campanhas digitais e branding — uma seleção do que construímos com as nossas marcas parceiras.",
     empty: "Nenhum projeto encontrado nesta categoria.",
     viewCase: "Ver caso",
+    featuredEyebrow: "Vídeos em Destaque",
+    featuredTitleLines: ["VÍDEOS", "DE DESTAQUE"],
     campaignsEyebrow: "Campanhas em Vídeo",
     campaignsTitleLines: ["CAMPANHAS"],
     campaignsDesc:

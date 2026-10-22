@@ -94,6 +94,8 @@ export const en = {
       "Commercial videos, editorial photography, digital campaigns, and branding — a curated selection of our work with partner brands.",
     empty: "No projects found in this category.",
     viewCase: "View case",
+    featuredEyebrow: "Featured Videos",
+    featuredTitleLines: ["FEATURED", "VIDEOS"],
     campaignsEyebrow: "Video Campaigns",
     campaignsTitleLines: ["CAMPAIGNS"],
     campaignsDesc:
