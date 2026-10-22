@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { ImageGallery } from "../components/common/ImageGallery";
 import { CTASection } from "../components/common/CTASection";
-import { WorkItem } from "../components/portfolio/PortfolioGrid";
+import { WorkItem, detectKind, type AspectKind } from "../components/portfolio/PortfolioGrid";
 import { Reveal } from "../hooks/useReveal";
 import { NotFound } from "./NotFound";
 import { apiService } from "../services/api";
@@ -15,6 +15,8 @@ export const ProjectDetails: React.FC = () => {
   const [project, setProject] = useState<PortfolioProject | null>(null);
   const [related, setRelated] = useState<PortfolioProject[]>([]);
   const [loading, setLoading] = useState(true);
+  const [kind, setKind] = useState<AspectKind>("unknown");
+  const [aspectRatio, setAspectRatio] = useState<string | undefined>(undefined);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -47,35 +49,79 @@ export const ProjectDetails: React.FC = () => {
 
   if (!project) return <NotFound />;
 
+  const hasVideo = Boolean(project.video);
+
+  const handleVideoMeta = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const w = e.currentTarget.videoWidth;
+    const h = e.currentTarget.videoHeight;
+    setKind(detectKind(w, h));
+    if (w && h) setAspectRatio(`${w} / ${h}`);
+  };
+
+  /*
+   * Container do vídeo do hero adaptado à proporção real do vídeo
+   * (padrão da secção Campanhas): portrait centrado com altura máxima,
+   * landscape/square ocupando a largura total.
+   */
+  const containerStyle: React.CSSProperties = (() => {
+    if (aspectRatio) {
+      if (kind === "portrait") {
+        return {
+          aspectRatio,
+          maxHeight: "72vh",
+          width: "auto",
+          maxWidth: "100%",
+          margin: "0 auto",
+        };
+      }
+      return {
+        aspectRatio,
+        width: "100%",
+        maxHeight: "70vh",
+      };
+    }
+    return {
+      minHeight: "10rem",
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    };
+  })();
+
   return (
     <div className="flex flex-col">
       {/* Cinematic hero */}
-      <section className="relative min-h-[85svh] flex flex-col justify-end overflow-hidden force-dark">
-        <div className="absolute inset-0 z-0 media-frame !overflow-hidden">
-          {project.video ? (
+      <section
+        className={`relative overflow-hidden force-dark ${
+          hasVideo ? "" : "min-h-[85svh] flex flex-col justify-end"
+        }`}
+      >
+        {hasVideo ? (
+          <div
+            className="relative z-0 overflow-hidden bg-black flex items-center justify-center"
+            style={containerStyle}
+          >
             <video
-              ref={(el) => {
-                if (el) {
-                  el.muted = true;
-                  el.play().catch(() => {});
-                }
-              }}
               src={project.video}
-              poster={project.imagem}
-              autoPlay
-              muted
-              loop
-              playsInline
+              className="block w-full h-full object-contain bg-black"
+              controls
               preload="auto"
-              className="w-full h-full object-cover"
+              playsInline
+              aria-label={project.title}
+              onLoadedMetadata={handleVideoMeta}
             />
-          ) : (
+          </div>
+        ) : (
+          <div className="absolute inset-0 z-0 media-frame !overflow-hidden">
             <img src={project.imagem} alt={project.title} className="kenburns" />
-          )}
-        </div>
-        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[var(--background)] via-[var(--background)]/50 to-[var(--background)]/40" />
+          </div>
+        )}
+        {!hasVideo && (
+          <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[var(--background)] via-[var(--background)]/50 to-[var(--background)]/40" />
+        )}
 
-        <div className="container relative z-10 pb-14 pt-44">
+        <div className={`container relative z-10 pb-14 ${hasVideo ? "pt-12" : "pt-44"}`}>
           <Link
             to="/portfolio"
             className="inline-flex items-center gap-2 text-[0.66rem] font-extrabold uppercase tracking-[0.2em] text-[var(--text-soft)] hover:text-[var(--primary)] mb-8 transition-colors"
