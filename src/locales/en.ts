@@ -100,6 +100,11 @@ export const en = {
       "Real campaign videos produced by Click Creators. Hit play to watch with sound — full volume, seek and fullscreen controls included.",
     campaignsBadge: "Campaign",
     campaignsHint: "Hit play to watch with sound",
+    campaignsPhotosEyebrow: "Photo Campaigns",
+    campaignsPhotosTitle: "Campaign Gallery",
+    campaignsPhotosDesc:
+      "Real campaign photographs produced by Click Creators. Click an image to view it in detail.",
+    campaignsPhotosHint: "Click the image to enlarge",
     categories: {
       all: "All",
       video: "Video",

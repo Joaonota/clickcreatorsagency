@@ -100,6 +100,11 @@ export const pt = {
       "Vídeos reais de campanhas produzidas pela Click Creators. Prime play para ver com som — com controlos completos de volume, progresso e fullscreen.",
     campaignsBadge: "Campanha",
     campaignsHint: "Clica em Play para ver com som",
+    campaignsPhotosEyebrow: "Campanhas em Fotografia",
+    campaignsPhotosTitle: "Galeria de Campanhas",
+    campaignsPhotosDesc:
+      "Fotografias reais de campanhas produzidas pela Click Creators. Clica numa imagem para ver em detalhe.",
+    campaignsPhotosHint: "Clica na imagem para ampliar",
     categories: {
       all: "Todos",
       video: "Vídeo",

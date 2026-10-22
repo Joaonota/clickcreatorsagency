@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
-import { campaignVideos } from "../../data/campaigns";
+import { Maximize2 } from "lucide-react";
+import { campaignPhotos, campaignVideos } from "../../data/campaigns";
+import { Lightbox } from "../common/Lightbox";
 import { Reveal } from "../../hooks/useReveal";
 import { useTranslation } from "../../i18n";
 
@@ -123,6 +125,7 @@ const CampaignCard: React.FC<{
 
 export const CampaignsSection: React.FC = () => {
   const { t } = useTranslation();
+  const [activePhoto, setActivePhoto] = useState<number | null>(null);
 
   return (
     <section
@@ -168,7 +171,81 @@ export const CampaignsSection: React.FC = () => {
             </Reveal>
           ))}
         </div>
+
+        {/* Fotografias de campanhas */}
+        <div className="mt-20 lg:mt-28">
+          <Reveal>
+            <p className="eyebrow mb-4">{t.portfolio.campaignsPhotosEyebrow}</p>
+            <h3 className="font-display text-3xl lg:text-4xl uppercase tracking-wide leading-none">
+              {t.portfolio.campaignsPhotosTitle}
+            </h3>
+            <p className="lede mt-4 max-w-xl">{t.portfolio.campaignsPhotosDesc}</p>
+          </Reveal>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8 mt-10">
+            {campaignPhotos.map((photo, i) => (
+              <Reveal key={photo.id} delay={(i % 3) as 0 | 1 | 2}>
+                <article className="group flex flex-col border border-[var(--border)] bg-[var(--surface)] transition-colors duration-300 hover:border-[var(--border-hover)]">
+                  <button
+                    type="button"
+                    onClick={() => setActivePhoto(i)}
+                    aria-label={`${photo.title} — ${t.portfolio.campaignsPhotosHint}`}
+                    className="relative block aspect-[3/4] w-full overflow-hidden bg-black"
+                  >
+                    <img
+                      src={photo.src}
+                      alt={photo.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <span className="bg-[var(--primary)] p-3 text-black">
+                        <Maximize2 size={18} />
+                      </span>
+                    </div>
+                    <span className="absolute top-4 left-4 bg-black/60 px-2.5 py-1 text-[0.58rem] font-extrabold uppercase tracking-[0.22em] text-[var(--primary)] backdrop-blur">
+                      {t.portfolio.campaignsBadge}
+                    </span>
+                  </button>
+                  <div className="flex items-baseline justify-between gap-4 px-5 py-4">
+                    <h4 className="font-display text-lg uppercase tracking-wide leading-none">
+                      {photo.title}
+                    </h4>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-[0.2em] muted whitespace-nowrap">
+                      {t.portfolio.campaignsPhotosHint}
+                    </span>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </div>
+
+      <Lightbox
+        isOpen={activePhoto !== null}
+        images={campaignPhotos.map((photo) => photo.src)}
+        currentIndex={activePhoto ?? 0}
+        onClose={() => setActivePhoto(null)}
+        onPrev={() =>
+          setActivePhoto((prev) =>
+            prev === null
+              ? null
+              : prev === 0
+              ? campaignPhotos.length - 1
+              : prev - 1
+          )
+        }
+        onNext={() =>
+          setActivePhoto((prev) =>
+            prev === null
+              ? null
+              : prev === campaignPhotos.length - 1
+              ? 0
+              : prev + 1
+          )
+        }
+      />
     </section>
   );
 };

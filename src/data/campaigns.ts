@@ -5,6 +5,35 @@ export interface CampaignVideo {
   mime: string;
 }
 
+export interface CampaignPhoto {
+  id: string;
+  title: string;
+  src: string;
+}
+
+export const campaignPhotos: CampaignPhoto[] = [
+  {
+    id: "camp-photo-casting",
+    title: "Casting",
+    src: "/camapnhas/Casting.jpeg",
+  },
+  {
+    id: "camp-photo-entretenimento",
+    title: "Entretenimento",
+    src: "/camapnhas/entretenimento.jpeg",
+  },
+  {
+    id: "camp-photo-move-run",
+    title: "Move Run",
+    src: "/camapnhas/MoveRun.jpeg",
+  },
+  {
+    id: "camp-photo-moyo-biz",
+    title: "Moyo Biz",
+    src: "/camapnhas/MOYO%20BIZ.jpeg",
+  },
+];
+
 export const campaignVideos: CampaignVideo[] = [
   {
     id: "camp-apresentacao-click",
