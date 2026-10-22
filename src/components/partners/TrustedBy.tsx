@@ -30,8 +30,8 @@ export const TrustedBy: React.FC<{ partners: Partner[] }> = ({ partners }) => {
       </div>
 
       {/* Marquee de logos dos parceiros */}
-      <div className="partner-marquee-wrap hairline-t py-9 -mx-5 sm:-mx-10 xl:-mx-16 px-5 sm:px-10 xl:px-16">
-        <div className="partner-marquee gap-24 pr-24" aria-hidden="false">
+      <div className="partner-marquee-wrap overflow-hidden hairline-t py-9 w-full">
+        <div className="partner-marquee gap-16 md:gap-24 pr-16 md:pr-24" aria-hidden="false">
           {[0, 1].map((dup) => (
             <div key={dup} className="flex gap-24 shrink-0 pr-24">
               {partners.map((p) => (

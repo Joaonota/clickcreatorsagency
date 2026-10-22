@@ -17,7 +17,7 @@ export const NotFound: React.FC = () => {
         <p className="lede mt-8 max-w-md">
           {t.notFound.description}
         </p>
-        <Link to="/" className="btn btn-primary btn-lg mt-10 self-start">
+        <Link to="/" className="btn btn-primary btn-lg mt-10 inline-flex w-full sm:w-auto justify-center">
           <span>← {t.notFound.backButton}</span>
         </Link>
       </div>

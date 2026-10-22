@@ -65,10 +65,10 @@ export const HeroSection: React.FC = () => {
           </div>
 
           <div className="anim-hero anim-hero-4 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-            <Link to="/portfolio" className="btn btn-primary btn-lg">
+            <Link to="/portfolio" className="btn btn-primary btn-lg justify-center">
               <span>{t.hero.exploreWork}</span>
             </Link>
-            <Link to="/contactos" className="btn btn-outline btn-lg">
+            <Link to="/contactos" className="btn btn-outline btn-lg justify-center">
               <span>{t.hero.workWithUs}</span>
             </Link>
           </div>

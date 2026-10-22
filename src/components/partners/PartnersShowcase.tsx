@@ -30,10 +30,10 @@ export const PartnersShowcase: React.FC<{ partners: Partner[] }> = ({ partners }
         />
 
         {/* Marquee — movimento horizontal contínuo */}
-        <div className="partner-marquee-wrap overflow-hidden hairline-t py-10 -mx-5 sm:-mx-10 xl:-mx-16 px-5 sm:px-10 xl:px-16 mb-12">
-          <div className="partner-marquee gap-24 pr-24" aria-hidden="true">
+        <div className="partner-marquee-wrap overflow-hidden hairline-t py-8 sm:py-10 w-full mb-12">
+          <div className="partner-marquee gap-16 md:gap-24 pr-16 md:pr-24" aria-hidden="true">
             {[0, 1].map((dup) => (
-              <div key={dup} className="flex gap-24 shrink-0 pr-24">
+              <div key={dup} className="flex gap-16 md:gap-24 shrink-0 pr-16 md:pr-24">
                 {partners.map((p) => (
                   <PartnerLogo key={`${dup}-${p.id}`} partner={{ ...p, website: undefined }} size="sm" />
                 ))}
@@ -48,7 +48,7 @@ export const PartnersShowcase: React.FC<{ partners: Partner[] }> = ({ partners }
             <Reveal
               key={p.id}
               delay={(i % 3) as 0 | 1 | 2}
-              className={`bg-[var(--background)] ${cellSpan(i, partners.length)} px-4 py-8 sm:px-6 lg:px-10 lg:py-10 flex items-center justify-center min-h-[130px] lg:min-h-[210px]`}
+              className={`bg-[var(--background)] ${cellSpan(i, partners.length)} px-2.5 py-6 sm:px-6 lg:px-10 lg:py-10 flex items-center justify-center min-h-[110px] sm:min-h-[130px] lg:min-h-[210px]`}
             >
               <PartnerLogo partner={p} />
             </Reveal>

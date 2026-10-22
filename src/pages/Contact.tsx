@@ -198,7 +198,7 @@ export const Contact: React.FC = () => {
                     />
                   </label>
 
-                  <button type="submit" className="btn btn-primary btn-lg self-start mt-2 cursor-pointer">
+                  <button type="submit" className="btn btn-primary btn-lg w-full sm:w-auto self-start mt-2 cursor-pointer justify-center">
                     <span>{t.contact.sendMessage} →</span>
                   </button>
                 </form>

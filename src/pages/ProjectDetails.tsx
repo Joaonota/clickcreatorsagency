@@ -98,7 +98,10 @@ export const ProjectDetails: React.FC = () => {
             { label: t.portfolio.details.agency, value: "Click Creators" },
             { label: t.portfolio.details.year, value: "2025" },
           ].map((meta) => (
-            <div key={meta.label} className="flex flex-col gap-1 pr-4 border-l border-[var(--border)] pl-4 first:border-l-0 first:pl-0">
+            <div
+              key={meta.label}
+              className="flex flex-col gap-1 pr-4 pl-0 sm:pl-4 border-l-0 sm:border-l border-[var(--border)] sm:first:border-l-0 sm:first:pl-0 [&:nth-child(even)]:border-l [&:nth-child(even)]:pl-4"
+            >
               <span className="text-[0.58rem] font-extrabold uppercase tracking-[0.24em] text-[var(--text-faint)]">
                 {meta.label}
               </span>

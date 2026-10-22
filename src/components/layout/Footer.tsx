@@ -41,14 +41,14 @@ export const Footer: React.FC = () => {
         </h2>
 
         <div className="flex flex-col sm:flex-row gap-4">
-          <Link to="/contactos" className="btn btn-primary btn-lg">
+          <Link to="/contactos" className="btn btn-primary btn-lg w-full sm:w-auto justify-center">
             <span>{t.footer.startProject} →</span>
           </Link>
           <a
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-outline btn-lg"
+            className="btn btn-outline btn-lg w-full sm:w-auto justify-center"
           >
             <span>{t.footer.whatsapp}</span>
           </a>

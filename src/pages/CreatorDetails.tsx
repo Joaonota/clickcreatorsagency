@@ -201,7 +201,7 @@ export const CreatorDetails: React.FC = () => {
               {t.creators.ctaQuestion}
             </h2>
           </div>
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg shrink-0">
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg w-full sm:w-auto justify-center shrink-0">
             <span>{t.creators.ctaStart} →</span>
           </a>
         </div>

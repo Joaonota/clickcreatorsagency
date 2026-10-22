@@ -60,21 +60,21 @@ export const PartnerLogo: React.FC<PartnerLogoProps> = ({ partner, size = "md" }
   const plate = plateClass[partner.id] ?? "";
 
   const inner = (
-    <span className="partner-wordmark group/pl flex items-center justify-center">
+    <span className="partner-wordmark group/pl flex items-center justify-center w-full max-w-full px-1">
       {partner.logo ? (
         <img
           src={partner.logo}
           alt={`Logo da ${partner.name}`}
           loading="lazy"
-          className={`${fit} w-auto object-contain transition-all duration-300 opacity-80 group-hover/pl:opacity-100 group-hover/pl:scale-[1.04] rounded-sm ${plate}`}
+          className={`${fit} max-w-full w-auto h-auto object-contain transition-all duration-300 opacity-80 group-hover/pl:opacity-100 group-hover/pl:scale-[1.04] rounded-sm ${plate}`}
         />
       ) : (
-        <div className="flex flex-col items-center justify-center">
-          <span className={`${s.name} font-display uppercase tracking-[0.08em] whitespace-nowrap text-[var(--color-text)] group-hover/pl:text-[var(--primary)] transition-colors duration-300`}>
+        <div className="flex flex-col items-center justify-center max-w-full text-center">
+          <span className={`${s.name} font-display uppercase tracking-[0.08em] max-w-full truncate text-[var(--color-text)] group-hover/pl:text-[var(--primary)] transition-colors duration-300`}>
             {partner.name}
           </span>
           {partner.category && (
-            <span className="pw-cat text-[0.55rem] font-bold uppercase tracking-widest text-[var(--text-faint)] mt-0.5">
+            <span className="pw-cat text-[0.55rem] font-bold uppercase tracking-widest text-[var(--text-faint)] mt-0.5 max-w-full truncate">
               {partner.category}
             </span>
           )}

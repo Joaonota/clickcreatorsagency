@@ -16,8 +16,8 @@ export const WhatsAppButton: React.FC = () => {
     <div
       className="fixed z-50 flex items-center gap-3 transition-all duration-300"
       style={{
-        bottom: "clamp(18px, 3vw, 24px)",
-        right: "clamp(18px, 3vw, 24px)",
+        bottom: "max(16px, env(safe-area-inset-bottom, 16px))",
+        right: "max(16px, env(safe-area-inset-right, 16px))",
       }}
     >
       {/* Tooltip — Desktop apenas */}
@@ -45,11 +45,10 @@ export const WhatsAppButton: React.FC = () => {
         onMouseLeave={() => setIsHovered(false)}
         onFocus={() => setIsHovered(true)}
         onBlur={() => setIsHovered(false)}
-        className="group relative flex items-center justify-center gap-2.5 rounded-full text-white shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/50"
+        className="group relative flex items-center justify-center gap-2.5 rounded-full text-white shadow-xl transition-all duration-300 w-12 h-12 md:w-auto md:h-auto md:px-5 md:py-3.5 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/50"
         style={{
           backgroundColor: WA_GREEN,
           boxShadow: "0 8px 24px -4px rgba(37, 211, 102, 0.45), 0 4px 12px -2px rgba(0, 0, 0, 0.3)",
-          padding: "12px 18px",
         }}
         onMouseOver={(e) => (e.currentTarget.style.backgroundColor = WA_GREEN_HOVER)}
         onMouseOut={(e) => (e.currentTarget.style.backgroundColor = WA_GREEN)}

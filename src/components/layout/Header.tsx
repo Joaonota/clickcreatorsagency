@@ -27,6 +27,16 @@ export const Header: React.FC = () => {
   };
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && open) {
+        setOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [open]);
+
+  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -94,25 +104,31 @@ export const Header: React.FC = () => {
           </nav>
 
           {/* Controls: Language Selector + Theme + WhatsApp CTA + Burger */}
-          <div className="flex items-center gap-2.5 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3.5">
             {/* Seletor de Idioma Desktop Minimalista PT / EN */}
-            <LanguageSwitcher className="hidden sm:inline-flex" />
+            <div className="hidden sm:inline-flex items-center">
+              <LanguageSwitcher />
+            </div>
 
             <ThemeToggle />
 
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary btn-sm hidden md:inline-flex"
-            >
-              <span>{t.nav.startProject}</span>
-            </a>
+            <div className="hidden md:inline-flex items-center">
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary btn-sm"
+              >
+                <span>{t.nav.startProject}</span>
+              </a>
+            </div>
 
             <button
+              type="button"
               onClick={() => setOpen(!open)}
               aria-label={open ? t.common.closeMenu : t.common.openMenu}
               aria-expanded={open}
+              aria-controls="mobile-navigation"
               className="lg:hidden flex flex-col justify-center items-end gap-[6px] w-11 h-11 cursor-pointer focus:outline-none"
             >
               <span
@@ -132,6 +148,7 @@ export const Header: React.FC = () => {
 
       {/* Mobile fullscreen menu */}
       <div
+        id="mobile-navigation"
         className={`lg:hidden fixed inset-0 z-50 flex flex-col bg-[var(--background)] transition-all duration-500 ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
@@ -150,17 +167,19 @@ export const Header: React.FC = () => {
               alt="Click Creators Agency"
               width={46}
               height={35}
+              className="max-h-[32px] w-auto"
             />
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3">
             <ThemeToggle />
             <LanguageSwitcher variant="mobile" />
             <button
+              type="button"
               onClick={handleCloseMenu}
               aria-label={t.common.closeMenu}
-              className="w-10 h-10 flex items-center justify-center text-[var(--color-text)] cursor-pointer"
+              className="w-11 h-11 flex items-center justify-center text-[var(--color-text)] cursor-pointer hover:text-[var(--primary)] transition-colors"
             >
-              <span className="font-display text-2xl">✕</span>
+              <span className="font-display text-2xl leading-none">✕</span>
             </button>
           </div>
         </div>
@@ -180,7 +199,7 @@ export const Header: React.FC = () => {
                     active ? "text-[var(--primary)]" : "text-[var(--color-text)]"
                   }`}
                   style={{
-                    fontSize: "clamp(32px, 8vw, 56px)",
+                    fontSize: "clamp(28px, 7.5vw, 56px)",
                     transform: open ? "translateY(0)" : "translateY(110%)",
                     opacity: open ? 1 : 0,
                     transition: "transform .5s cubic-bezier(0.16,1,0.3,1), opacity .3s",
@@ -197,12 +216,9 @@ export const Header: React.FC = () => {
 
         {/* Mobile footer controls */}
         <div className="container pb-8 pt-4 border-t border-[var(--border)]">
-          <div className="flex items-center justify-between mb-4">
-            <p className="eyebrow eyebrow-bare text-[var(--text-faint)] text-[0.62rem]">
-              {t.hero.subtext}
-            </p>
-            <ThemeToggle />
-          </div>
+          <p className="eyebrow eyebrow-bare text-[var(--text-faint)] text-[0.62rem] mb-3">
+            {t.hero.subtext}
+          </p>
           <a
             href={waUrl}
             target="_blank"
