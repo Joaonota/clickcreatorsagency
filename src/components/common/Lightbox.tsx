@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface LightboxProps {
@@ -37,9 +38,9 @@ export const Lightbox: React.FC<LightboxProps> = ({
     };
   }, [isOpen, onClose, onPrev, onNext]);
 
-  if (!isOpen || images.length === 0) return null;
+  if (!isOpen || images.length === 0 || typeof document === "undefined") return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-xl animate-fade-in">
       {/* Close Button */}
       <button
@@ -85,6 +86,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
           <ChevronRight size={28} />
         </button>
       )}
-    </div>
+    </div>,
+    document.body
   );
 };
