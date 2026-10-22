@@ -35,22 +35,17 @@ export const campaignPhotos: CampaignPhoto[] = [
 ];
 
 export const campaignVideos: CampaignVideo[] = [
-  {
-    id: "camp-apresentacao-click",
-    title: "Apresentação Click",
-    src: "/Videos/apresentacao-click.mp4",
-    mime: "video/mp4",
-  },
+
   {
     id: "camp-2m-1",
     title: "Campanha 2M — Parte 1",
-    src: "/Videos/Campanha_da_2m_1.MP4",
+    src: "https://firebasestorage.googleapis.com/v0/b/lamapp-b1125.firebasestorage.app/o/clik%2FCampanha_da_2m_1.MP4?alt=media&token=1bae273c-3289-475d-a5be-f91bfd76055a",
     mime: "video/mp4",
   },
   {
     id: "camp-2m-2",
     title: "Campanha 2M — Parte 2",
-    src: "/Videos/Campanha_da_2m_2.MP4",
+    src: "https://firebasestorage.googleapis.com/v0/b/lamapp-b1125.firebasestorage.app/o/clik%2FCampanha_da_2m_2.MP4?alt=media&token=cbfcd8f1-d8ab-4145-8eae-a2c246e91383",
     mime: "video/mp4",
   },
   {
