@@ -107,6 +107,7 @@ export const en = {
     campaignsPhotosDesc:
       "Real campaign photographs produced by Click Creators. Click an image to view it in detail.",
     campaignsPhotosHint: "Click the image to enlarge",
+    videoUnavailable: "Video unavailable",
     categories: {
       all: "All",
       video: "Video",

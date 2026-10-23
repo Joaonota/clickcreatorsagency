@@ -10,13 +10,75 @@ import { apiService } from "../services/api";
 import { useTranslation } from "../i18n";
 import type { PortfolioProject } from "../data/portfolio";
 
+/** Hero em vídeo do projeto — estado de erro isolado (reset por key={slug}) */
+const ProjectVideo: React.FC<{ video: string; title: string }> = ({ video, title }) => {
+  const { t } = useTranslation();
+  const [kind, setKind] = useState<AspectKind>("unknown");
+  const [aspectRatio, setAspectRatio] = useState<string | undefined>(undefined);
+  const [error, setError] = useState(false);
+
+  const handleVideoMeta = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const w = e.currentTarget.videoWidth;
+    const h = e.currentTarget.videoHeight;
+    setKind(detectKind(w, h));
+    if (w && h) setAspectRatio(`${w} / ${h}`);
+  };
+
+  const containerStyle: React.CSSProperties = (() => {
+    if (aspectRatio) {
+      if (kind === "portrait") {
+        return {
+          aspectRatio,
+          maxHeight: "72vh",
+          width: "auto",
+          maxWidth: "100%",
+          margin: "0 auto",
+        };
+      }
+      return {
+        aspectRatio,
+        width: "100%",
+        maxHeight: "70vh",
+      };
+    }
+    return {
+      minHeight: "10rem",
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    };
+  })();
+
+  return (
+    <div
+      className="relative z-0 overflow-hidden bg-black flex items-center justify-center"
+      style={containerStyle}
+    >
+      <video
+        src={video}
+        className="block w-full h-full object-contain bg-black"
+        controls
+        preload="auto"
+        playsInline
+        aria-label={title}
+        onLoadedMetadata={handleVideoMeta}
+        onError={() => setError(true)}
+      />
+      {error && (
+        <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-black/80 px-4 text-center text-sm uppercase tracking-[0.2em] text-white/60">
+          {t.portfolio.videoUnavailable}
+        </span>
+      )}
+    </div>
+  );
+};
+
 export const ProjectDetails: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [project, setProject] = useState<PortfolioProject | null>(null);
   const [related, setRelated] = useState<PortfolioProject[]>([]);
   const [loading, setLoading] = useState(true);
-  const [kind, setKind] = useState<AspectKind>("unknown");
-  const [aspectRatio, setAspectRatio] = useState<string | undefined>(undefined);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -51,44 +113,6 @@ export const ProjectDetails: React.FC = () => {
 
   const hasVideo = Boolean(project.video);
 
-  const handleVideoMeta = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-    const w = e.currentTarget.videoWidth;
-    const h = e.currentTarget.videoHeight;
-    setKind(detectKind(w, h));
-    if (w && h) setAspectRatio(`${w} / ${h}`);
-  };
-
-  /*
-   * Container do vídeo do hero adaptado à proporção real do vídeo
-   * (padrão da secção Campanhas): portrait centrado com altura máxima,
-   * landscape/square ocupando a largura total.
-   */
-  const containerStyle: React.CSSProperties = (() => {
-    if (aspectRatio) {
-      if (kind === "portrait") {
-        return {
-          aspectRatio,
-          maxHeight: "72vh",
-          width: "auto",
-          maxWidth: "100%",
-          margin: "0 auto",
-        };
-      }
-      return {
-        aspectRatio,
-        width: "100%",
-        maxHeight: "70vh",
-      };
-    }
-    return {
-      minHeight: "10rem",
-      width: "100%",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    };
-  })();
-
   return (
     <div className="flex flex-col">
       {/* Cinematic hero */}
@@ -98,20 +122,7 @@ export const ProjectDetails: React.FC = () => {
         }`}
       >
         {hasVideo ? (
-          <div
-            className="relative z-0 overflow-hidden bg-black flex items-center justify-center"
-            style={containerStyle}
-          >
-            <video
-              src={project.video}
-              className="block w-full h-full object-contain bg-black"
-              controls
-              preload="auto"
-              playsInline
-              aria-label={project.title}
-              onLoadedMetadata={handleVideoMeta}
-            />
-          </div>
+          <ProjectVideo video={project.video!} title={project.title} key={slug ?? project.slug} />
         ) : (
           <div className="absolute inset-0 z-0 media-frame !overflow-hidden">
             <img src={project.imagem} alt={project.title} className="kenburns" />

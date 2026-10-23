@@ -62,8 +62,10 @@ const ratioLabelText = (kind: AspectKind): string =>
     : "—";
 
 const VideoWorkCard: React.FC<{ project: PortfolioProject }> = ({ project }) => {
+  const { t } = useTranslation();
   const [kind, setKind] = useState<AspectKind>("unknown");
   const [aspectRatio, setAspectRatio] = useState<string | undefined>(undefined);
+  const [error, setError] = useState(false);
 
   const handleMetadata = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const w = e.currentTarget.videoWidth;
@@ -117,7 +119,13 @@ const VideoWorkCard: React.FC<{ project: PortfolioProject }> = ({ project }) => 
           playsInline
           aria-label={project.title}
           onLoadedMetadata={handleMetadata}
+          onError={() => setError(true)}
         />
+        {error && (
+          <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-black/80 px-4 text-center text-sm uppercase tracking-[0.2em] text-white/60">
+            {t.portfolio.videoUnavailable}
+          </span>
+        )}
         <span className="pointer-events-none absolute top-4 left-4 z-10 flex items-center gap-2 text-[0.58rem] font-extrabold uppercase tracking-[0.22em]">
           <span className="text-white/50">01 /</span>
           <span className="text-[var(--primary)] bg-black/60 backdrop-blur px-2.5 py-1">

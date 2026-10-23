@@ -27,8 +27,10 @@ const FeaturedVideoCard: React.FC<{
   mime: string;
   index: string;
 }> = ({ title, src, mime, index }) => {
+  const { t } = useTranslation();
   const [kind, setKind] = useState<AspectKind>("unknown");
   const [aspectRatio, setAspectRatio] = useState<string | undefined>(undefined);
+  const [error, setError] = useState(false);
 
   const handleMetadata = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const w = e.currentTarget.videoWidth;
@@ -86,9 +88,15 @@ const FeaturedVideoCard: React.FC<{
           playsInline
           aria-label={title}
           onLoadedMetadata={handleMetadata}
+          onError={() => setError(true)}
         >
           <source src={src} type={mime} />
         </video>
+        {error && (
+          <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-black/80 px-4 text-center text-sm uppercase tracking-[0.2em] text-white/60">
+            {t.portfolio.videoUnavailable}
+          </span>
+        )}
         <span className="pointer-events-none absolute top-4 left-4 z-10 text-[0.58rem] font-extrabold uppercase tracking-[0.22em] text-white/50">
           {index} /
         </span>
