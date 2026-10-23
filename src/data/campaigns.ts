@@ -61,12 +61,6 @@ export const campaignVideos: CampaignVideo[] = [
     mime: "video/mp4",
   },
   {
-    id: "camp-video-3",
-    title: "Campanha — Vídeo 03",
-    src: "/Videos/video3.mp4",
-    mime: "video/mp4",
-  },
-  {
     id: "camp-white-sunset-beira",
     title: "White Sunset Beira",
     src: "/Videos/white-sunset-beira.mp4",
