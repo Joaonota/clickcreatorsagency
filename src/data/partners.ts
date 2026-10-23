@@ -64,6 +64,14 @@ export const partners: Partner[] = [
     category: "Formação & Networking",
     description: "Parceria de casting, formação e desenvolvimento de novos criadores audiovisuais.",
   },
+  {
+    id: "partner-byte",
+    name: "Byte",
+    logo: "/parceiros/Bytemoz.png",
+    website: "",
+    category: "Tecnologia & Inovação",
+    description: "Parceria de casting, formação e desenvolvimento de novos criadores audiovisuais.",
+  },
 
 ];
 
