@@ -48,22 +48,6 @@ export const campaignVideos: CampaignVideo[] = [
     src: "https://firebasestorage.googleapis.com/v0/b/lamapp-b1125.firebasestorage.app/o/clik%2FCampanha_da_2m_2.MP4?alt=media&token=cbfcd8f1-d8ab-4145-8eae-a2c246e91383",
     mime: "video/mp4",
   },
-  {
-    id: "camp-casting-global-lead",
-    title: "Casting Global Lead",
-    src: "/Videos/casting-global-lead.mp4",
-    mime: "video/mp4",
-  },
-  {
-    id: "camp-video-2",
-    title: "Campanha — Vídeo 02",
-    src: "/Videos/video2.mp4",
-    mime: "video/mp4",
-  },
-  {
-    id: "camp-white-sunset-beira",
-    title: "White Sunset Beira",
-    src: "/Videos/white-sunset-beira.mp4",
-    mime: "video/mp4",
-  },
+
+
 ];

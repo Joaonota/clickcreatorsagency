@@ -61,29 +61,7 @@ export const portfolio: PortfolioProject[] = [
     ],
     destaqueHome: true,
   },
-  {
-    id: "3",
-    slug: "white-sunset-white-sensation-beira",
-    title: "Campanha White Sunset — White Sensation Beira",
-    cliente: "White Sensation Beira",
-    categoria: "Vídeo",
-    descricao: "Contagem decrescente e cobertura dos preparativos para a WHITE SUNSET – White Sensation Beira. Cada detalhe preparado para proporcionar uma experiência memorável.",
-    objetivo: "Gerar antecipação, engajamento e dinamizar a venda de ingressos para um dos eventos mais aguardados da Beira.",
-    solucao: "Produção de vídeo teaser de contagem decrescente com montagem enérgica, efeitos sonoros e identidade visual marcante.",
-    resultados: [
-      "Grande impacto e partilha nas comunidades locais e digitais",
-      "Aumento exponencial na procura de bilhetes na fase de contagem decrescente",
-      "Produção audiovisual com registo vibrante e imersivo"
-    ],
-    imagem: "/img/modelo.jpeg",
-    video: "/Videos/white-sunset-beira.mp4",
-    galeria: [
-      "/img/modelo.jpeg",
-      "/img/Default_img.jpeg",
-      "/img/filmmaker-fotografo.jpeg"
-    ],
-    destaqueHome: true,
-  },
+
   {
     id: "4",
     slug: "social-media-lumina",
