@@ -10,8 +10,8 @@ const featuredVideos = [
   {
     id: "destaque-1",
     title: "Ana Yoice",
-    src: "https://firebasestorage.googleapis.com/v0/b/lamapp-b1125.firebasestorage.app/o/clik%2FAna%20yoice%201.MOV?alt=media&token=623378c4-db86-4646-b4a6-32d876d7a3f8",
-    mime: "video/quicktime",
+    src: "/Videos/ana-yoice.mp4",
+    mime: "video/mp4",
   },
   {
     id: "destaque-2",
