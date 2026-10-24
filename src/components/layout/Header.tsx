@@ -16,6 +16,7 @@ export const Header: React.FC = () => {
     { name: t.nav.about, path: "/sobre" },
     { name: t.nav.services, path: "/servicos" },
     { name: t.nav.portfolio, path: "/portfolio" },
+    { name: t.nav.memory, path: "/memoria" },
     { name: t.nav.creators, path: "/creators" },
     { name: t.nav.partners, path: "/partners" },
     { name: t.nav.contact, path: "/contactos" },
@@ -51,8 +52,11 @@ export const Header: React.FC = () => {
   }, [open]);
 
   useEffect(() => {
-    handleCloseMenu();
-  }, [location.pathname]);
+    // Fecha o menu quando o histórico do browser muda (voltar/avançar)
+    const onHistoryChange = () => setOpen(false);
+    window.addEventListener("popstate", onHistoryChange);
+    return () => window.removeEventListener("popstate", onHistoryChange);
+  }, []);
 
   const waUrl = getWhatsAppUrl(t.whatsapp.defaultMessage);
 

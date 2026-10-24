@@ -7,6 +7,9 @@ import { ServicesPage } from "./pages/Services";
 import { ServiceDetails } from "./pages/ServiceDetails";
 import { PortfolioPage } from "./pages/Portfolio";
 import { ProjectDetails } from "./pages/ProjectDetails";
+import { MemoryPage } from "./pages/memory/MemoryPage";
+import { MemoryEventPage } from "./pages/memory/MemoryEventPage";
+import { MemoryAdminPage } from "./pages/memory/MemoryAdminPage";
 import { CreatorsPage } from "./pages/Creators";
 import { CreatorDetails } from "./pages/CreatorDetails";
 import { PartnersPage } from "./pages/Partners";
@@ -27,6 +30,9 @@ function App() {
             <Route path="servicos/:slug" element={<ServiceDetails />} />
             <Route path="portfolio" element={<PortfolioPage />} />
             <Route path="portfolio/:slug" element={<ProjectDetails />} />
+            <Route path="memoria" element={<MemoryPage />} />
+            <Route path="memoria/admin" element={<MemoryAdminPage />} />
+            <Route path="memoria/:slug" element={<MemoryEventPage />} />
             <Route path="creators" element={<CreatorsPage />} />
             <Route path="creators/:slug" element={<CreatorDetails />} />
             <Route path="partners" element={<PartnersPage />} />

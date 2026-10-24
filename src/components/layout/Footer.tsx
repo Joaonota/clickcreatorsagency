@@ -19,6 +19,7 @@ export const Footer: React.FC = () => {
     { name: t.nav.about, path: "/sobre" },
     { name: t.nav.services, path: "/servicos" },
     { name: t.nav.portfolio, path: "/portfolio" },
+    { name: t.nav.memory, path: "/memoria" },
     { name: t.nav.creators, path: "/creators" },
     { name: t.nav.partners, path: "/partners" },
     { name: t.nav.contact, path: "/contactos" },
