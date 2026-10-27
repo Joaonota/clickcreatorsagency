@@ -1,6 +1,6 @@
 ﻿import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Download } from "lucide-react";
 
 interface LightboxProps {
   isOpen: boolean;
@@ -11,6 +11,10 @@ interface LightboxProps {
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
+  /** Opcional — ação de descarga individual (usada na galeria Save Your Memory) */
+  onDownload?: () => void;
+  downloadLabel?: string;
+  downloadDisabled?: boolean;
 }
 
 const pad = (value: number) => String(value).padStart(2, "0");
@@ -24,6 +28,9 @@ export const Lightbox: React.FC<LightboxProps> = ({
   onClose,
   onPrev,
   onNext,
+  onDownload,
+  downloadLabel = "Download",
+  downloadDisabled = false,
 }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -64,13 +71,28 @@ export const Lightbox: React.FC<LightboxProps> = ({
           )}
         </div>
 
-        <button
-          onClick={onClose}
-          aria-label="Fechar Lightbox"
-          className="lb-control lb-close group grid h-11 w-11 shrink-0 place-items-center rounded-full"
-        >
-          <X size={20} />
-        </button>
+        <div className="flex shrink-0 items-center gap-2">
+          {onDownload && (
+            <button
+              onClick={onDownload}
+              disabled={downloadDisabled}
+              aria-label={downloadLabel}
+              title={downloadLabel}
+              className={`lb-control grid h-11 w-11 place-items-center rounded-full ${
+                downloadDisabled ? "pointer-events-none opacity-50" : ""
+              }`}
+            >
+              <Download size={18} />
+            </button>
+          )}
+          <button
+            onClick={onClose}
+            aria-label="Fechar Lightbox"
+            className="lb-control lb-close group grid h-11 w-11 shrink-0 place-items-center rounded-full"
+          >
+            <X size={20} />
+          </button>
+        </div>
       </div>
 
       {/* Imagem */}

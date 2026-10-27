@@ -44,6 +44,7 @@ export const WorkItem: React.FC<{
 /** Proporção detetada após carregar os metadados do vídeo */
 export type AspectKind = "landscape" | "portrait" | "square" | "unknown";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function detectKind(w: number, h: number): AspectKind {
   if (w === 0 || h === 0) return "unknown";
   const ratio = w / h;
