@@ -54,14 +54,6 @@ export const MemoryPage: React.FC = () => {
     return counts;
   }, [photos]);
 
-  const countsByCategory = useMemo(() => {
-    const counts: Record<string, number> = {};
-    events.forEach((event) => {
-      counts[event.categoryId] = (counts[event.categoryId] ?? 0) + 1;
-    });
-    return counts;
-  }, [events]);
-
   const categoryNameById = useMemo(() => {
     const map = new Map<string, string>();
     categories.forEach((category) => map.set(category.id, category.name));
@@ -154,7 +146,6 @@ export const MemoryPage: React.FC = () => {
         <div className="container">
           <MemoryToolbar
             categories={categories}
-            countsByCategory={countsByCategory}
             activeCategory={category}
             onCategoryChange={setCategory}
             query={query}

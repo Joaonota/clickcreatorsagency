@@ -5,8 +5,6 @@ import type { MemoryCategory } from "../../data/memory";
 
 interface MemoryToolbarProps {
   categories: MemoryCategory[];
-  /** map categoryId -> nº de eventos publicados */
-  countsByCategory: Record<string, number>;
   activeCategory: string; // "all" | categoryId
   onCategoryChange: (categoryId: string) => void;
   query: string;
@@ -17,7 +15,6 @@ interface MemoryToolbarProps {
 /** Pesquisa + filtros por categoria da galeria Save Your Memory. */
 export const MemoryToolbar: React.FC<MemoryToolbarProps> = ({
   categories,
-  countsByCategory,
   activeCategory,
   onCategoryChange,
   query,
@@ -28,18 +25,13 @@ export const MemoryToolbar: React.FC<MemoryToolbarProps> = ({
 
   const filterItems = useMemo(
     () => [
-      {
-        id: "all",
-        name: t.memory.filterAll,
-        count: Object.values(countsByCategory).reduce((sum, count) => sum + count, 0),
-      },
+      { id: "all", name: t.memory.filterAll },
       ...categories.map((category) => ({
         id: category.id,
         name: category.name,
-        count: countsByCategory[category.id] ?? 0,
       })),
     ],
-    [categories, countsByCategory, t.memory.filterAll]
+    [categories, t.memory.filterAll]
   );
 
   const resultLabel =
@@ -85,7 +77,6 @@ export const MemoryToolbar: React.FC<MemoryToolbarProps> = ({
             className={`filter-btn ${activeCategory === item.id ? "active" : ""}`}
           >
             {item.name}
-            <sup>{item.count}</sup>
           </button>
         ))}
       </nav>
