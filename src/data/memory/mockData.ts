@@ -25,7 +25,7 @@ const TEST_IMAGES: string[] = [
   "/camapnhas/MOYO%20BIZ.jpeg",
   "/img/Default_img.jpeg",
   "/img/filmmaker-fotografo.jpeg",
-  "/img/marketing-digital.jpeg",
+  "/img/Modelos2.jpeg",
   "/img/modelo.jpeg",
 ];
 
