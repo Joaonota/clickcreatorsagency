@@ -43,14 +43,12 @@ export const formatEventDate = (isoDate: string, lang: "pt" | "en"): string => {
 };
 
 /* ============================================================
-   DEMO: placeholder de capa para eventos sem imagem definida
-   (substituído por URLs de armazenamento reais no backend).
+   DEMO: capa de fallback para eventos sem imagem definida
+   (reutiliza a imagem default do projecto; o backend trará
+   as capas reais).
    ============================================================ */
-export const placeholderCover = (eventOrSlug: { slug: string } | string): string => {
-  const seed = typeof eventOrSlug === "string" ? eventOrSlug : eventOrSlug.slug;
-  return `https://picsum.photos/seed/cc-memory-cover-${encodeURIComponent(seed)}/1600/1000`;
-};
+export const placeholderCover = (): string => "/img/Default_img.jpeg";
 
 /** Capa efetiva de um evento (faz fallback para placeholder demo). */
-export const displayCover = (event: { slug: string; cover: string }): string =>
-  event.cover || placeholderCover(event);
+export const displayCover = (event: { cover: string }): string =>
+  event.cover || placeholderCover();

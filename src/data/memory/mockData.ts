@@ -4,9 +4,9 @@
    ⚠️  MOCK DATA — Phase 1 (sem backend)
    - Todos os eventos, categorias e fotografias nesta pasta são
      FALCOS (dados de demonstração) e vivem apenas em memória.
-   - Imagens de capa/galeria usam um serviço de placeholder
-     (picsum.photos) — devem ser substituídas por URLs reais de
-     CDN/armazenamento quando o backend existir.
+   - Imagens de capa/galeria reutilizam ficheiros existentes do
+     projecto (public/camapnhas e public/img) — apenas para
+     teste visual; o backend trará as fotografias reais.
    - Uploads feitos no painel admin demo criam blob URLs de
      sessão — nada é gravado num servidor.
    - Para integrar o backend real: substituir store/mock por
@@ -17,20 +17,20 @@ import type { MemoryCategory, MemoryEvent, MemoryPhoto } from "./types";
 
 /* ---------- Helpers de imagens de demonstração -------------- */
 
-/** Placeholder de fotografia (Picsum) com seed estável por foto. */
-const demoImage = (seed: string, width: number, height: number) =>
-  `https://picsum.photos/seed/${seed}/${width}/${height}`;
-
-/** Paleta de proporções para a grelha masonry ter ritmo editorial. */
-const DEMO_ASPECTS: Array<[number, number]> = [
-  [1200, 1500], // 4:5 retrato
-  [1600, 1000], // 8:5 paisagem
-  [1200, 1600], // 3:4 retrato
-  [1600, 1067], // 3:2 paisagem
-  [1200, 1200], // 1:1 quadrado
+/** Pool de imagens existentes do projecto — só para teste. */
+const TEST_IMAGES: string[] = [
+  "/camapnhas/Casting.jpeg",
+  "/camapnhas/entretenimento.jpeg",
+  "/camapnhas/MoveRun.jpeg",
+  "/camapnhas/MOYO%20BIZ.jpeg",
+  "/img/Default_img.jpeg",
+  "/img/filmmaker-fotografo.jpeg",
+  "/img/marketing-digital.jpeg",
+  "/img/modelo.jpeg",
 ];
 
-const DEMO_COVER_SIZE: [number, number] = [1600, 1000];
+/** Escolhe ciclicamente uma imagem do pool de teste. */
+const testImage = (index: number) => TEST_IMAGES[index % TEST_IMAGES.length];
 
 const demoTimestamp = (dayOffset: number) =>
   new Date(Date.now() - dayOffset * 24 * 60 * 60 * 1000).toISOString();
@@ -41,20 +41,23 @@ interface DemoPhotoSpec {
   count: number;
 }
 
-/** Gera N fotografias demo para um evento, com seeds únicos e tempo real de render reproduzível. */
-function buildDemoPhotos(spec: DemoPhotoSpec, baseDaysAgo: number): MemoryPhoto[] {
+/** Gera N fotografias demo para um evento, com imagens do pool local e tempo real de render reproduzível. */
+function buildDemoPhotos(
+  spec: DemoPhotoSpec,
+  baseDaysAgo: number,
+  poolOffset: number
+): MemoryPhoto[] {
   const shortTitle = spec.slug
     .split("-")
     .map((chunk) => chunk.charAt(0).toUpperCase() + chunk.slice(1))
     .join(" ");
 
   return Array.from({ length: spec.count }, (_, index) => {
-    const [width, height] = DEMO_ASPECTS[index % DEMO_ASPECTS.length];
     const number = String(index + 1).padStart(2, "0");
     return {
       id: `ph-${spec.slug}-${number}`,
       eventId: spec.eventId,
-      src: demoImage(`cc-memory-${spec.slug}-${number}`, width, height),
+      src: testImage(poolOffset + index),
       alt: `${shortTitle} — fotografia ${number}`,
       order: index,
       createdAt: demoTimestamp(baseDaysAgo * 24 - index),
@@ -83,7 +86,7 @@ export const demoEvents: MemoryEvent[] = [
       "Cobertura completa do lançamento da Yango na Beira: palco principal, convidados, test-drives e after-party. Uma noite em que a marca encontrou a cidade, registada ao segundo pela nossa equipa.",
     date: "2026-10-11",
     categoryId: "cat-marca",
-    cover: demoImage("cc-memory-cover-yango", ...DEMO_COVER_SIZE),
+    cover: testImage(1),
     coverAlt: "Capa — Yango, Lançamento na Beira",
     status: "published",
     createdAt: demoTimestamp(60),
@@ -97,7 +100,7 @@ export const demoEvents: MemoryEvent[] = [
       "O maior summit de negócios e criatividade da Beira. Painéis, workshops de networking e cerimónia de prémios — fotografia corporativa com direção de luz e enquadramentos editoriais.",
     date: "2026-09-26",
     categoryId: "cat-corporativo",
-    cover: demoImage("cc-memory-cover-moyo", ...DEMO_COVER_SIZE),
+    cover: testImage(3),
     coverAlt: "Capa — Moyo Biz Summit 2026",
     status: "published",
     createdAt: demoTimestamp(75),
@@ -111,7 +114,7 @@ export const demoEvents: MemoryEvent[] = [
       "A corrida urbana que transformou a avenida principal numa festa. Largada, hidratação, meta e celebração — cobertura desportiva com fotógrafos posicionados ao longo do percurso.",
     date: "2026-08-02",
     categoryId: "cat-desporto",
-    cover: demoImage("cc-memory-cover-move-run", ...DEMO_COVER_SIZE),
+    cover: testImage(2),
     coverAlt: "Capa — Move Run, City Race Beira",
     status: "published",
     createdAt: demoTimestamp(120),
@@ -125,7 +128,7 @@ export const demoEvents: MemoryEvent[] = [
       "A campanha de verão da 2M levou produção fotográfica às praias e mercados da cidade. Direção de arte, modelos locais e finalização em editorial de lifestyle.",
     date: "2026-07-18",
     categoryId: "cat-marca",
-    cover: demoImage("cc-memory-cover-2m", ...DEMO_COVER_SIZE),
+    cover: testImage(6),
     coverAlt: "Capa — 2M, Sabores de Verão",
     status: "published",
     createdAt: demoTimestamp(140),
@@ -139,7 +142,7 @@ export const demoEvents: MemoryEvent[] = [
       "Duas jornadas de casting para o novo rosto da Global Lead. Testes de câmara, polaroids, provas de figurino e momentos de bastidores com a equipa de direção criativa.",
     date: "2026-05-09",
     categoryId: "cat-casting",
-    cover: demoImage("cc-memory-cover-casting", ...DEMO_COVER_SIZE),
+    cover: testImage(0),
     coverAlt: "Capa — Casting Global Lead",
     status: "published",
     createdAt: demoTimestamp(200),
@@ -153,7 +156,7 @@ export const demoEvents: MemoryEvent[] = [
       "Aniversário da Nova Era com showcase musical, luzes de palco e energia de multidão. Reportagem fotográfica em baixa luz com toques de cor âmbar.",
     date: "2026-04-11",
     categoryId: "cat-cultura",
-    cover: demoImage("cc-memory-cover-nova-era", ...DEMO_COVER_SIZE),
+    cover: testImage(5),
     coverAlt: "Capa — Noite Nova Era",
     status: "published",
     createdAt: demoTimestamp(230),
@@ -168,7 +171,7 @@ export const demoEvents: MemoryEvent[] = [
       "Seleção preliminar das primeiras fotografias da turné de verão. Este evento está em rascunho — ainda não está visível na galeria pública. Revê a seleção e publica quando estiver pronto.",
     date: "2027-01-16",
     categoryId: "cat-cultura",
-    cover: demoImage("cc-memory-cover-turne", ...DEMO_COVER_SIZE),
+    cover: testImage(7),
     coverAlt: "Capa — Turné Verão 2027 (preview)",
     status: "draft",
     createdAt: demoTimestamp(6),
@@ -189,7 +192,7 @@ const demoPhotoSpecs: DemoPhotoSpec[] = [
 ];
 
 export const demoPhotos: MemoryPhoto[] = demoPhotoSpecs.flatMap((spec, setIndex) =>
-  buildDemoPhotos(spec, 10 + setIndex * 8)
+  buildDemoPhotos(spec, 10 + setIndex * 8, setIndex * 3)
 );
 
 /* ------------ Todo o conjunto demo (para restaurar) --------- */
