@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Loader2, LogIn, ShieldCheck } from "lucide-react";
+import { Eye, EyeOff, Loader2, LogIn, ShieldCheck } from "lucide-react";
 import { Reveal } from "../../../hooks/useReveal";
 import { useTranslation } from "../../../i18n";
 import { memoryAuth, type DemoUser } from "../../../services/memoryAuth";
@@ -13,6 +13,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
   const { t } = useTranslation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(false);
 
@@ -29,6 +30,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
       setError(true);
     }
   };
+
+  const togglePassword = () => setShowPassword((prev) => !prev);
 
   return (
     <div className="adm-login">
@@ -51,19 +54,35 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   autoComplete="username"
+                  autoFocus
                   required
                 />
               </label>
-              <label className="block">
+              <label className="adm-password-label block">
                 <span className="field-label">{t.memory.admin.loginPasswordLabel}</span>
-                <input
-                  type="password"
-                  className="field"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="current-password"
-                  required
-                />
+                <div className="adm-password-wrap">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="field"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={togglePassword}
+                    aria-label={showPassword ? t.memory.admin.passwordHide : t.memory.admin.passwordShow}
+                    title={showPassword ? t.memory.admin.passwordHide : t.memory.admin.passwordShow}
+                    className="adm-password-toggle"
+                  >
+                    {showPassword ? (
+                      <EyeOff size={14} aria-hidden="true" />
+                    ) : (
+                      <Eye size={14} aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
               </label>
             </div>
 

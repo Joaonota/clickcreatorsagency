@@ -74,12 +74,6 @@ export const CategoriesManager: React.FC<CategoriesManagerProps> = ({
   };
 
   const handleDelete = async (category: MemoryCategory) => {
-    const related = eventsByCategory(category.id).length;
-    const message = t.memory.admin.confirmDeleteCategory.replace("{count}", String(related));
-    if (!window.confirm(`${message} — ${category.name}`)) {
-      setPendingDeleteId(null);
-      return;
-    }
     await memoryApi.deleteCategory(category.id);
     await onChanged();
     onNotice(t.memory.admin.savedNote);
@@ -179,7 +173,8 @@ export const CategoriesManager: React.FC<CategoriesManagerProps> = ({
                     <button
                       type="button"
                       onClick={() => void handleDelete(category)}
-                      aria-label="Confirmar eliminação"
+                      aria-label={t.memory.admin.confirmYes}
+                      title={t.memory.admin.confirmYes}
                       className="adm-icon-btn adm-icon-btn-danger"
                     >
                       <Check size={15} />
@@ -187,7 +182,8 @@ export const CategoriesManager: React.FC<CategoriesManagerProps> = ({
                     <button
                       type="button"
                       onClick={() => setPendingDeleteId(null)}
-                      aria-label="Cancelar eliminação"
+                      aria-label={t.memory.admin.cancel}
+                      title={t.memory.admin.cancel}
                       className="adm-icon-btn"
                     >
                       <X size={15} />
