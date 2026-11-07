@@ -2649,6 +2649,26 @@ section > .svc-feature:last-of-type {
   padding: 1.1rem 1.35rem;
 }
 
+/* Campo de password com alternância de visibilidade */
+.adm-password-wrap { position: relative; }
+.adm-password-wrap .field { padding-right: 2.4rem; }
+.adm-password-toggle {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease);
+}
+.adm-password-toggle:hover { color: var(--primary); }
+
 /* Cabeçalho e abas */
 .adm-header-line {
   height: 1px;
@@ -3051,6 +3071,174 @@ section > .svc-feature:last-of-type {
   .mem-photo img,
   .mem-thumb img,
   .adm-cover-thumb img { transition: none; }
+}
+
+/* ============================================================
+   ADMIN v2 — stats, filtros, skeleton, empty state
+   ============================================================ */
+.adm-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-top: 2.5rem;
+}
+@media (min-width: 720px) {
+  .adm-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.adm-stat {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 1.1rem 1.25rem;
+  display: grid;
+  gap: 0.35rem;
+  transition: border-color var(--t-fast) var(--ease);
+}
+.adm-stat:hover { border-color: var(--border-hover); }
+.adm-stat-num {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  line-height: 1;
+  color: var(--foreground);
+}
+.adm-stat-num small {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+.adm-stat-label {
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.adm-stat-accent .adm-stat-num { color: var(--primary); }
+
+/* Filtros */
+.adm-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+}
+.adm-filters-spacer { flex: 1 1 0; min-width: 0.5rem; }
+
+.adm-search-wrap { position: relative; max-width: 260px; flex: 1 1 210px; }
+.adm-search-wrap .field { padding-left: 2.2rem; }
+.adm-search-icon {
+  position: absolute;
+  left: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.adm-search-clear {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.5rem;
+  height: 1.5rem;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.adm-search-clear:hover { color: var(--foreground); }
+
+.adm-chip {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.55rem 0.95rem;
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease),
+    background var(--t-fast) var(--ease);
+  white-space: nowrap;
+}
+.adm-chip:hover { color: var(--foreground); border-color: var(--border-hover); }
+.adm-chip.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-accent);
+}
+
+.adm-select-mini {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.9rem 0.55rem 0.9rem;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 51%);
+  background-position: calc(100% - 14px) 50%, calc(100% - 9px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.adm-select-mini:hover { border-color: var(--border-hover); color: var(--foreground); }
+.adm-select-mini:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* Skeleton */
+.adm-skel-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.adm-skel-box {
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--surface-hover) 25%,
+    var(--surface) 45%,
+    var(--surface-hover) 65%
+  );
+  background-size: 240% 100%;
+  animation: adm-skel-sweep 1.4s ease infinite;
+}
+@keyframes adm-skel-sweep {
+  from { background-position: 120% 0; }
+  to { background-position: -120% 0; }
+}
+.adm-skel-thumb { width: 64px; height: 64px; }
+.adm-skel-lines { display: grid; gap: 0.55rem; }
+.adm-skel-line { height: 0.7rem; width: 62%; }
+.adm-skel-line:last-child { width: 38%; height: 0.55rem; }
+.adm-skel-actions { display: flex; gap: 0.5rem; }
+.adm-skel-btn { width: 36px; height: 36px; }
+
+/* Empty state */
+.adm-empty {
+  border: 1px dashed var(--border-hover);
+  padding: 2.75rem 1.5rem;
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+  margin-top: 2rem;
+}
+.adm-empty p { max-width: 420px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-skel-box { animation: none; }
 }
 
 /* ============================================================

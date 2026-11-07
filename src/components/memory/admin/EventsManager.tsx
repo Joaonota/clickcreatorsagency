@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Check,
@@ -6,6 +6,7 @@ import {
   EyeOff,
   Pencil,
   Plus,
+  Search,
   Trash2,
   X,
 } from "lucide-react";
@@ -28,6 +29,15 @@ type View =
   | { mode: "create" }
   | { mode: "edit"; eventId: string };
 
+type StatusFilter = "all" | "published" | "draft";
+type SortKey = "newest" | "oldest" | "title";
+
+const normalizeStr = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
 /** Lista + edição de eventos do painel Save Your Memory (dados MOCK). */
 export const EventsManager: React.FC<EventsManagerProps> = ({
   events,
@@ -40,6 +50,11 @@ export const EventsManager: React.FC<EventsManagerProps> = ({
   const [view, setView] = useState<View>({ mode: "list" });
   const [deletePendingId, setDeletePendingId] = useState<string | null>(null);
   const [statusBusyId, setStatusBusyId] = useState<string | null>(null);
+
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [sortBy, setSortBy] = useState<SortKey>("newest");
 
   const categoryName = (categoryId: string) =>
     categoryId
@@ -82,14 +97,43 @@ export const EventsManager: React.FC<EventsManagerProps> = ({
   };
 
   const handleDelete = async (event: MemoryEvent) => {
-    if (!window.confirm(`${t.memory.admin.confirmDeleteEvent}\n\n${event.title}`)) {
-      setDeletePendingId(null);
-      return;
-    }
     await memoryApi.deleteEvent(event.id);
     await onDataChanged();
     onNotice(t.memory.admin.savedNote);
     setDeletePendingId(null);
+  };
+
+  const visibleEvents = useMemo(() => {
+    const query = normalizeStr(search.trim());
+    const filtered = events.filter((item) => {
+      if (statusFilter !== "all" && item.status !== statusFilter) return false;
+      if (categoryFilter !== "all" && item.categoryId !== categoryFilter) return false;
+      if (query) {
+        const haystack = normalizeStr(`${item.title} ${item.description ?? ""}`);
+        if (!haystack.includes(query)) return false;
+      }
+      return true;
+    });
+    const sorted = [...filtered];
+    if (sortBy === "title") {
+      sorted.sort((a, b) => a.title.localeCompare(b.title, lang));
+    } else {
+      sorted.sort((a, b) =>
+        sortBy === "newest"
+          ? (b.date ?? "").localeCompare(a.date ?? "")
+          : (a.date ?? "").localeCompare(b.date ?? "")
+      );
+    }
+    return sorted;
+  }, [events, search, statusFilter, categoryFilter, sortBy, lang]);
+
+  const filtersActive =
+    search.trim() !== "" || statusFilter !== "all" || categoryFilter !== "all";
+
+  const clearFilters = () => {
+    setSearch("");
+    setStatusFilter("all");
+    setCategoryFilter("all");
   };
 
   if (view.mode !== "list") {
@@ -124,7 +168,10 @@ export const EventsManager: React.FC<EventsManagerProps> = ({
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.22em] text-[var(--text-muted)]">
-          {t.memory.statsEvents} · {events.length}
+          {t.memory.statsEvents} · {visibleEvents.length}
+          {filtersActive && events.length !== visibleEvents.length
+            ? ` / ${events.length}`
+            : ""}
         </p>
         <button
           type="button"
@@ -139,11 +186,102 @@ export const EventsManager: React.FC<EventsManagerProps> = ({
         </button>
       </div>
 
+      {/* Pesquisa, filtros e ordenação */}
+      {events.length > 0 && (
+        <div className="adm-filters mt-6">
+          <div className="adm-search-wrap">
+            <Search size={14} className="adm-search-icon" aria-hidden="true" />
+            <input
+              type="search"
+              role="searchbox"
+              aria-label={t.memory.admin.searchLabel}
+              placeholder={t.memory.admin.searchPlaceholder}
+              className="field"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                aria-label={t.memory.admin.clearFilters}
+                className="adm-search-clear"
+              >
+                <X size={13} />
+              </button>
+            )}
+          </div>
+
+          <div className="adm-tabs" role="group" aria-label={t.memory.admin.colStatus}>
+            <button
+              type="button"
+              onClick={() => setStatusFilter("all")}
+              aria-pressed={statusFilter === "all"}
+              className={`adm-chip ${statusFilter === "all" ? "active" : ""}`}
+            >
+              {t.memory.admin.filterAll}
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter("published")}
+              aria-pressed={statusFilter === "published"}
+              className={`adm-chip ${statusFilter === "published" ? "active" : ""}`}
+            >
+              {t.memory.admin.filterPublished}
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter("draft")}
+              aria-pressed={statusFilter === "draft"}
+              className={`adm-chip ${statusFilter === "draft" ? "active" : ""}`}
+            >
+              {t.memory.admin.filterDrafts}
+            </button>
+          </div>
+
+          <span className="adm-filters-spacer" />
+
+          <select
+            className="adm-select-mini"
+            aria-label={t.memory.admin.filterCategory}
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+          >
+            <option value="all">{t.memory.admin.filterCategory}: {t.memory.admin.filterAll}</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="adm-select-mini"
+            aria-label={t.memory.admin.sortBy}
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as SortKey)}
+          >
+            <option value="newest">{t.memory.admin.sortNewest}</option>
+            <option value="oldest">{t.memory.admin.sortOldest}</option>
+            <option value="title">{t.memory.admin.sortTitle}</option>
+          </select>
+        </div>
+      )}
+
       {events.length === 0 ? (
         <p className="muted mt-8">{t.memory.admin.eventsEmpty}</p>
+      ) : visibleEvents.length === 0 ? (
+        <div className="adm-empty mt-8">
+          <Search size={18} className="text-[var(--primary)]" aria-hidden="true" />
+          <p className="muted">{t.memory.admin.noResults}</p>
+          <button type="button" onClick={clearFilters} className="btn btn-outline btn-sm">
+            <X size={13} aria-hidden="true" />
+            <span>{t.memory.admin.clearFilters}</span>
+          </button>
+        </div>
       ) : (
         <ul className="mt-2">
-          {events.map((event) => (
+          {visibleEvents.map((event) => (
             <li key={event.id} className="adm-row">
               {/* Capa */}
               <Link to={`/memoria/${event.slug}`} className="adm-cover-thumb media-frame" tabIndex={-1}>
@@ -183,8 +321,7 @@ export const EventsManager: React.FC<EventsManagerProps> = ({
                   <button
                     type="button"
                     onClick={() => void handleDelete(event)}
-                    aria-label="Confirmar eliminação"
-                    title="Confirmar eliminação"
+                    aria-label={t.memory.admin.confirmYes}
                     className="adm-icon-btn adm-icon-btn-danger"
                   >
                     <Check size={15} />
@@ -192,7 +329,7 @@ export const EventsManager: React.FC<EventsManagerProps> = ({
                   <button
                     type="button"
                     onClick={() => setDeletePendingId(null)}
-                    aria-label="Cancelar eliminação"
+                    aria-label={t.memory.admin.cancel}
                     className="adm-icon-btn"
                   >
                     <X size={15} />

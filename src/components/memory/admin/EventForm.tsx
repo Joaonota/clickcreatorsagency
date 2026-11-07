@@ -281,7 +281,7 @@ export const EventForm: React.FC<EventFormProps> = ({
             <textarea
               className="field mem-textarea"
               rows={3}
-              placeholder={t.memory.admin.fieldTitlePlaceholder}
+              placeholder={t.memory.admin.fieldDescriptionPlaceholder}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />

@@ -145,12 +145,35 @@ export const MemoryAdminPage: React.FC = () => {
               </span>
               <span aria-hidden="true">·</span>
               <span>{t.memory.admin.subtitle}</span>
-              <span aria-hidden="true">·</span>
-              <span>
-                {events.length} {t.memory.statsEvents} ·{" "}
-                {Object.values(photoCount).reduce((a, b) => a + b, 0)} {t.memory.statsPhotos}
-              </span>
             </p>
+
+            {/* Resumo do painel */}
+            {!loading && (
+              <div className="adm-stats">
+                <div className="adm-stat">
+                  <span className="adm-stat-num">{events.length}</span>
+                  <span className="adm-stat-label">{t.memory.statsEvents}</span>
+                </div>
+                <div className="adm-stat adm-stat-accent">
+                  <span className="adm-stat-num">
+                    {events.filter((item) => item.status === "published").length}
+                  </span>
+                  <span className="adm-stat-label">{t.memory.admin.statsPublished}</span>
+                </div>
+                <div className="adm-stat">
+                  <span className="adm-stat-num">
+                    {events.filter((item) => item.status === "draft").length}
+                  </span>
+                  <span className="adm-stat-label">{t.memory.admin.statsDrafts}</span>
+                </div>
+                <div className="adm-stat">
+                  <span className="adm-stat-num">
+                    {Object.values(photoCount).reduce((a, b) => a + b, 0)}
+                  </span>
+                  <span className="adm-stat-label">{t.memory.statsPhotos}</span>
+                </div>
+              </div>
+            )}
           </Reveal>
         </div>
       </section>
@@ -184,7 +207,21 @@ export const MemoryAdminPage: React.FC = () => {
           </div>
 
           {loading ? (
-            <p className="eyebrow eyebrow-bare muted mt-12">{t.common.loading}</p>
+            <ul aria-hidden="true">
+              {[0, 1, 2, 3].map((item) => (
+                <li key={item} className="adm-skel-row">
+                  <span className="adm-skel-box adm-skel-thumb" />
+                  <span className="adm-skel-lines">
+                    <span className="adm-skel-box adm-skel-line" />
+                    <span className="adm-skel-box adm-skel-line" />
+                  </span>
+                  <span className="adm-skel-actions">
+                    <span className="adm-skel-box adm-skel-btn" />
+                    <span className="adm-skel-box adm-skel-btn" />
+                  </span>
+                </li>
+              ))}
+            </ul>
           ) : (
             <div className="mt-8">
               {tab === "events" ? (
