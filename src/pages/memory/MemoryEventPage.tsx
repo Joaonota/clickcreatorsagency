@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Camera, CalendarDays, Download, Loader2, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, Camera, CalendarDays, Download, Loader2, MapPin, Sparkles } from "lucide-react";
 import { EventCard } from "../../components/memory/EventCard";
 import { PhotoMasonry } from "../../components/memory/PhotoMasonry";
 import { Lightbox } from "../../components/common/Lightbox";
@@ -11,6 +11,9 @@ import { memoryPublicApi } from "../../services/memoryPublicApi";
 import { downloadEventPhotosZip, openDownloadUrl } from "../../services/memoryZip";
 import { formatEventDate } from "../../data/memory";
 import type { MemoryEvent, MemoryEventDetail, MemorySettings } from "../../data/memory";
+
+/** O evento ainda não aconteceu (conta o dia inteiro do evento). */
+const isUpcomingDate = (isoDate: string) => new Date(`${isoDate}T23:59:59`).getTime() > Date.now();
 
 type ZipStatus = "idle" | "busy" | "done" | "partial" | "failed";
 type LoadState = "loading" | "ready" | "missing" | "error";
@@ -147,11 +150,16 @@ export const MemoryEventPage: React.FC = () => {
   }
 
   const { event, albums } = detail;
+  const hasMedia = detail.media.length > 0;
+  const formattedDate = formatEventDate(event.date, lang);
+  const isUpcoming = isUpcomingDate(event.date);
   const hasVideos = media.some((item) => item.type === "video");
   const meta = [
-    { icon: CalendarDays, label: formatEventDate(event.date, lang) },
+    { icon: CalendarDays, label: formattedDate },
     ...(event.location ? [{ icon: MapPin, label: event.location }] : []),
-    { icon: Camera, label: `${detail.media.length} ${t.memory.event.photosLabel}` },
+    hasMedia
+      ? { icon: Camera, label: `${detail.media.length} ${t.memory.event.photosLabel}` }
+      : { icon: Sparkles, label: t.memory.event.soonEyebrow },
   ];
   const zipBlocked = zipStatus === "busy" || photoCount === 0;
 
@@ -159,55 +167,62 @@ export const MemoryEventPage: React.FC = () => {
     <div className="flex flex-col">
       {/* Cabeçalho do evento */}
       <section className="pt-32 pb-10 lg:pt-44 lg:pb-14">
-        <div className="container">
-          <Link to="/memoria" className="mem-back-link">
-            <ArrowLeft size={15} aria-hidden="true" />
-            {t.memory.event.backLink}
-          </Link>
-
-          <div className="mem-event-meta mt-8">
-            {meta.map((item) => (
-              <span className="mem-meta-item" key={item.label}>
-                <item.icon size={14} aria-hidden="true" className="mem-meta-icon" />
-                {item.label}
-              </span>
-            ))}
-          </div>
-
-          <h1 className="display-lg mt-6 max-w-4xl">{event.title}</h1>
-          {event.description && <p className="lede mt-6 max-w-2xl">{event.description}</p>}
-
-          <div className="mem-actions mt-9 flex flex-col gap-4 sm:flex-row sm:items-center sm:flex-wrap">
-            {settings.allowZipDownloads && photoCount > 0 && (
-              <button type="button" onClick={handleDownloadAll} disabled={zipBlocked} className="btn btn-primary btn-lg">
-                {zipStatus === "busy" ? (
-                  <Loader2 size={16} className="animate-spin" aria-hidden="true" />
-                ) : (
-                  <Download size={16} aria-hidden="true" />
-                )}
-                <span>
-                  {zipStatus === "busy" ? zipMessage || t.memory.event.preparing : `${t.memory.event.downloadAll} · ZIP`}
-                </span>
-              </button>
-            )}
-            {zipStatus !== "busy" && zipMessage && (
-              <p className={`mem-zip-note ${zipStatus === "failed" ? "mem-zip-note-error" : ""}`} role="status">
-                {zipMessage}
-              </p>
-            )}
-            {!zipMessage && media.length > 0 && (
-              <p className="muted text-[0.68rem] uppercase tracking-[0.18em]">
-                {t.memory.event.zoomHint}
-                {hasVideos && settings.allowZipDownloads ? ` · ${t.memory.event.videoNote}` : ""}
-              </p>
-            )}
-          </div>
-
-          {zipStatus === "busy" && (
-            <div className="mem-zip-progress mt-4" aria-hidden="true">
-              <span style={{ width: `${zipProgress}%` }} />
-            </div>
+        <div className={`container ${event.cover ? "mem-event-hero" : ""}`}>
+          {event.cover && (
+            <figure className="mem-event-cover">
+              <img src={event.cover} alt={event.coverAlt} />
+            </figure>
           )}
+          <div className="mem-event-head">
+            <Link to="/memoria" className="mem-back-link">
+              <ArrowLeft size={15} aria-hidden="true" />
+              {t.memory.event.backLink}
+            </Link>
+
+            <div className="mem-event-meta mt-8">
+              {meta.map((item) => (
+                <span className="mem-meta-item" key={item.label}>
+                  <item.icon size={14} aria-hidden="true" className="mem-meta-icon" />
+                  {item.label}
+                </span>
+              ))}
+            </div>
+
+            <h1 className="display-lg mt-6 max-w-4xl">{event.title}</h1>
+            {event.description && <p className="lede mt-6 max-w-2xl">{event.description}</p>}
+
+            <div className="mem-actions mt-9 flex flex-col gap-4 sm:flex-row sm:items-center sm:flex-wrap">
+              {settings.allowZipDownloads && photoCount > 0 && (
+                <button type="button" onClick={handleDownloadAll} disabled={zipBlocked} className="btn btn-primary btn-lg">
+                  {zipStatus === "busy" ? (
+                    <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+                  ) : (
+                    <Download size={16} aria-hidden="true" />
+                  )}
+                  <span>
+                    {zipStatus === "busy" ? zipMessage || t.memory.event.preparing : `${t.memory.event.downloadAll} · ZIP`}
+                  </span>
+                </button>
+              )}
+              {zipStatus !== "busy" && zipMessage && (
+                <p className={`mem-zip-note ${zipStatus === "failed" ? "mem-zip-note-error" : ""}`} role="status">
+                  {zipMessage}
+                </p>
+              )}
+              {!zipMessage && media.length > 0 && (
+                <p className="muted text-[0.68rem] uppercase tracking-[0.18em]">
+                  {t.memory.event.zoomHint}
+                  {hasVideos && settings.allowZipDownloads ? ` · ${t.memory.event.videoNote}` : ""}
+                </p>
+              )}
+            </div>
+
+            {zipStatus === "busy" && (
+              <div className="mem-zip-progress mt-4" aria-hidden="true">
+                <span style={{ width: `${zipProgress}%` }} />
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
@@ -231,7 +246,34 @@ export const MemoryEventPage: React.FC = () => {
               ))}
             </nav>
           )}
-          {media.length === 0 ? (
+          {!hasMedia ? (
+            <div className="mem-soon">
+              <div className="mem-soon-ghosts" aria-hidden="true">
+                {Array.from({ length: 8 }, (_, index) => (
+                  <span key={index} />
+                ))}
+              </div>
+              <div className="mem-soon-card">
+                <span className="mem-soon-icon" aria-hidden="true">
+                  <Camera size={22} strokeWidth={1.6} />
+                </span>
+                <p className="eyebrow eyebrow-bare">{t.memory.event.soonEyebrow}</p>
+                <h2 className="display-sm mem-soon-title">
+                  {isUpcoming ? t.memory.event.soonUpcomingTitle : t.memory.event.soonPastTitle}
+                </h2>
+                <p className="muted mem-soon-body">
+                  {isUpcoming
+                    ? t.memory.event.soonUpcomingBody.replace("{date}", formattedDate)
+                    : t.memory.event.soonPastBody}
+                </p>
+                {otherEvents.length > 0 && (
+                  <a href="#mem-more-events" className="btn btn-outline btn-sm mem-soon-cta">
+                    <span>{t.memory.event.soonCta}</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          ) : media.length === 0 ? (
             <p className="muted">{t.memory.event.emptyMedia}</p>
           ) : (
             <PhotoMasonry media={media} onOpen={setLightboxIndex} />
@@ -241,7 +283,7 @@ export const MemoryEventPage: React.FC = () => {
 
       {/* Mais eventos */}
       {otherEvents.length > 0 && (
-        <section className="hairline-t pb-24 lg:pb-32" aria-label={t.memory.moreEvents}>
+        <section id="mem-more-events" className="hairline-t pb-24 lg:pb-32" aria-label={t.memory.moreEvents}>
           <div className="container section-y">
             <Reveal>
               <p className="eyebrow mb-6">{t.memory.pageHeroEyebrow}</p>
