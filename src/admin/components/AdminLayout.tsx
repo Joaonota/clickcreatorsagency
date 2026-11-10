@@ -116,6 +116,7 @@ export const AdminLayout: React.FC = () => {
 
         <div className="mc-sidebar-foot">
           <span className="mc-private-tag">Área privada · noindex</span>
+          <span className="mc-credit">Desenvolvido por <strong>BYTEMOZ</strong></span>
         </div>
       </aside>
 

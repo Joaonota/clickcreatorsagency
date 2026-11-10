@@ -138,6 +138,7 @@ export const LoginPage: React.FC = () => {
           <p className="mc-login-foot">
             Acesso exclusivo por convite. Não existe registo público de administradores.
           </p>
+          <p className="mc-credit">Desenvolvido por <strong>BYTEMOZ</strong></p>
         </div>
       </section>
     </div>

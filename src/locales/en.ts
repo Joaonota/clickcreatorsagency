@@ -461,6 +461,7 @@ export const en = {
     contactTitle: "Contact",
     allRightsReserved: "Click Creators Agency — All rights reserved.",
     tagline: "Creativity connecting brands, people, and stories.",
+    developedBy: "Developed by",
   },
   whatsapp: {
     buttonText: "WhatsApp",

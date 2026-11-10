@@ -2791,3 +2791,16 @@ section > .svc-feature:last-of-type {
   .line-mask > span { transform: none; }
   .grain::before { display: none; }
 }
+
+/* Crédito de desenvolvimento no rodapé */
+.footer-credit {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.footer-credit strong {
+  font-weight: 800;
+  color: var(--primary);
+}

@@ -126,9 +126,14 @@ export const Footer: React.FC = () => {
 
       {/* Bottom bar */}
       <div className="container pb-8 flex flex-col md:flex-row items-center justify-between gap-3 pt-6 hairline-t">
-        <p className="text-xs text-[var(--text-faint)]">
-          © {year} {t.footer.allRightsReserved}
-        </p>
+        <div className="flex flex-col items-center gap-1.5 md:items-start">
+          <p className="text-xs text-[var(--text-faint)]">
+            © {year} {t.footer.allRightsReserved}
+          </p>
+          <p className="footer-credit">
+            {t.footer.developedBy} <strong>BYTEMOZ</strong>
+          </p>
+        </div>
         <p className="text-[0.55rem] font-extrabold uppercase tracking-[0.3em] text-[var(--text-faint)]">
           {t.footer.tagline}
         </p>

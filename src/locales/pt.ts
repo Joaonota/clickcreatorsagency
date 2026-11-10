@@ -461,6 +461,7 @@ export const pt = {
     contactTitle: "Contacto",
     allRightsReserved: "Click Creators Agency — Todos os direitos reservados.",
     tagline: "Criatividade que conecta marcas, pessoas e histórias.",
+    developedBy: "Desenvolvido por",
   },
   whatsapp: {
     buttonText: "WhatsApp",
