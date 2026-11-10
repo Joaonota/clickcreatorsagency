@@ -2532,6 +2532,12 @@ section > .svc-feature:last-of-type {
   gap: 2.5rem;
 }
 .mem-event-head { min-width: 0; }
+.mem-event-desc {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
 .mem-event-cover {
   position: relative;
   width: 100%;

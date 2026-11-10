@@ -189,7 +189,7 @@ export const MemoryEventPage: React.FC = () => {
             </div>
 
             <h1 className="display-lg mt-6 max-w-4xl">{event.title}</h1>
-            {event.description && <p className="lede mt-6 max-w-2xl">{event.description}</p>}
+            {event.description && <p className="lede mem-event-desc mt-6 max-w-2xl" lang={lang}>{event.description}</p>}
 
             <div className="mem-actions mt-9 flex flex-col gap-4 sm:flex-row sm:items-center sm:flex-wrap">
               {settings.allowZipDownloads && photoCount > 0 && (
