@@ -20,7 +20,7 @@ const rolePermissions: Record<AdminRole, readonly AdminPermission[]> = {
     "settings:manage",
     "admins:manage",
   ],
-  memory_admin: ["events:write", "albums:write", "photos:write", "photos:publish"],
+  memory_admin: ["events:write", "albums:write", "photos:write", "photos:publish", "settings:manage"],
 };
 
 export const roleLabels: Record<AdminRole, string> = {

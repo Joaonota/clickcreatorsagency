@@ -23,6 +23,7 @@ import { PhotosPage } from "./features/photos/PhotosPage";
 import { PublicationsPage } from "./features/publications/PublicationsPage";
 import { SettingsPage } from "./features/settings/SettingsPage";
 import { ProfilePage } from "./features/profile/ProfilePage";
+import { TeamPage } from "./features/team/TeamPage";
 
 /** Impede indexação da área privada enquanto está montada (complementa o header X-Robots-Tag). */
 function useNoIndex() {
@@ -71,11 +72,12 @@ const AdminApp: React.FC = () => {
               <Route path="albums" element={<AlbumsPage />} />
               <Route path="photos" element={<PhotosPage />} />
               <Route path="publications" element={<PublicationsPage />} />
+              <Route path="settings" element={<SettingsPage />} />
               <Route
-                path="settings"
+                path="team"
                 element={
                   <RequireRole roles={["super_admin"]}>
-                    <SettingsPage />
+                    <TeamPage />
                   </RequireRole>
                 }
               />

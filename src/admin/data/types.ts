@@ -94,7 +94,8 @@ export type ActivityKind =
   | "album_created"
   | "photos_uploaded"
   | "photos_published"
-  | "deleted";
+  | "deleted"
+  | "team";
 
 export interface ActivityItem {
   id: string;

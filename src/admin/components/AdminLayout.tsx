@@ -10,12 +10,13 @@ import {
   Menu,
   Settings,
   UserRound,
+  Users,
   X,
 } from "lucide-react";
 import { ThemeToggle } from "../../components/common/ThemeToggle";
 import { adminRoutes } from "../config/routes";
 import { useAdminAuth } from "../auth/context";
-import { roleLabels } from "../auth/permissions";
+import { roleHasPermission, roleLabels } from "../auth/permissions";
 import { BackendStatusBanner } from "./BackendStatusBanner";
 
 const navItems = [
@@ -26,10 +27,9 @@ const navItems = [
   { to: adminRoutes.publications, label: "Gestão de publicações", icon: CheckSquare },
 ] as const;
 
-const accountItems = [
-  { to: adminRoutes.settings, label: "Definições", icon: Settings },
-  { to: adminRoutes.profile, label: "Perfil", icon: UserRound },
-] as const;
+const settingsItem = { to: adminRoutes.settings, label: "Definições", icon: Settings };
+const teamItem = { to: adminRoutes.team, label: "Utilizadores", icon: Users };
+const profileItem = { to: adminRoutes.profile, label: "Perfil", icon: UserRound };
 
 const initialsOf = (name: string) =>
   name
@@ -59,6 +59,9 @@ export const AdminLayout: React.FC = () => {
   }, [navOpen]);
 
   const isPreview = status === "preview";
+  /* Só adapta o menu; a função admin-users volta a validar no servidor. */
+  const canManageTeam = isPreview || (profile ? roleHasPermission(profile.role, "admins:manage") : false);
+  const accountItems = canManageTeam ? [settingsItem, teamItem, profileItem] : [settingsItem, profileItem];
   const displayName = profile?.displayName ?? (isPreview ? "Pré-visualização" : "Administrador");
   const subtitle = profile ? roleLabels[profile.role] : isPreview ? "Sem sessão · sem dados" : "";
 

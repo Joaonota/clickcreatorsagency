@@ -33,3 +33,20 @@ Sem essas variáveis, o painel usa as implementações pendentes: não há login
 
 `VITE_ADMIN_UI_PREVIEW=true npm run dev` mostra o painel sem sessão e sem dados.
 Este modo é eliminado nos builds de produção (`import.meta.env.DEV`).
+
+## Gestão de utilizadores (Edge Function `admin-users`)
+
+Criar contas exige privilégios de servidor, por isso a página **Utilizadores**
+(`/memory-control/team`, só super_admin) usa a Edge Function
+`supabase/functions/admin-users/index.ts`. A service role key é fornecida pelo
+próprio Supabase à função (`SUPABASE_SERVICE_ROLE_KEY`) e nunca vai para o frontend.
+
+1. Executar `supabase/migrations/0003_team_and_settings.sql` no SQL Editor.
+2. Publicar a função — no painel: *Edge Functions → Deploy a new function → Via Editor*,
+   nome `admin-users`, colar o conteúdo de `index.ts` e fazer *Deploy*
+   (ou, com a CLI: `supabase functions deploy admin-users`).
+   Manter "Verify JWT" activo.
+
+Roles:
+- `memory_admin` — eventos, álbuns, fotografias, publicações e definições da galeria.
+- `super_admin` — tudo o anterior + gestão de contas.

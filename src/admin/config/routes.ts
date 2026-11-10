@@ -11,5 +11,6 @@ export const adminRoutes = {
   photos: `${ADMIN_BASE}/photos`,
   publications: `${ADMIN_BASE}/publications`,
   settings: `${ADMIN_BASE}/settings`,
+  team: `${ADMIN_BASE}/team`,
   profile: `${ADMIN_BASE}/profile`,
 } as const;

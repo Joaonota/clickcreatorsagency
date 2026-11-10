@@ -1,8 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { adminRoutes } from "../../config/routes";
+import { useAdminAuth } from "../../auth/context";
 import { KeyRound, PlugZap, SlidersHorizontal, Users } from "lucide-react";
 import { supabaseEnv } from "../../config/env";
 import { adminAuthProvider } from "../../auth/provider";
-import { roleLabels } from "../../auth/permissions";
+import { roleHasPermission, roleLabels } from "../../auth/permissions";
 import { memoryAdminRepository } from "../../data/repository";
 import { useAsyncResource } from "../../hooks/useAsyncResource";
 import { useAdminAction } from "../../hooks/useAdminAction";
@@ -19,6 +22,8 @@ const settingRows: Array<{ key: keyof GallerySettings; label: string; hint: stri
 
 export const SettingsPage: React.FC = () => {
   const settings = useAsyncResource(() => memoryAdminRepository.getSettings(), "settings");
+  const { profile } = useAdminAuth();
+  const canManageTeam = profile ? roleHasPermission(profile.role, "admins:manage") : false;
 
   return (
     <div className="mc-page">
@@ -67,14 +72,19 @@ export const SettingsPage: React.FC = () => {
             </header>
             <div className="mc-card-body">
               <p className="mc-text-muted">
-                Não existe registo público. Novos administradores são convidados por um super administrador
-                no Supabase Auth e recebem um dos roles:
+                Não existe registo público. As contas são criadas por um super administrador na página
+                Utilizadores, com um dos roles:
               </p>
               <ul className="mc-role-list">
                 {Object.entries(roleLabels).map(([role, label]) => (
                   <li key={role}><code>{role}</code> — {label}</li>
                 ))}
               </ul>
+              {canManageTeam && (
+                <Link to={adminRoutes.team} className="mc-btn mc-btn-ghost mc-btn-sm">
+                  <Users size={14} aria-hidden="true" /> Gerir utilizadores
+                </Link>
+              )}
             </div>
           </section>
         </div>
