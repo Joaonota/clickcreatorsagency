@@ -17,7 +17,7 @@ export {
   createDemoMemoryDataset,
 } from "./mockData";
 
-export { memoryStore, resetMemoryStore } from "./store";
+export { memoryStore } from "./store";
 
 export {
   normalizeText,

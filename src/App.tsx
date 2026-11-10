@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./i18n";
 import { MainLayout } from "./layouts/MainLayout";
@@ -9,7 +10,6 @@ import { PortfolioPage } from "./pages/Portfolio";
 import { ProjectDetails } from "./pages/ProjectDetails";
 import { MemoryPage } from "./pages/memory/MemoryPage";
 import { MemoryEventPage } from "./pages/memory/MemoryEventPage";
-import { MemoryAdminPage } from "./pages/memory/MemoryAdminPage";
 import { CreatorsPage } from "./pages/Creators";
 import { CreatorDetails } from "./pages/CreatorDetails";
 import { PartnersPage } from "./pages/Partners";
@@ -17,6 +17,10 @@ import { BlogPage } from "./pages/Blog";
 import { BlogDetails } from "./pages/BlogDetails";
 import { Contact } from "./pages/Contact";
 import { NotFound } from "./pages/NotFound";
+
+/* Área administrativa privada (Save Your Memory) — chunk separado,
+   fora do layout público e sem links na navegação. */
+const AdminApp = lazy(() => import("./admin/AdminApp"));
 
 function App() {
   return (
@@ -31,7 +35,6 @@ function App() {
             <Route path="portfolio" element={<PortfolioPage />} />
             <Route path="portfolio/:slug" element={<ProjectDetails />} />
             <Route path="memoria" element={<MemoryPage />} />
-            <Route path="memoria/admin" element={<MemoryAdminPage />} />
             <Route path="memoria/:slug" element={<MemoryEventPage />} />
             <Route path="creators" element={<CreatorsPage />} />
             <Route path="creators/:slug" element={<CreatorDetails />} />
@@ -43,6 +46,14 @@ function App() {
             <Route path="contato" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
           </Route>
+          <Route
+            path="/memory-control/*"
+            element={
+              <Suspense fallback={<div className="min-h-screen bg-[var(--background)]" aria-busy="true" />}>
+                <AdminApp />
+              </Suspense>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </LanguageProvider>
