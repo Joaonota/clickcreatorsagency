@@ -1,5 +1,5 @@
 -- ============================================================
--- SAVE YOUR MEMORY — esquema inicial (RASCUNHO, ainda não aplicado)
+-- SAVE YOUR MEMORY — esquema inicial
 -- ------------------------------------------------------------
 -- Base de dados, roles e Row Level Security para a área privada
 -- /memory-control. Rever antes de aplicar no projecto Supabase.
@@ -36,7 +36,7 @@ create table public.memory_events (
   location    text not null default '',
   cover_path  text,
   status      public.event_status not null default 'draft',
-  created_by  uuid references auth.users (id) on delete set null,
+  created_by  uuid default auth.uid() references auth.users (id) on delete set null,
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );
@@ -63,7 +63,7 @@ create table public.memory_photos (
   width        integer,
   height       integer,
   status       public.photo_status not null default 'pending_review',
-  uploaded_by  uuid references auth.users (id) on delete set null,
+  uploaded_by  uuid default auth.uid() references auth.users (id) on delete set null,
   created_at   timestamptz not null default now()
 );
 create index memory_photos_album_idx on public.memory_photos (album_id, status);
@@ -81,7 +81,7 @@ create table public.memory_activity (
   id         bigint generated always as identity primary key,
   kind       text not null,
   summary    text not null,
-  actor_id   uuid references auth.users (id) on delete set null,
+  actor_id   uuid default auth.uid() references auth.users (id) on delete set null,
   created_at timestamptz not null default now()
 );
 

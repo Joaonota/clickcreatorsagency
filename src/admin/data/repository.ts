@@ -1,17 +1,15 @@
 /* ============================================================
    MEMORY CONTROL — repositório de dados administrativo
    ------------------------------------------------------------
-   Contrato único usado por todas as páginas do painel. Hoje a
-   implementação activa é PENDENTE: todas as operações rejeitam
-   com BackendNotConfiguredError — não há dados fictícios nem
-   escritas simuladas.
-
-   Integração futura: criar `supabaseRepository.ts` que
-   implemente MemoryAdminRepository (supabase.from(...),
-   supabase.storage.from("memory-photos")) e exportá-lo aqui.
+   Contrato único usado por todas as páginas do painel.
+   Com o Supabase configurado usa supabaseRepository.ts; sem
+   configuração, a implementação PENDENTE rejeita tudo com
+   BackendNotConfiguredError (sem dados fictícios).
    ============================================================ */
 
+import { supabase } from "../lib/supabase";
 import { BackendNotConfiguredError } from "./errors";
+import { createSupabaseRepository } from "./supabaseRepository";
 import type {
   AdminAlbum,
   AdminEvent,
@@ -82,4 +80,6 @@ const pendingRepository: MemoryAdminRepository = {
   updateSettings: reject,
 };
 
-export const memoryAdminRepository: MemoryAdminRepository = pendingRepository;
+export const memoryAdminRepository: MemoryAdminRepository = supabase
+  ? createSupabaseRepository(supabase)
+  : pendingRepository;

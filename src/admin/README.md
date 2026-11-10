@@ -5,32 +5,29 @@ O código é carregado em lazy a partir de `App.tsx`, por isso nada do painel en
 
 ## Estado actual
 
-| Camada | Ficheiro | Estado |
-| --- | --- | --- |
-| Autenticação | `auth/provider.ts` | **Pendente**: não é possível iniciar sessão |
-| Dados + Storage | `data/repository.ts` | **Pendente**: todas as operações devolvem `BackendNotConfiguredError` |
-| Esquema SQL / RLS | `supabase/migrations/0001_save_your_memory.sql` | Rascunho, ainda não aplicado |
+Com `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` definidas (`.env.local` / Vercel):
 
-Não existem credenciais locais, sessões simuladas nem dados fictícios.
+| Camada | Ficheiro |
+| --- | --- |
+| Cliente | `lib/supabase.ts`: só a chave pública; a sessão é gerida pelo supabase-js |
+| Autenticação | `auth/supabaseAuthProvider.ts`: login, sessão validada no servidor, role lido de `admin_profiles` |
+| Dados + Storage | `data/supabaseRepository.ts`: CRUD, upload com progresso, URLs assinados (bucket privado) |
+| Esquema SQL / RLS | `supabase/migrations/0001_save_your_memory.sql` |
 
-## Ligar o Supabase
+Sem essas variáveis, o painel usa as implementações pendentes: não há login possível e as operações são rejeitadas.
 
-1. `npm i @supabase/supabase-js`
-2. Definir `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` (ver `.env.example`), localmente e na Vercel.
-   **Nunca** usar a service_role key no frontend.
-3. Rever e aplicar a migração SQL. Em Auth → Providers, desactivar o registo público e convidar os administradores.
-   Depois, inserir o perfil de cada um em `admin_profiles` com o role (`super_admin` | `memory_admin`).
-4. Criar `auth/supabaseAuthProvider.ts` que implemente `AdminAuthProvider`:
-   - `signIn` → `supabase.auth.signInWithPassword`; em seguida, ler `admin_profiles` do próprio utilizador.
-   - `getSession` → `supabase.auth.getUser()`, que valida no servidor, mais o perfil.
-   - `onSessionChange` → `supabase.auth.onAuthStateChange`.
-   - A sessão é persistida pelo próprio supabase-js (tokens, nunca palavras-passe).
-5. Criar `data/supabaseRepository.ts` que implemente `MemoryAdminRepository` com `supabase.from(...)` e
-   `supabase.storage.from("memory-photos")`. As pré-visualizações no admin usam URLs assinados.
-6. Exportar ambos em `auth/provider.ts` e `data/repository.ts`, com `configured: true`.
+## Configurar um projecto Supabase
 
-As permissões em `auth/permissions.ts` servem só para adaptar a interface.
-Quem decide o acesso são as policies RLS e Storage.
+1. Aplicar `supabase/migrations/0001_save_your_memory.sql` no *SQL Editor*.
+2. Em *Authentication → Sign In / Providers*, desactivar "Allow new users to sign up".
+3. Convidar cada administrador (*Authentication → Users → Invite user*) e atribuir-lhe o role:
+   ```sql
+   insert into public.admin_profiles (user_id, display_name, role)
+   select id, 'Nome', 'super_admin' from auth.users where email = 'email@exemplo.com';
+   ```
+4. Definir as duas variáveis na Vercel (Production e Preview).
+
+**Nunca** usar a service_role key no frontend: o código recusa-a se for colocada por engano.
 
 ## Pré-visualizar a interface (só em desenvolvimento)
 

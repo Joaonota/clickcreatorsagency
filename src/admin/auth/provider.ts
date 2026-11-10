@@ -1,19 +1,14 @@
 /* ============================================================
    MEMORY CONTROL — fornecedor de autenticação activo
    ------------------------------------------------------------
-   Estado actual: PENDENTE. Não existe sessão possível até ao
-   Supabase Auth ser integrado — não há credenciais locais nem
-   sessões simuladas.
-
-   Integração futura (ver src/admin/README.md):
-     1. npm i @supabase/supabase-js
-     2. Criar `supabaseAuthProvider.ts` que implemente
-        AdminAuthProvider com supabase.auth.* e leia o perfil em
-        `admin_profiles` (RLS: cada utilizador só lê o seu).
-     3. Exportar esse provider aqui quando supabaseEnv.hasPublicConfig.
+   Com VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY definidas usa o
+   Supabase Auth. Sem elas, fica PENDENTE: nenhum login é possível
+   (sem credenciais locais nem sessões simuladas).
    ============================================================ */
 
 import { AuthNotConfiguredError } from "../data/errors";
+import { supabase } from "../lib/supabase";
+import { createSupabaseAuthProvider } from "./supabaseAuthProvider";
 import type { AdminAuthProvider } from "./types";
 
 const pendingAuthProvider: AdminAuthProvider = {
@@ -35,4 +30,6 @@ const pendingAuthProvider: AdminAuthProvider = {
   },
 };
 
-export const adminAuthProvider: AdminAuthProvider = pendingAuthProvider;
+export const adminAuthProvider: AdminAuthProvider = supabase
+  ? createSupabaseAuthProvider(supabase)
+  : pendingAuthProvider;

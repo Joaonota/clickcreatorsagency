@@ -35,6 +35,8 @@ if (leakedServiceRole) {
 
 export const supabaseEnv = {
   url: rawUrl,
+  /** Chave pública (anon/publishable) — segura no frontend; o acesso é limitado por RLS. */
+  anonKey: leakedServiceRole ? "" : rawAnonKey,
   /** true quando URL e anon key estão definidas (e a chave não é service_role). */
   hasPublicConfig: Boolean(rawUrl && rawAnonKey && !leakedServiceRole),
   leakedServiceRole,
@@ -47,4 +49,7 @@ export const supabaseEnv = {
  * serve apenas para rever layout e navegação antes do Supabase.
  */
 export const isUiPreviewMode =
-  import.meta.env.DEV && import.meta.env.VITE_ADMIN_UI_PREVIEW === "true";
+  import.meta.env.DEV &&
+  import.meta.env.VITE_ADMIN_UI_PREVIEW === "true" &&
+  // Com o Supabase configurado, usa-se sempre a autenticação real.
+  !supabaseEnv.hasPublicConfig;
