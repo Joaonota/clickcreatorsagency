@@ -880,8 +880,18 @@ a.mc-cell-title:hover { text-decoration: underline; text-decoration-color: var(-
   display: none;
   position: relative;
   overflow: hidden;
-  background: #050505;
+  background: #050505 url("/img/Default_img.jpeg") center / cover no-repeat;
   color: #fff;
+}
+/* Véu escuro sobre a fotografia para manter o texto legível. */
+.mc-login-aside::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 5, 5, 0.55) 0%, rgba(5, 5, 5, 0.25) 40%, rgba(5, 5, 5, 0.85) 100%),
+    linear-gradient(90deg, rgba(5, 5, 5, 0.35), transparent 70%);
+  pointer-events: none;
 }
 .mc-login-aside::after {
   content: "";
