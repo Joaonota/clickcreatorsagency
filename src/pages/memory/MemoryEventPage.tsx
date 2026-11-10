@@ -48,7 +48,7 @@ export const MemoryEventPage: React.FC = () => {
 
   useEffect(() => {
     document.title = slug ? t.memory.pageTitle : t.notFound.pageTitle;
-  }, [t, slug]);  useEffect(() => {
+  }, [t, slug]); useEffect(() => {
     let active = true;
     (async () => {
       setLoading(true);
@@ -242,10 +242,7 @@ export const MemoryEventPage: React.FC = () => {
             </div>
           )}
 
-          <p className="mem-note mt-8">
-            <span className="mem-note-dot" aria-hidden="true" />
-            {t.memory.demoNote}
-          </p>
+
         </div>
       </section>
 

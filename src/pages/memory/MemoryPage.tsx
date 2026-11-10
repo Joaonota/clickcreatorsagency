@@ -117,12 +117,7 @@ export const MemoryPage: React.FC = () => {
           <Reveal delay={2}>
             <p className="lede mt-8 max-w-2xl">{t.memory.pageHeroLede}</p>
           </Reveal>
-          <Reveal delay={3}>
-            <p className="mem-note mt-8">
-              <span className="mem-note-dot" aria-hidden="true" />
-              {t.memory.demoNote}
-            </p>
-          </Reveal>
+
         </div>
       </section>
 
