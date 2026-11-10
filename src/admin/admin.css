@@ -515,7 +515,8 @@ a.mc-cell-title:hover { text-decoration: underline; text-decoration-color: var(-
   background: var(--background-secondary);
   border: 1px solid var(--border);
 }
-.mc-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.mc-thumb img,
+.mc-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 @media (max-width: 767px) {
   .mc-table thead { display: none; }
@@ -724,7 +725,21 @@ a.mc-cell-title:hover { text-decoration: underline; text-decoration-color: var(-
   cursor: pointer;
   transition: border-color var(--t-fast) var(--ease);
 }
-.mc-photo-hit img { width: 100%; height: 100%; object-fit: cover; }
+.mc-photo-hit img,
+.mc-photo-hit video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+.mc-photo-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(5, 5, 5, 0.6);
+  color: #fff;
+}
 .mc-photo-hit:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
 .mc-photo.selected .mc-photo-hit { border-color: var(--accent); }
 .mc-photo-check {

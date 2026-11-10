@@ -1,13 +1,14 @@
 /* ============================================================
-   MEMORY CONTROL — cliente Supabase (apenas chave pública)
+   SUPABASE — cliente partilhado (apenas chave pública)
    ------------------------------------------------------------
-   A sessão é persistida pelo supabase-js (tokens com refresh
-   automático) — nunca palavras-passe. Todo o acesso a dados é
-   limitado pelas policies RLS/Storage no servidor.
+   Usado pela área privada /memory-control e pela galeria
+   pública Save Your Memory (que o carrega em lazy). A sessão é
+   persistida pelo supabase-js (tokens com refresh automático),
+   nunca palavras-passe. Todo o acesso é limitado por RLS.
    ============================================================ */
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { supabaseEnv } from "../config/env";
+import { supabaseEnv } from "./supabaseEnv";
 
 export const MEMORY_BUCKET = "memory-photos";
 

@@ -21,7 +21,7 @@ export const AlbumFormDrawer: React.FC<AlbumFormDrawerProps> = ({ album, events,
     eventId: album?.eventId ?? defaultEventId,
     title: album?.title ?? "",
     description: album?.description ?? "",
-    status: album?.status ?? "hidden",
+    status: album?.status ?? "published",
     coverFile: null,
   });
   const [errors, setErrors] = useState<{ title?: string; eventId?: string }>({});

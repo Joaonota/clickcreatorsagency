@@ -7,7 +7,7 @@
    ============================================================ */
 
 import { AuthNotConfiguredError } from "../data/errors";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../lib/supabase";
 import { createSupabaseAuthProvider } from "./supabaseAuthProvider";
 import type { AdminAuthProvider } from "./types";
 

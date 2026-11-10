@@ -42,13 +42,9 @@ export const formatEventDate = (isoDate: string, lang: "pt" | "en"): string => {
   }).format(date);
 };
 
-/* ============================================================
-   DEMO: capa de fallback para eventos sem imagem definida
-   (reutiliza a imagem default do projecto; o backend trará
-   as capas reais).
-   ============================================================ */
+/* Capa de fallback para eventos publicados sem imagem de capa. */
 export const placeholderCover = (): string => "/img/Default_img.jpeg";
 
-/** Capa efetiva de um evento (faz fallback para placeholder demo). */
+/** Capa efectiva de um evento (com fallback para a imagem default). */
 export const displayCover = (event: { cover: string }): string =>
   event.cover || placeholderCover();

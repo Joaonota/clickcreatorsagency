@@ -7,7 +7,7 @@
    BackendNotConfiguredError (sem dados fictícios).
    ============================================================ */
 
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../lib/supabase";
 import { BackendNotConfiguredError } from "./errors";
 import { createSupabaseRepository } from "./supabaseRepository";
 import type {

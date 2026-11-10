@@ -3,7 +3,7 @@ import { AlertCircle, CheckCircle2, Clock3, Loader2, UploadCloud, X } from "luci
 import { memoryAdminRepository } from "../../data/repository";
 import { toUserMessage } from "../../data/errors";
 import { formatBytes } from "../../data/labels";
-import { ACCEPTED_IMAGE_TYPES, validateImageFile } from "../../hooks/useFilePreview";
+import { ACCEPTED_IMAGE_TYPES, ACCEPTED_VIDEO_TYPES, isVideoFile, validateMediaFile } from "../../hooks/useFilePreview";
 import { useToast } from "../../components/toast";
 
 type QueueStatus = "queued" | "uploading" | "done" | "error" | "invalid";
@@ -61,7 +61,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ albumId, albumLabe
   const addFiles = (files: FileList | null) => {
     if (!files) return;
     const items = Array.from(files).map<QueueItem>((file) => {
-      const problem = validateImageFile(file);
+      const problem = validateMediaFile(file);
       const previewUrl = problem ? "" : URL.createObjectURL(file);
       if (previewUrl) urls.current.add(previewUrl);
       return {
@@ -104,7 +104,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ albumId, albumLabe
     }
     setUploading(false);
     if (succeeded > 0) {
-      toast.push({ tone: "success", title: `${succeeded} fotografia(s) enviada(s).`, description: "Ficam pendentes de aprovação." });
+      toast.push({ tone: "success", title: `${succeeded} ficheiro(s) enviado(s).`, description: "Reveja-os em Gestão de publicações para os publicar." });
       onUploaded();
     }
     if (succeeded < pending.length) {
@@ -115,7 +115,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ albumId, albumLabe
   return (
     <section className="mc-card" aria-labelledby="mc-upload-title">
       <header className="mc-card-header">
-        <h2 id="mc-upload-title" className="mc-card-title"><UploadCloud size={16} aria-hidden="true" /> Carregar fotografias</h2>
+        <h2 id="mc-upload-title" className="mc-card-title"><UploadCloud size={16} aria-hidden="true" /> Carregar fotografias e vídeos</h2>
         <span className="mc-card-hint">{albumId ? `Destino: ${albumLabel ?? "álbum seleccionado"}` : "Escolha um álbum de destino"}</span>
       </header>
 
@@ -135,14 +135,14 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ albumId, albumLabe
           }}
         >
           <UploadCloud size={26} strokeWidth={1.6} aria-hidden="true" />
-          <span className="mc-dropzone-title">Arraste fotografias para aqui ou <u>escolha no dispositivo</u></span>
-          <span className="mc-dropzone-hint">JPG, PNG, WebP ou HEIC · até 25 MB por ficheiro · múltiplos ficheiros</span>
+          <span className="mc-dropzone-title">Arraste fotografias ou vídeos para aqui ou <u>escolha no dispositivo</u></span>
+          <span className="mc-dropzone-hint">Fotos JPG, PNG, WebP, HEIC (até 25 MB) · vídeos MP4, MOV, WebM (até 50 MB) · múltiplos ficheiros</span>
         </label>
         <input
           id={inputId}
           type="file"
           multiple
-          accept={ACCEPTED_IMAGE_TYPES.join(",")}
+          accept={[...ACCEPTED_IMAGE_TYPES, ...ACCEPTED_VIDEO_TYPES].join(",")}
           className="mc-visually-hidden"
           onChange={(event) => {
             addFiles(event.target.files);
@@ -155,7 +155,14 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ albumId, albumLabe
             <ul className="mc-upload-list">
               {queue.map((item) => (
                 <li key={item.id} className={`mc-upload-item mc-upload-${item.status}`}>
-                  <span className="mc-thumb">{item.previewUrl && <img src={item.previewUrl} alt="" />}</span>
+                  <span className="mc-thumb">
+                    {item.previewUrl &&
+                      (isVideoFile(item.file) ? (
+                        <video src={item.previewUrl} muted preload="metadata" />
+                      ) : (
+                        <img src={item.previewUrl} alt="" />
+                      ))}
+                  </span>
                   <span className="mc-cell-text">
                     <span className="mc-cell-title mc-truncate" title={item.file.name}>{item.file.name}</span>
                     <span className="mc-cell-sub">
@@ -188,7 +195,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ albumId, albumLabe
               </button>
               <button type="button" className="mc-btn mc-btn-primary" onClick={() => void startUpload()} disabled={uploading || !albumId || pending.length === 0}>
                 {uploading ? <Loader2 size={15} className="mc-spin" aria-hidden="true" /> : <UploadCloud size={15} aria-hidden="true" />}
-                {uploading ? "A enviar…" : `Enviar ${pending.length} fotografia(s)`}
+                {uploading ? "A enviar…" : `Enviar ${pending.length} ficheiro(s)`}
               </button>
             </div>
             {!albumId && <p className="mc-field-hint mc-text-right">Seleccione evento e álbum acima para activar o envio.</p>}

@@ -1,26 +1,9 @@
 /* ============================================================
-   SAVE YOUR MEMORY — Data types
+   SAVE YOUR MEMORY — tipos da galeria pública
+   (dados reais do Supabase: apenas conteúdo publicado)
    ============================================================ */
 
-export type EventStatus = "published" | "draft";
-
-export interface MemoryCategory {
-  id: string;
-  slug: string;
-  name: string;
-  createdAt: string;
-}
-
-export interface MemoryPhoto {
-  id: string;
-  eventId: string;
-  /** URL da imagem (demo: placeholder service; uploads demo: blob URL de sessão) */
-  src: string;
-  alt: string;
-  caption?: string;
-  order: number;
-  createdAt: string;
-}
+export type MediaType = "image" | "video";
 
 export interface MemoryEvent {
   id: string;
@@ -29,21 +12,39 @@ export interface MemoryEvent {
   description: string;
   /** Data do evento — ISO yyyy-mm-dd */
   date: string;
-  categoryId: string;
+  location: string;
+  /** URL assinado temporário da capa ("" quando não existe). */
   cover: string;
   coverAlt: string;
-  status: EventStatus;
-  createdAt: string;
-  updatedAt: string;
+  albumCount: number;
+  mediaCount: number;
 }
 
-/** Dados usados para criar/atualizar um evento (sem campos derivados) */
-export interface MemoryEventInput {
+export interface MemoryAlbum {
+  id: string;
   title: string;
   description: string;
-  date: string;
-  categoryId: string;
-  cover?: string;
-  coverAlt?: string;
-  status?: EventStatus;
+  position: number;
+}
+
+export interface MemoryMedia {
+  id: string;
+  albumId: string;
+  type: MediaType;
+  /** URL assinado temporário para visualização. */
+  src: string;
+  storagePath: string;
+  fileName: string;
+  order: number;
+}
+
+export interface MemorySettings {
+  allowDownloads: boolean;
+  allowZipDownloads: boolean;
+}
+
+export interface MemoryEventDetail {
+  event: MemoryEvent;
+  albums: MemoryAlbum[];
+  media: MemoryMedia[];
 }

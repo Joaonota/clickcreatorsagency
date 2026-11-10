@@ -9,7 +9,7 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { supabaseEnv } from "../config/env";
-import { MEMORY_BUCKET } from "../lib/supabase";
+import { MEMORY_BUCKET } from "../../lib/supabase";
 import { PermissionDeniedError, UserFacingError, fromSupabaseError } from "./errors";
 import type { MemoryAdminRepository } from "./repository";
 import type {
@@ -23,6 +23,7 @@ import type {
   EventInput,
   EventStatus,
   GallerySettings,
+  MediaType,
   PhotoStatus,
 } from "./types";
 
@@ -65,6 +66,7 @@ interface PhotoRow {
   width: number | null;
   height: number | null;
   status: PhotoStatus;
+  media_type: MediaType | null;
   created_at: string;
   memory_albums: { event_id: string } | null;
 }
@@ -456,6 +458,7 @@ export function createSupabaseRepository(client: SupabaseClient): MemoryAdminRep
         id: row.id,
         eventId: row.memory_albums?.event_id ?? "",
         albumId: row.album_id,
+        mediaType: row.media_type === "video" ? "video" : "image",
         fileName: row.file_name,
         storagePath: row.storage_path,
         previewUrl: urls.get(row.storage_path) ?? "",
@@ -471,14 +474,17 @@ export function createSupabaseRepository(client: SupabaseClient): MemoryAdminRep
       const album = await getAlbumRow(albumId);
       const settings = await readSettings();
       const path = `events/${album.event_id}/${albumId}/${crypto.randomUUID()}.${extensionOf(file)}`;
+      const mediaType: MediaType = file.type.startsWith("video/") ? "video" : "image";
       await uploadWithProgress(path, file, onProgress);
-      const { width, height } = await readDimensions(file);
+      const { width, height } = mediaType === "image" ? await readDimensions(file) : { width: null, height: null };
       const result = await client
         .from("memory_photos")
         .insert({
           album_id: albumId,
           storage_path: path,
           file_name: file.name,
+          media_type: mediaType,
+          mime_type: file.type,
           size_bytes: file.size,
           width,
           height,
@@ -495,6 +501,7 @@ export function createSupabaseRepository(client: SupabaseClient): MemoryAdminRep
         id: row.id,
         eventId: album.event_id,
         albumId,
+        mediaType,
         fileName: row.file_name,
         storagePath: row.storage_path,
         previewUrl: "",

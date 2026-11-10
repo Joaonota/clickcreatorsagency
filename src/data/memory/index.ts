@@ -1,23 +1,15 @@
 /* ============================================================
-   SAVE YOUR MEMORY — barrel de dados (mock)
+   SAVE YOUR MEMORY — barrel de tipos e utilitários
    ============================================================ */
 
 export type {
-  MemoryCategory,
+  MediaType,
+  MemoryAlbum,
   MemoryEvent,
-  MemoryEventInput,
-  MemoryPhoto,
-  EventStatus,
+  MemoryEventDetail,
+  MemoryMedia,
+  MemorySettings,
 } from "./types";
-
-export {
-  demoCategories,
-  demoEvents,
-  demoPhotos,
-  createDemoMemoryDataset,
-} from "./mockData";
-
-export { memoryStore } from "./store";
 
 export {
   normalizeText,

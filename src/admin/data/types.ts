@@ -6,6 +6,7 @@
 export type EventStatus = "draft" | "published" | "archived";
 export type AlbumStatus = "published" | "hidden";
 export type PhotoStatus = "pending_review" | "approved" | "published" | "hidden";
+export type MediaType = "image" | "video";
 
 export interface AdminEvent {
   id: string;
@@ -59,6 +60,7 @@ export interface AdminPhoto {
   id: string;
   eventId: string;
   albumId: string;
+  mediaType: MediaType;
   fileName: string;
   /** Caminho no bucket do Supabase Storage. */
   storagePath: string;

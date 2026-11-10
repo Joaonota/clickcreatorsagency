@@ -2572,7 +2572,8 @@ section > .svc-feature:last-of-type {
   .mem-photo { margin-bottom: 1.25rem; }
 }
 .mem-photo:hover { border-color: var(--border-lime); }
-.mem-photo img {
+.mem-photo img,
+.mem-photo video {
   width: 100%;
   height: auto;
   display: block;
@@ -2580,8 +2581,11 @@ section > .svc-feature:last-of-type {
   filter: saturate(0.94);
 }
 @media (hover: hover) {
-  .mem-photo:hover img { transform: scale(1.04); filter: saturate(1.05); }
+  .mem-photo:hover img,
+  .mem-photo:hover video { transform: scale(1.04); filter: saturate(1.05); }
 }
+.mem-photo video { pointer-events: none; aspect-ratio: 16 / 9; object-fit: cover; background: #050505; }
+.mem-photo-zoom-video { opacity: 1; }
 .mem-photo-index {
   position: absolute;
   top: 0.7rem;
@@ -2625,7 +2629,8 @@ section > .svc-feature:last-of-type {
 /* Galeria Save Your Memory — sem zoom animado com movimento reduzido */
 @media (prefers-reduced-motion: reduce) {
   .mem-card-media img,
-  .mem-photo img { transition: none; }
+  .mem-photo img,
+  .mem-photo video { transition: none; }
 }
 
 /* ============================================================

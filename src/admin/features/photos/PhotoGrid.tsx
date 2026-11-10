@@ -1,5 +1,5 @@
 import React from "react";
-import { Check } from "lucide-react";
+import { Check, Play } from "lucide-react";
 import { formatBytes, photoStatusMeta } from "../../data/labels";
 import { StatusBadge } from "../../components/ui";
 import type { AdminPhoto } from "../../data/types";
@@ -25,7 +25,14 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, selected, onToggle
               onChange={() => onToggle(photo.id)}
               aria-label={`Seleccionar ${photo.fileName}`}
             />
-            <img src={photo.previewUrl} alt={photo.fileName} loading="lazy" />
+            {photo.mediaType === "video" ? (
+              <>
+                <video src={`${photo.previewUrl}#t=0.1`} muted preload="metadata" aria-label={photo.fileName} />
+                <span className="mc-photo-play" aria-hidden="true"><Play size={16} /></span>
+              </>
+            ) : (
+              <img src={photo.previewUrl} alt={photo.fileName} loading="lazy" />
+            )}
             <span className="mc-photo-check" aria-hidden="true">{isSelected && <Check size={13} strokeWidth={3} />}</span>
             <span className="mc-photo-status"><StatusBadge {...photoStatusMeta[photo.status]} /></span>
           </label>

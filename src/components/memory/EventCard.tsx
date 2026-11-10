@@ -7,21 +7,11 @@ import { useTranslation } from "../../i18n";
 
 interface EventCardProps {
   event: MemoryEvent;
-  categoryName?: string;
-  photoCount: number;
   compact?: boolean;
 }
 
-/**
- * Cartão de evento da galeria **Save Your Memory**.
- * (Dados MOCK — ver src/data/memory)
- */
-export const EventCard: React.FC<EventCardProps> = ({
-  event,
-  categoryName,
-  photoCount,
-  compact = false,
-}) => {
+/** Cartão de evento publicado da galeria **Save Your Memory**. */
+export const EventCard: React.FC<EventCardProps> = ({ event, compact = false }) => {
   const { t, lang } = useTranslation();
 
   return (
@@ -32,14 +22,14 @@ export const EventCard: React.FC<EventCardProps> = ({
     >
       <div className="mem-card-media">
         <img src={displayCover(event)} alt={event.coverAlt || event.title} loading="lazy" />
-        {categoryName && (
-          <span className="mem-card-chip" title={categoryName}>
-            {categoryName}
+        {event.location && (
+          <span className="mem-card-chip" title={event.location}>
+            {event.location}
           </span>
         )}
         <span className="mem-card-count">
           <Camera size={13} strokeWidth={2.4} aria-hidden="true" />
-          <span>{photoCount}</span>
+          <span>{event.mediaCount}</span>
         </span>
       </div>
 
@@ -56,7 +46,7 @@ export const EventCard: React.FC<EventCardProps> = ({
           </span>
           <span className="mem-card-count-inline">
             <Camera size={12} aria-hidden="true" />
-            {photoCount} {t.memory.photosCount}
+            {event.mediaCount} {t.memory.photosCount}
           </span>
         </div>
       </div>

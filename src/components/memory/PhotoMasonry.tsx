@@ -1,30 +1,34 @@
 import React from "react";
-import { ZoomIn } from "lucide-react";
-import type { MemoryPhoto } from "../../data/memory";
+import { Play, ZoomIn } from "lucide-react";
+import type { MemoryMedia } from "../../data/memory";
 
 interface PhotoMasonryProps {
-  photos: MemoryPhoto[];
+  media: MemoryMedia[];
   onOpen: (index: number) => void;
 }
 
-/** Grelha masonry das fotografias de um evento (clique abre o lightbox). */
-export const PhotoMasonry: React.FC<PhotoMasonryProps> = ({ photos, onOpen }) => {
+/** Grelha masonry de fotografias e vídeos de um evento (clique abre o lightbox). */
+export const PhotoMasonry: React.FC<PhotoMasonryProps> = ({ media, onOpen }) => {
   return (
     <div className="mem-masonry">
-      {photos.map((photo, index) => (
+      {media.map((item, index) => (
         <button
-          key={photo.id}
+          key={item.id}
           type="button"
           className="mem-photo"
           onClick={() => onOpen(index)}
-          aria-label={`${photo.alt || `Fotografia ${index + 1}`} — ampliar`}
+          aria-label={`${item.type === "video" ? "Vídeo" : "Fotografia"} ${index + 1} — abrir`}
         >
-          <img src={photo.src} alt={photo.alt} loading="lazy" />
+          {item.type === "video" ? (
+            <video src={`${item.src}#t=0.1`} muted playsInline preload="metadata" />
+          ) : (
+            <img src={item.src} alt="" loading="lazy" />
+          )}
           <span className="mem-photo-index">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <span className="mem-photo-zoom" aria-hidden="true">
-            <ZoomIn size={18} />
+          <span className={`mem-photo-zoom ${item.type === "video" ? "mem-photo-zoom-video" : ""}`} aria-hidden="true">
+            {item.type === "video" ? <Play size={18} /> : <ZoomIn size={18} />}
           </span>
         </button>
       ))}

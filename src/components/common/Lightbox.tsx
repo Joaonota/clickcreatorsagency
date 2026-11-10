@@ -15,6 +15,8 @@ interface LightboxProps {
   onDownload?: () => void;
   downloadLabel?: string;
   downloadDisabled?: boolean;
+  /** Opcional — tipo de cada item; "video" é reproduzido com controlos nativos. */
+  mediaTypes?: Array<"image" | "video">;
 }
 
 const pad = (value: number) => String(value).padStart(2, "0");
@@ -31,6 +33,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
   onDownload,
   downloadLabel = "Download",
   downloadDisabled = false,
+  mediaTypes,
 }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -54,6 +57,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
   if (!isOpen || images.length === 0 || typeof document === "undefined") return null;
 
   const title = titles?.[currentIndex];
+  const isVideo = (index: number) => mediaTypes?.[index] === "video";
 
   return createPortal(
     <div className="lb-overlay fixed inset-0 z-50 overflow-hidden">
@@ -104,11 +108,22 @@ export const Lightbox: React.FC<LightboxProps> = ({
       >
         <figure key={currentIndex} className="lb-pop relative flex max-h-full max-w-full flex-col items-center">
           <span className="lb-frame" />
-          <img
-            src={images[currentIndex]}
-            alt={title ?? `Visualização ${currentIndex + 1}`}
-            className="max-h-[78vh] max-w-[92vw] rounded-xl object-contain shadow-[0_40px_140px_-30px_rgba(0,0,0,0.95)] select-none"
-          />
+          {isVideo(currentIndex) ? (
+            <video
+              src={images[currentIndex]}
+              controls
+              autoPlay
+              playsInline
+              aria-label={title ?? `Vídeo ${currentIndex + 1}`}
+              className="max-h-[78vh] max-w-[92vw] rounded-xl bg-black shadow-[0_40px_140px_-30px_rgba(0,0,0,0.95)]"
+            />
+          ) : (
+            <img
+              src={images[currentIndex]}
+              alt={title ?? `Visualização ${currentIndex + 1}`}
+              className="max-h-[78vh] max-w-[92vw] rounded-xl object-contain shadow-[0_40px_140px_-30px_rgba(0,0,0,0.95)] select-none"
+            />
+          )}
         </figure>
       </div>
 
@@ -144,7 +159,11 @@ export const Lightbox: React.FC<LightboxProps> = ({
                 aria-current={index === currentIndex}
                 className="lb-thumb h-11 w-11 shrink-0 overflow-hidden rounded-full sm:h-12 sm:w-12"
               >
-                <img src={src} alt="" className="h-full w-full object-cover" />
+                {isVideo(index) ? (
+                  <video src={`${src}#t=0.1`} muted preload="metadata" className="h-full w-full object-cover" />
+                ) : (
+                  <img src={src} alt="" className="h-full w-full object-cover" />
+                )}
               </button>
             ))}
           </div>

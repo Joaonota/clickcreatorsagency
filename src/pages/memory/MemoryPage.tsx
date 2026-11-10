@@ -4,24 +4,22 @@ import { MemoryToolbar } from "../../components/memory/MemoryToolbar";
 import { CTASection } from "../../components/common/CTASection";
 import { Reveal } from "../../hooks/useReveal";
 import { useTranslation } from "../../i18n";
-import { memoryApi } from "../../services/memoryApi";
+import { memoryPublicApi } from "../../services/memoryPublicApi";
 import { normalizeText } from "../../data/memory";
-import type { MemoryCategory, MemoryEvent, MemoryPhoto } from "../../data/memory";
+import type { MemoryEvent } from "../../data/memory";
+
+type LoadState = "loading" | "ready" | "error";
 
 /**
- * SAVE YOUR MEMORY — Galeria pública dos eventos (fase MOCK).
- * Dados de demonstração em memória (src/data/memory).
+ * SAVE YOUR MEMORY — Galeria pública dos eventos.
+ * Lê do Supabase apenas eventos publicados (garantido por RLS).
  */
 export const MemoryPage: React.FC = () => {
   const { t } = useTranslation();
 
   const [events, setEvents] = useState<MemoryEvent[]>([]);
-  const [categories, setCategories] = useState<MemoryCategory[]>([]);
-  const [photos, setPhotos] = useState<MemoryPhoto[]>([]);
-  const [loaded, setLoaded] = useState(false);
-
+  const [state, setState] = useState<LoadState>("loading");
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("all");
 
   useEffect(() => {
     document.title = t.memory.pageTitle;
@@ -29,74 +27,37 @@ export const MemoryPage: React.FC = () => {
 
   useEffect(() => {
     let active = true;
-    (async () => {
-      const [eventsData, categoriesData, photosData] = await Promise.all([
-        memoryApi.getPublicEvents(),
-        memoryApi.getCategories(),
-        memoryApi.getAllPhotos(),
-      ]);
-      if (!active) return;
-      setEvents(eventsData);
-      setCategories(categoriesData);
-      setPhotos(photosData);
-      setLoaded(true);
-    })();
+    memoryPublicApi
+      .getEvents()
+      .then((data) => {
+        if (!active) return;
+        setEvents(data);
+        setState("ready");
+      })
+      .catch(() => {
+        if (active) setState("error");
+      });
     return () => {
       active = false;
     };
   }, []);
 
-  const photoCountByEvent = useMemo(() => {
-    const counts: Record<string, number> = {};
-    photos.forEach((photo) => {
-      counts[photo.eventId] = (counts[photo.eventId] ?? 0) + 1;
-    });
-    return counts;
-  }, [photos]);
-
-  const categoryNameById = useMemo(() => {
-    const map = new Map<string, string>();
-    categories.forEach((category) => map.set(category.id, category.name));
-    return map;
-  }, [categories]);
-
   const filteredEvents = useMemo(() => {
     const normalizedQuery = normalizeText(query.trim());
-    return events.filter((event) => {
-      const matchesCategory = category === "all" || event.categoryId === category;
-      if (!matchesCategory) return false;
-      if (!normalizedQuery) return true;
-      const haystack = normalizeText(
-        [
-          event.title,
-          event.description,
-          categoryNameById.get(event.categoryId) ?? "",
-        ]
-          .join(" ")
-      );
-      return haystack.includes(normalizedQuery);
-    });
-  }, [events, category, query, categoryNameById]);
-
-  const totalPhotos = useMemo(
-    () =>
-      events.reduce((sum, event) => sum + (photoCountByEvent[event.id] ?? 0), 0),
-    [events, photoCountByEvent]
-  );
+    if (!normalizedQuery) return events;
+    return events.filter((event) =>
+      normalizeText([event.title, event.description, event.location].join(" ")).includes(normalizedQuery)
+    );
+  }, [events, query]);
 
   const stats = useMemo(
     () => [
       { value: String(events.length), label: t.memory.statsEvents },
-      { value: String(totalPhotos), label: t.memory.statsPhotos },
-      { value: String(categories.length), label: t.memory.statsCategories },
+      { value: String(events.reduce((sum, event) => sum + event.mediaCount, 0)), label: t.memory.statsPhotos },
+      { value: String(events.reduce((sum, event) => sum + event.albumCount, 0)), label: t.memory.statsAlbums },
     ],
-    [events.length, totalPhotos, categories.length, t.memory.statsEvents, t.memory.statsPhotos, t.memory.statsCategories]
+    [events, t.memory.statsEvents, t.memory.statsPhotos, t.memory.statsAlbums]
   );
-
-  const resetFilters = () => {
-    setQuery("");
-    setCategory("all");
-  };
 
   return (
     <div className="flex flex-col">
@@ -117,14 +78,13 @@ export const MemoryPage: React.FC = () => {
           <Reveal delay={2}>
             <p className="lede mt-8 max-w-2xl">{t.memory.pageHeroLede}</p>
           </Reveal>
-
         </div>
       </section>
 
       {/* Números da memória */}
       <section className="pb-4" aria-label={t.memory.statsEvents}>
         <div className="container">
-          <div className="mem-stats" style={{ visibility: loaded ? "visible" : "hidden" }}>
+          <div className="mem-stats" style={{ visibility: state === "ready" ? "visible" : "hidden" }}>
             {stats.map((stat, index) => (
               <div className="mem-stat" key={stat.label}>
                 <span className="mem-stat-num">{stat.value}</span>
@@ -139,32 +99,40 @@ export const MemoryPage: React.FC = () => {
       {/* Galeria */}
       <section className="pb-24 lg:pb-32">
         <div className="container">
-          <MemoryToolbar
-            categories={categories}
-            activeCategory={category}
-            onCategoryChange={setCategory}
-            query={query}
-            onQueryChange={setQuery}
-            resultCount={filteredEvents.length}
-          />
+          <MemoryToolbar query={query} onQueryChange={setQuery} resultCount={filteredEvents.length} />
 
-          {loaded && filteredEvents.length === 0 ? (
+          {state === "loading" && (
+            <p className="eyebrow eyebrow-bare muted mt-10">{t.common.loading}</p>
+          )}
+
+          {state === "error" && (
+            <div className="mem-empty">
+              <p className="muted max-w-md">{t.memory.loadError}</p>
+            </div>
+          )}
+
+          {state === "ready" && events.length === 0 && (
+            <div className="mem-empty">
+              <p className="display-sm">{t.memory.noEventsTitle}</p>
+              <p className="muted mt-3 max-w-md">{t.memory.noEventsBody}</p>
+            </div>
+          )}
+
+          {state === "ready" && events.length > 0 && filteredEvents.length === 0 && (
             <div className="mem-empty">
               <p className="display-sm">{t.memory.emptyTitle}</p>
               <p className="muted mt-3 max-w-md">{t.memory.emptyBody}</p>
-              <button type="button" onClick={resetFilters} className="btn btn-outline btn-sm mt-6">
+              <button type="button" onClick={() => setQuery("")} className="btn btn-outline btn-sm mt-6">
                 <span>{t.memory.emptyReset}</span>
               </button>
             </div>
-          ) : (
+          )}
+
+          {state === "ready" && filteredEvents.length > 0 && (
             <div className="mem-grid">
               {filteredEvents.map((event, index) => (
                 <Reveal key={event.id} delay={(index % 3) as 0 | 1 | 2}>
-                  <EventCard
-                    event={event}
-                    categoryName={categoryNameById.get(event.categoryId)}
-                    photoCount={photoCountByEvent[event.id] ?? 0}
-                  />
+                  <EventCard event={event} />
                 </Reveal>
               ))}
             </div>
