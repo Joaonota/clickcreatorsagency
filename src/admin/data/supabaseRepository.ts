@@ -15,11 +15,8 @@ import type { MemoryAdminRepository } from "./repository";
 import type {
   ActivityItem,
   ActivityKind,
-  AdminAlbum,
   AdminEvent,
   AdminPhoto,
-  AlbumInput,
-  AlbumStatus,
   EventInput,
   EventStatus,
   GallerySettings,
@@ -42,19 +39,6 @@ interface EventRow {
   created_at: string;
   updated_at: string;
   memory_albums?: Array<{ id: string; memory_photos: Array<{ count: number }> }>;
-}
-
-interface AlbumRow {
-  id: string;
-  event_id: string;
-  title: string;
-  description: string;
-  cover_path: string | null;
-  position: number;
-  status: AlbumStatus;
-  created_at: string;
-  updated_at: string;
-  memory_photos?: Array<{ count: number }>;
 }
 
 interface PhotoRow {
@@ -164,28 +148,41 @@ export function createSupabaseRepository(client: SupabaseClient): MemoryAdminRep
     }));
   }
 
-  async function mapAlbums(rows: AlbumRow[]): Promise<AdminAlbum[]> {
-    const urls = await signPaths(rows.map((row) => row.cover_path));
-    return rows.map((row) => ({
-      id: row.id,
-      eventId: row.event_id,
-      title: row.title,
-      description: row.description,
-      coverUrl: row.cover_path ? urls.get(row.cover_path) ?? null : null,
-      position: row.position,
-      status: row.status,
-      photoCount: row.memory_photos?.[0]?.count ?? 0,
-      createdAt: row.created_at,
-      updatedAt: row.updated_at,
-    }));
-  }
-
   async function getEventRow(id: string): Promise<EventRow> {
     return unwrap(await client.from("memory_events").select(EVENT_SELECT).eq("id", id).single<EventRow>());
   }
 
-  async function getAlbumRow(id: string): Promise<AlbumRow> {
-    return unwrap(await client.from("memory_albums").select("*, memory_photos(count)").eq("id", id).single<AlbumRow>());
+  /* Os ficheiros de cada evento ficam num álbum interno único, criado no
+     primeiro upload. Os álbuns não aparecem na interface, mas mantêm-se na
+     base de dados porque as regras de acesso (RLS) dependem deles. */
+  const eventAlbums = new Map<string, string>();
+  async function ensureEventAlbum(eventId: string): Promise<string> {
+    const cached = eventAlbums.get(eventId);
+    if (cached) return cached;
+    const existing = await client
+      .from("memory_albums")
+      .select("id, status")
+      .eq("event_id", eventId)
+      .order("position")
+      .limit(1)
+      .maybeSingle<{ id: string; status: string }>();
+    if (existing.error) throw fromSupabaseError(existing.error);
+    let albumId = existing.data?.id;
+    if (albumId && existing.data?.status !== "published") {
+      const { error } = await client.from("memory_albums").update({ status: "published" }).eq("id", albumId);
+      if (error) throw fromSupabaseError(error);
+    }
+    if (!albumId) {
+      albumId = unwrap(
+        await client
+          .from("memory_albums")
+          .insert({ event_id: eventId, title: "Geral", description: "", status: "published", position: 0 })
+          .select("id")
+          .single<{ id: string }>()
+      ).id;
+    }
+    eventAlbums.set(eventId, albumId);
+    return albumId;
   }
 
   async function count(table: string, filter?: [string, string]): Promise<number> {
@@ -359,87 +356,8 @@ export function createSupabaseRepository(client: SupabaseClient): MemoryAdminRep
       const { error } = await client.from("memory_events").delete().eq("id", id);
       if (error) throw fromSupabaseError(error);
       await removeFiles([event.cover_path, ...albums.map((album) => album.cover_path), ...photos.map((photo) => photo.storage_path)]);
+      eventAlbums.delete(id);
       await log("deleted", `Evento "${event.title}" eliminado`);
-    },
-
-    /* ---------------------------------------------------- álbuns */
-    async listAlbums(eventId) {
-      const rows = unwrap(
-        await client.from("memory_albums").select("*, memory_photos(count)").eq("event_id", eventId).order("position")
-      ) as AlbumRow[];
-      return mapAlbums(rows);
-    },
-
-    async createAlbum(input: AlbumInput) {
-      const last = await client
-        .from("memory_albums")
-        .select("position")
-        .eq("event_id", input.eventId)
-        .order("position", { ascending: false })
-        .limit(1)
-        .maybeSingle<{ position: number }>();
-      if (last.error) throw fromSupabaseError(last.error);
-      const row = unwrap(
-        await client
-          .from("memory_albums")
-          .insert({
-            event_id: input.eventId,
-            title: input.title,
-            description: input.description,
-            status: input.status,
-            position: (last.data?.position ?? -1) + 1,
-          })
-          .select("id")
-          .single<{ id: string }>()
-      );
-      if (input.coverFile) {
-        const coverPath = await uploadCover("albums", row.id, input.coverFile);
-        const { error } = await client.from("memory_albums").update({ cover_path: coverPath }).eq("id", row.id);
-        if (error) throw fromSupabaseError(error);
-      }
-      await log("album_created", `Álbum "${input.title}" criado`);
-      return (await mapAlbums([await getAlbumRow(row.id)]))[0];
-    },
-
-    async updateAlbum(id, input) {
-      const previous = await getAlbumRow(id);
-      const coverPath = input.coverFile ? await uploadCover("albums", id, input.coverFile) : previous.cover_path;
-      const { error } = await client
-        .from("memory_albums")
-        .update({ title: input.title, description: input.description, status: input.status, cover_path: coverPath })
-        .eq("id", id);
-      if (error) {
-        if (input.coverFile && coverPath) await removeFiles([coverPath]);
-        throw fromSupabaseError(error);
-      }
-      if (input.coverFile && previous.cover_path) await removeFiles([previous.cover_path]);
-      return (await mapAlbums([await getAlbumRow(id)]))[0];
-    },
-
-    async setAlbumStatus(id, status) {
-      const row = unwrap(
-        await client.from("memory_albums").update({ status }).eq("id", id).select("*, memory_photos(count)").single<AlbumRow>()
-      );
-      return (await mapAlbums([row]))[0];
-    },
-
-    async reorderAlbums(eventId, orderedIds) {
-      const results = await Promise.all(
-        orderedIds.map((albumId, position) =>
-          client.from("memory_albums").update({ position }).eq("id", albumId).eq("event_id", eventId)
-        )
-      );
-      const failed = results.find((result) => result.error);
-      if (failed?.error) throw fromSupabaseError(failed.error);
-    },
-
-    async deleteAlbum(id) {
-      const album = await getAlbumRow(id);
-      const photos = unwrap(await client.from("memory_photos").select("storage_path").eq("album_id", id)) as Array<{ storage_path: string }>;
-      const { error } = await client.from("memory_albums").delete().eq("id", id);
-      if (error) throw fromSupabaseError(error);
-      await removeFiles([album.cover_path, ...photos.map((photo) => photo.storage_path)]);
-      await log("deleted", `Álbum "${album.title}" eliminado`);
     },
 
     /* ---------------------------------------------------- fotografias */
@@ -470,10 +388,10 @@ export function createSupabaseRepository(client: SupabaseClient): MemoryAdminRep
       }));
     },
 
-    async uploadPhoto(albumId, file, onProgress) {
-      const album = await getAlbumRow(albumId);
+    async uploadPhoto(eventId, file, onProgress) {
+      const albumId = await ensureEventAlbum(eventId);
       const settings = await readSettings();
-      const path = `events/${album.event_id}/${albumId}/${crypto.randomUUID()}.${extensionOf(file)}`;
+      const path = `events/${eventId}/${albumId}/${crypto.randomUUID()}.${extensionOf(file)}`;
       const mediaType: MediaType = file.type.startsWith("video/") ? "video" : "image";
       await uploadWithProgress(path, file, onProgress);
       const { width, height } = mediaType === "image" ? await readDimensions(file) : { width: null, height: null };
@@ -499,7 +417,7 @@ export function createSupabaseRepository(client: SupabaseClient): MemoryAdminRep
       const row = result.data;
       return {
         id: row.id,
-        eventId: album.event_id,
+        eventId,
         albumId,
         mediaType,
         fileName: row.file_name,

@@ -105,7 +105,7 @@ export const EventsPage: React.FC = () => {
             <EmptyState
               icon={CalendarPlus}
               title={events.data.length === 0 ? "Ainda não existem eventos" : "Nenhum evento encontrado"}
-              description={events.data.length === 0 ? "Crie o primeiro evento para começar a organizar álbuns e fotografias." : "Ajuste a pesquisa ou o filtro de estado."}
+              description={events.data.length === 0 ? "Crie o primeiro evento e carregue as fotografias e os vídeos." : "Ajuste a pesquisa ou o filtro de estado."}
             />
           </div>
         ) : (
@@ -133,7 +133,7 @@ export const EventsPage: React.FC = () => {
                       </div>
                     </td>
                     <td data-label="Data">{formatDate(event.eventDate)}</td>
-                    <td data-label="Conteúdo">{event.albumCount} álbuns · {event.photoCount} fotos</td>
+                    <td data-label="Conteúdo">{event.photoCount} fotos e vídeos</td>
                     <td data-label="Estado"><StatusBadge {...eventStatusMeta[event.status]} /></td>
                     <td className="mc-cell-actions">
                       <Link to={adminRoutes.event(event.id)} className="mc-icon-btn" aria-label={`Ver detalhes de ${event.title}`} title="Ver detalhes">
@@ -180,7 +180,7 @@ export const EventsPage: React.FC = () => {
         open={Boolean(deleting)}
         tone="danger"
         title="Eliminar evento?"
-        description={`"${deleting?.title ?? ""}" e todos os seus álbuns e fotografias serão eliminados permanentemente.`}
+        description={`"${deleting?.title ?? ""}" e todas as suas fotografias e vídeos serão eliminados permanentemente.`}
         confirmLabel="Eliminar evento"
         busy={busy}
         onConfirm={() => void confirmDelete()}

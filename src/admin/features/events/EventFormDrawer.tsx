@@ -68,7 +68,7 @@ export const EventFormDrawer: React.FC<EventFormDrawerProps> = ({ event, onClose
       onClose={onClose}
       locked={busy}
       title={isEdit ? "Editar evento" : "Novo evento"}
-      description="Cada evento pode conter vários álbuns de fotografias."
+      description="Depois de criar o evento, carregue as fotografias e os vídeos em Fotos e vídeos."
       footer={
         <>
           <button type="button" className="mc-btn mc-btn-ghost" onClick={onClose} disabled={busy}>

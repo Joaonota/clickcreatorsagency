@@ -5,7 +5,6 @@ import {
   CheckSquare,
   Images,
   LayoutDashboard,
-  Library,
   LogOut,
   Menu,
   Settings,
@@ -22,8 +21,7 @@ import { BackendStatusBanner } from "./BackendStatusBanner";
 const navItems = [
   { to: adminRoutes.dashboard, label: "Dashboard", icon: LayoutDashboard, end: true },
   { to: adminRoutes.events, label: "Eventos", icon: Calendar },
-  { to: adminRoutes.albums, label: "Álbuns", icon: Library },
-  { to: adminRoutes.photos, label: "Fotografias", icon: Images },
+  { to: adminRoutes.photos, label: "Fotos e vídeos", icon: Images },
   { to: adminRoutes.publications, label: "Gestão de publicações", icon: CheckSquare },
 ] as const;
 

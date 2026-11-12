@@ -17,7 +17,7 @@ import type { GallerySettings } from "../../data/types";
 const settingRows: Array<{ key: keyof GallerySettings; label: string; hint: string }> = [
   { key: "requirePhotoApproval", label: "Exigir aprovação antes de publicar", hint: "Novas fotografias ficam pendentes até serem revistas." },
   { key: "allowDownloads", label: "Permitir download individual", hint: "Visitantes podem descarregar cada fotografia publicada." },
-  { key: "allowZipDownloads", label: "Permitir download em ZIP", hint: "Visitantes podem descarregar um álbum completo." },
+  { key: "allowZipDownloads", label: "Permitir download em ZIP", hint: "Visitantes podem descarregar todas as fotografias de um evento." },
 ];
 
 export const SettingsPage: React.FC = () => {

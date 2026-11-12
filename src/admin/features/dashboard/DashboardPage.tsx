@@ -128,7 +128,7 @@ export const DashboardPage: React.FC = () => {
             ))}
           </ul>
           <p className="mc-card-foot">
-            A galeria pública só mostrará eventos, álbuns e fotografias publicados — regra aplicada
+            A galeria pública só mostra eventos, fotografias e vídeos publicados — regra aplicada
             no servidor por Row Level Security.
           </p>
         </section>

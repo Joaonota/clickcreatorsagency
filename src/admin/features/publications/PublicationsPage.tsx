@@ -57,8 +57,8 @@ export const PublicationsPage: React.FC = () => {
       <section className="mc-rules" aria-label="Regras de publicação">
         <ShieldCheck size={18} aria-hidden="true" />
         <p>
-          Uma fotografia só é visível publicamente quando <strong>o evento</strong>, <strong>o álbum</strong> e{" "}
-          <strong>a própria fotografia</strong> estão publicados. Esta regra é aplicada no servidor (RLS),
+          Uma fotografia ou vídeo só é visível publicamente quando <strong>o evento</strong> e{" "}
+          <strong>o próprio ficheiro</strong> estão publicados. Esta regra é aplicada no servidor (RLS),
           não apenas na interface.
         </p>
       </section>

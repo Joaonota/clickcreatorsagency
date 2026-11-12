@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, CalendarDays, EyeOff, Library, MapPin, Pencil, Send, Trash2 } from "lucide-react";
+import { ArrowLeft, CalendarDays, EyeOff, Images, MapPin, Pencil, Send, Trash2, UploadCloud } from "lucide-react";
 import { adminRoutes } from "../../config/routes";
 import { memoryAdminRepository } from "../../data/repository";
-import { albumStatusMeta, eventStatusMeta, formatDate, formatDateTime } from "../../data/labels";
+import { eventStatusMeta, formatDate, formatDateTime } from "../../data/labels";
 import { useAsyncResource } from "../../hooks/useAsyncResource";
 import { useAdminAction } from "../../hooks/useAdminAction";
 import { DataError } from "../../components/DataState";
@@ -17,11 +17,11 @@ export const EventDetailsPage: React.FC = () => {
   const { eventId = "" } = useParams();
   const navigate = useNavigate();
   const detail = useAsyncResource(async () => {
-    const [event, albums] = await Promise.all([
+    const [event, media] = await Promise.all([
       memoryAdminRepository.getEvent(eventId),
-      memoryAdminRepository.listAlbums(eventId),
+      memoryAdminRepository.listPhotos({ eventId }),
     ]);
-    return { event, albums };
+    return { event, media };
   }, `event:${eventId}`);
   const [editing, setEditing] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -57,7 +57,8 @@ export const EventDetailsPage: React.FC = () => {
     );
   }
 
-  const { event, albums } = detail.data;
+  const { event, media } = detail.data;
+  const publishedCount = media.filter((item) => item.status === "published").length;
   const isPublished = event.status === "published";
 
   const togglePublish = async () => {
@@ -112,25 +113,36 @@ export const EventDetailsPage: React.FC = () => {
 
         <section className="mc-card">
           <header className="mc-card-header">
-            <h2 className="mc-card-title"><Library size={16} aria-hidden="true" /> Álbuns ({albums.length})</h2>
-            <Link to={`${adminRoutes.albums}?event=${encodeURIComponent(event.id)}`} className="mc-btn mc-btn-ghost mc-btn-sm">
-              Gerir álbuns
+            <h2 className="mc-card-title"><Images size={16} aria-hidden="true" /> Fotos e vídeos ({media.length})</h2>
+            <Link to={`${adminRoutes.photos}?event=${encodeURIComponent(event.id)}`} className="mc-btn mc-btn-primary mc-btn-sm">
+              <UploadCloud size={14} aria-hidden="true" /> Carregar
             </Link>
           </header>
-          {albums.length === 0 ? (
-            <EmptyState compact icon={Library} title="Sem álbuns" description="Crie álbuns como Cerimónia, Bastidores ou Convidados." />
+          {media.length === 0 ? (
+            <EmptyState
+              compact
+              icon={Images}
+              title="Ainda sem conteúdo"
+              description="Carregue as fotografias e os vídeos do evento. Aparecem na galeria assim que forem publicados."
+            />
           ) : (
-            <ul className="mc-list">
-              {albums.map((album) => (
-                <li key={album.id} className="mc-list-item">
-                  <span className="mc-cell-text">
-                    <span className="mc-cell-title">{album.title}</span>
-                    <span className="mc-cell-sub">{album.photoCount} fotografias</span>
-                  </span>
-                  <StatusBadge {...albumStatusMeta[album.status]} />
-                </li>
-              ))}
-            </ul>
+            <div className="mc-card-body mc-stack">
+              <p className="mc-text-muted">
+                {publishedCount} publicado(s)
+                {media.length - publishedCount > 0 && ` · ${media.length - publishedCount} por publicar`}
+              </p>
+              <ul className="mc-detail-thumbs">
+                {media.slice(0, 8).map((item) => (
+                  <li key={item.id} className="mc-thumb">
+                    {item.mediaType === "video" ? (
+                      <video src={`${item.previewUrl}#t=0.1`} muted preload="metadata" aria-label={item.fileName} />
+                    ) : (
+                      <img src={item.previewUrl} alt={item.fileName} loading="lazy" />
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </section>
       </div>
@@ -150,7 +162,7 @@ export const EventDetailsPage: React.FC = () => {
         open={deleting}
         tone="danger"
         title="Eliminar evento?"
-        description={`"${event.title}" e todos os seus álbuns e fotografias serão eliminados permanentemente.`}
+        description={`"${event.title}" e todas as suas fotografias e vídeos serão eliminados permanentemente.`}
         confirmLabel="Eliminar evento"
         busy={busy}
         onConfirm={() => void confirmDelete()}

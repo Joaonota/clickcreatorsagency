@@ -6,7 +6,7 @@
    ============================================================ */
 
 import React, { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Compass } from "lucide-react";
 import "./admin.css";
 import { AdminAuthProvider } from "./auth/AdminAuthContext";
@@ -18,7 +18,6 @@ import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./features/dashboard/DashboardPage";
 import { EventsPage } from "./features/events/EventsPage";
 import { EventDetailsPage } from "./features/events/EventDetailsPage";
-import { AlbumsPage } from "./features/albums/AlbumsPage";
 import { PhotosPage } from "./features/photos/PhotosPage";
 import { PublicationsPage } from "./features/publications/PublicationsPage";
 import { SettingsPage } from "./features/settings/SettingsPage";
@@ -69,7 +68,8 @@ const AdminApp: React.FC = () => {
               <Route index element={<DashboardPage />} />
               <Route path="events" element={<EventsPage />} />
               <Route path="events/:eventId" element={<EventDetailsPage />} />
-              <Route path="albums" element={<AlbumsPage />} />
+              {/* Álbuns foram removidos: endereços antigos vão para Fotografias. */}
+              <Route path="albums" element={<Navigate to="../photos" replace />} />
               <Route path="photos" element={<PhotosPage />} />
               <Route path="publications" element={<PublicationsPage />} />
               <Route path="settings" element={<SettingsPage />} />

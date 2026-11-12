@@ -7,7 +7,6 @@ export const adminRoutes = {
   dashboard: ADMIN_BASE,
   events: `${ADMIN_BASE}/events`,
   event: (id: string) => `${ADMIN_BASE}/events/${encodeURIComponent(id)}`,
-  albums: `${ADMIN_BASE}/albums`,
   photos: `${ADMIN_BASE}/photos`,
   publications: `${ADMIN_BASE}/publications`,
   settings: `${ADMIN_BASE}/settings`,

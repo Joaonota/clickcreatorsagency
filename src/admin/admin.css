@@ -399,6 +399,9 @@
 .mc-checklist li:last-child { border-bottom: none; }
 
 .mc-list { list-style: none; margin: 0; padding: 0; }
+.mc-detail-thumbs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
+.mc-detail-thumbs .mc-thumb { width: 100%; height: auto; aspect-ratio: 1; }
+.mc-detail-thumbs .mc-thumb :is(img, video) { width: 100%; height: 100%; object-fit: cover; }
 .mc-list-item {
   display: flex;
   align-items: center;

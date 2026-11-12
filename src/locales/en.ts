@@ -477,7 +477,6 @@ export const en = {
       "The official photos and videos from events covered by the agency. Search, relive the moments and download what you want to keep.",
     statsEvents: "Events",
     statsPhotos: "Photos & videos",
-    statsAlbums: "Albums",
     searchPlaceholder: "Search events...",
     searchLabel: "Search events",
     filterAll: "All",

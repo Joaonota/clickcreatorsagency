@@ -42,7 +42,7 @@ export const TeamPage: React.FC = () => {
       />
 
       <Notice icon={ShieldCheck}>
-        <strong>Administrador de memória:</strong> cria e gere eventos, álbuns, fotografias e publicações, e altera as
+        <strong>Administrador de memória:</strong> cria e gere eventos, fotos, vídeos e publicações, e altera as
         definições da galeria. <strong>Super administrador:</strong> tem também acesso a esta página para gerir contas.
       </Notice>
 

@@ -68,7 +68,7 @@ export const LoginPage: React.FC = () => {
             <br />
             <span className="mc-text-accent">Memory</span>
           </p>
-          <p className="mc-login-tagline">Gestão privada de eventos, álbuns e fotografias.</p>
+          <p className="mc-login-tagline">Gestão privada de eventos, fotos e vídeos.</p>
         </div>
       </section>
 

@@ -2275,7 +2275,7 @@ section > .svc-feature:last-of-type {
   transition: width 0.9s var(--ease-out);
 }
 @media (min-width: 768px) {
-  .mem-stats { grid-template-columns: repeat(3, 1fr); }
+  .mem-stats { grid-template-columns: repeat(2, 1fr); }
   .mem-stat { border-bottom: none; border-left: 1px solid var(--border); padding: 2.4rem 2rem; }
   .mem-stat:first-child { border-left: none; }
   .mem-stats { border-top: none; }

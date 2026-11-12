@@ -12,37 +12,28 @@ import { ConfirmDialog } from "../../components/Dialog";
 import { PageHeader } from "../../components/ui";
 import { PhotoUploader } from "./PhotoUploader";
 import { PhotoGrid } from "./PhotoGrid";
-import type { AdminAlbum, PhotoStatus } from "../../data/types";
-
-const noAlbums: AdminAlbum[] = [];
+import type { PhotoStatus } from "../../data/types";
 
 export const PhotosPage: React.FC = () => {
   const [params, setParams] = useSearchParams();
   const eventId = params.get("event") ?? "";
-  const albumId = params.get("album") ?? "";
   const status = (params.get("status") ?? "") as PhotoStatus | "";
 
   const setFilter = (key: string, value: string) => {
     const next = new URLSearchParams(params);
     if (value) next.set(key, value);
     else next.delete(key);
-    if (key === "event") next.delete("album");
     setParams(next, { replace: true });
   };
 
   const events = useAsyncResource(() => memoryAdminRepository.listEvents(), "events");
-  const albums = useAsyncResource(
-    () => (eventId ? memoryAdminRepository.listAlbums(eventId) : Promise.resolve(noAlbums)),
-    `albums:${eventId}`
-  );
   const photos = useAsyncResource(
     () =>
       memoryAdminRepository.listPhotos({
         eventId: eventId || undefined,
-        albumId: albumId || undefined,
         status: status || undefined,
       }),
-    `photos:${eventId}:${albumId}:${status}`
+    `photos:${eventId}:${status}`
   );
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -51,8 +42,7 @@ export const PhotosPage: React.FC = () => {
 
   const photoIds = useMemo(() => (photos.status === "success" ? photos.data.map((photo) => photo.id) : []), [photos]);
   const selectedIds = photoIds.filter((id) => selected.has(id));
-  const albumList = albums.status === "success" ? albums.data : noAlbums;
-  const albumTitle = albumList.find((album) => album.id === albumId)?.title;
+  const eventTitle = events.status === "success" ? events.data.find((event) => event.id === eventId)?.title : undefined;
 
   const toggle = (id: string) =>
     setSelected((current) => {
@@ -81,7 +71,7 @@ export const PhotosPage: React.FC = () => {
 
   return (
     <div className="mc-page">
-      <PageHeader eyebrow="Conteúdo" title="Fotografias" description="Carregue, aprove e publique as fotografias de cada álbum." />
+      <PageHeader eyebrow="Conteúdo" title="Fotos e vídeos" description="Escolha o evento e carregue as fotografias e os vídeos directamente." />
 
       <div className="mc-toolbar mc-toolbar-filters">
         <label className="mc-inline-field">
@@ -90,13 +80,6 @@ export const PhotosPage: React.FC = () => {
             <option value="">{events.status === "success" ? "Todos os eventos" : "Eventos indisponíveis"}</option>
             {events.status === "success" &&
               events.data.map((event) => <option key={event.id} value={event.id}>{event.title}</option>)}
-          </select>
-        </label>
-        <label className="mc-inline-field">
-          <span className="mc-label">Álbum</span>
-          <select className="mc-input mc-select" value={albumId} onChange={(e) => setFilter("album", e.target.value)} disabled={!eventId || albums.status !== "success"}>
-            <option value="">{eventId ? "Todos os álbuns" : "Escolha um evento"}</option>
-            {albumList.map((album) => <option key={album.id} value={album.id}>{album.title}</option>)}
           </select>
         </label>
         <label className="mc-inline-field">
@@ -110,7 +93,7 @@ export const PhotosPage: React.FC = () => {
         </label>
       </div>
 
-      <PhotoUploader albumId={albumId} albumLabel={albumTitle} onUploaded={photos.reload} />
+      <PhotoUploader eventId={eventId} eventLabel={eventTitle} onUploaded={photos.reload} />
 
       <section aria-label="Fotografias carregadas" className="mc-stack">
         <div className="mc-section-bar">

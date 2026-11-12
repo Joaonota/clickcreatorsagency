@@ -26,9 +26,9 @@ const statusText: Record<QueueStatus, string> = {
 };
 
 interface PhotoUploaderProps {
-  /** Álbum de destino; vazio = ainda não escolhido. */
-  albumId: string;
-  albumLabel?: string;
+  /** Evento de destino; vazio = ainda não escolhido. */
+  eventId: string;
+  eventLabel?: string;
   onUploaded: () => void;
 }
 
@@ -39,7 +39,7 @@ let sequence = 0;
  * A pré-visualização é local; o envio só acontece quando o backend
  * existir — até lá, cada ficheiro reporta o erro real devolvido.
  */
-export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ albumId, albumLabel, onUploaded }) => {
+export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ eventId, eventLabel, onUploaded }) => {
   const inputId = useId();
   const toast = useToast();
   const [queue, setQueue] = useState<QueueItem[]>([]);
@@ -89,13 +89,13 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ albumId, albumLabe
   const pending = queue.filter((item) => item.status === "queued" || item.status === "error");
 
   const startUpload = async () => {
-    if (!albumId || pending.length === 0) return;
+    if (!eventId || pending.length === 0) return;
     setUploading(true);
     let succeeded = 0;
     for (const item of pending) {
       patch(item.id, { status: "uploading", progress: 0, message: undefined });
       try {
-        await memoryAdminRepository.uploadPhoto(albumId, item.file, (fraction) => patch(item.id, { progress: fraction }));
+        await memoryAdminRepository.uploadPhoto(eventId, item.file, (fraction) => patch(item.id, { progress: fraction }));
         patch(item.id, { status: "done", progress: 1 });
         succeeded += 1;
       } catch (error) {
@@ -116,7 +116,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ albumId, albumLabe
     <section className="mc-card" aria-labelledby="mc-upload-title">
       <header className="mc-card-header">
         <h2 id="mc-upload-title" className="mc-card-title"><UploadCloud size={16} aria-hidden="true" /> Carregar fotografias e vídeos</h2>
-        <span className="mc-card-hint">{albumId ? `Destino: ${albumLabel ?? "álbum seleccionado"}` : "Escolha um álbum de destino"}</span>
+        <span className="mc-card-hint">{eventId ? `Destino: ${eventLabel ?? "evento seleccionado"}` : "Escolha o evento de destino"}</span>
       </header>
 
       <div className="mc-card-body">
@@ -193,12 +193,12 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ albumId, albumLabe
               <button type="button" className="mc-btn mc-btn-ghost mc-btn-sm" onClick={clearFinished} disabled={uploading}>
                 Limpar concluídos
               </button>
-              <button type="button" className="mc-btn mc-btn-primary" onClick={() => void startUpload()} disabled={uploading || !albumId || pending.length === 0}>
+              <button type="button" className="mc-btn mc-btn-primary" onClick={() => void startUpload()} disabled={uploading || !eventId || pending.length === 0}>
                 {uploading ? <Loader2 size={15} className="mc-spin" aria-hidden="true" /> : <UploadCloud size={15} aria-hidden="true" />}
                 {uploading ? "A enviar…" : `Enviar ${pending.length} ficheiro(s)`}
               </button>
             </div>
-            {!albumId && <p className="mc-field-hint mc-text-right">Seleccione evento e álbum acima para activar o envio.</p>}
+            {!eventId && <p className="mc-field-hint mc-text-right">Escolha o evento acima para activar o envio.</p>}
           </>
         )}
       </div>

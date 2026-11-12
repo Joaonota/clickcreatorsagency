@@ -11,11 +11,8 @@ import { supabase } from "../../lib/supabase";
 import { BackendNotConfiguredError } from "./errors";
 import { createSupabaseRepository } from "./supabaseRepository";
 import type {
-  AdminAlbum,
   AdminEvent,
   AdminPhoto,
-  AlbumInput,
-  AlbumStatus,
   DashboardSnapshot,
   EventInput,
   EventStatus,
@@ -37,15 +34,9 @@ export interface MemoryAdminRepository {
   setEventStatus(id: string, status: EventStatus): Promise<AdminEvent>;
   deleteEvent(id: string): Promise<void>;
 
-  listAlbums(eventId: string): Promise<AdminAlbum[]>;
-  createAlbum(input: AlbumInput): Promise<AdminAlbum>;
-  updateAlbum(id: string, input: AlbumInput): Promise<AdminAlbum>;
-  setAlbumStatus(id: string, status: AlbumStatus): Promise<AdminAlbum>;
-  reorderAlbums(eventId: string, orderedIds: string[]): Promise<void>;
-  deleteAlbum(id: string): Promise<void>;
-
   listPhotos(filter: PhotoFilter): Promise<AdminPhoto[]>;
-  uploadPhoto(albumId: string, file: File, onProgress: UploadProgressHandler): Promise<AdminPhoto>;
+  /** Carrega um ficheiro directamente para o evento. */
+  uploadPhoto(eventId: string, file: File, onProgress: UploadProgressHandler): Promise<AdminPhoto>;
   setPhotoStatus(ids: string[], status: PhotoStatus): Promise<void>;
   deletePhotos(ids: string[]): Promise<void>;
 
@@ -66,12 +57,6 @@ const pendingRepository: MemoryAdminRepository = {
   updateEvent: reject,
   setEventStatus: reject,
   deleteEvent: reject,
-  listAlbums: reject,
-  createAlbum: reject,
-  updateAlbum: reject,
-  setAlbumStatus: reject,
-  reorderAlbums: reject,
-  deleteAlbum: reject,
   listPhotos: reject,
   uploadPhoto: reject,
   setPhotoStatus: reject,

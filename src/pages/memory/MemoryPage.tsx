@@ -54,9 +54,8 @@ export const MemoryPage: React.FC = () => {
     () => [
       { value: String(events.length), label: t.memory.statsEvents },
       { value: String(events.reduce((sum, event) => sum + event.mediaCount, 0)), label: t.memory.statsPhotos },
-      { value: String(events.reduce((sum, event) => sum + event.albumCount, 0)), label: t.memory.statsAlbums },
     ],
-    [events, t.memory.statsEvents, t.memory.statsPhotos, t.memory.statsAlbums]
+    [events, t.memory.statsEvents, t.memory.statsPhotos]
   );
 
   return (

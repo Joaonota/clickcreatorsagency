@@ -5,7 +5,6 @@ import type { AdminRole } from "./types";
    RLS e Storage no Supabase. */
 export type AdminPermission =
   | "events:write"
-  | "albums:write"
   | "photos:write"
   | "photos:publish"
   | "settings:manage"
@@ -14,13 +13,12 @@ export type AdminPermission =
 const rolePermissions: Record<AdminRole, readonly AdminPermission[]> = {
   super_admin: [
     "events:write",
-    "albums:write",
     "photos:write",
     "photos:publish",
     "settings:manage",
     "admins:manage",
   ],
-  memory_admin: ["events:write", "albums:write", "photos:write", "photos:publish", "settings:manage"],
+  memory_admin: ["events:write", "photos:write", "photos:publish", "settings:manage"],
 };
 
 export const roleLabels: Record<AdminRole, string> = {

@@ -477,7 +477,6 @@ export const pt = {
       "As fotografias e vídeos oficiais dos eventos cobertos pela agência. Pesquisa, revê os momentos e descarrega o que queres guardar.",
     statsEvents: "Eventos",
     statsPhotos: "Fotos e vídeos",
-    statsAlbums: "Álbuns",
     searchPlaceholder: "Pesquisar eventos...",
     searchLabel: "Pesquisar eventos",
     filterAll: "Todos",
