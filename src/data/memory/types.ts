@@ -7,6 +7,8 @@ export type MediaType = "image" | "video";
 
 export interface MemoryEvent {
   id: string;
+  /** Identificador público estável (URL /memoria/e/{publicId} e QR Code). */
+  publicId: string;
   slug: string;
   title: string;
   description: string;

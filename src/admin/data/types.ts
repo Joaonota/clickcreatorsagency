@@ -10,6 +10,8 @@ export type MediaType = "image" | "video";
 
 export interface AdminEvent {
   id: string;
+  /** Identificador público estável usado na URL /memoria/e/{publicId} e no QR Code. */
+  publicId: string;
   slug: string;
   title: string;
   description: string;

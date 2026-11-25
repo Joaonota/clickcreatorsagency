@@ -35,6 +35,7 @@ function App() {
             <Route path="portfolio" element={<PortfolioPage />} />
             <Route path="portfolio/:slug" element={<ProjectDetails />} />
             <Route path="memoria" element={<MemoryPage />} />
+            <Route path="memoria/e/:publicId" element={<MemoryEventPage />} />
             <Route path="memoria/:slug" element={<MemoryEventPage />} />
             <Route path="creators" element={<CreatorsPage />} />
             <Route path="creators/:slug" element={<CreatorDetails />} />

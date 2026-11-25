@@ -12,6 +12,8 @@ import { TableSkeleton } from "../../components/Skeleton";
 import { ConfirmDialog } from "../../components/Dialog";
 import { PageHeader, StatusBadge } from "../../components/ui";
 import { EventFormDrawer } from "./EventFormDrawer";
+import { ShareGallery } from "./ShareGallery";
+import { memoryEventPath } from "../../../lib/memoryLinks";
 
 export const EventDetailsPage: React.FC = () => {
   const { eventId = "" } = useParams();
@@ -98,6 +100,8 @@ export const EventDetailsPage: React.FC = () => {
         }
       />
 
+      <ShareGallery event={event} busy={busy} onTogglePublish={() => void togglePublish()} />
+
       <div className="mc-split mc-split-detail">
         <section className="mc-card">
           {event.coverUrl && <img src={event.coverUrl} alt={`Capa de ${event.title}`} className="mc-detail-cover" />}
@@ -105,7 +109,7 @@ export const EventDetailsPage: React.FC = () => {
             <div><dt>Estado</dt><dd><StatusBadge {...eventStatusMeta[event.status]} /></dd></div>
             <div><dt>Data</dt><dd><CalendarDays size={14} aria-hidden="true" /> {formatDate(event.eventDate)}</dd></div>
             <div><dt>Localização</dt><dd><MapPin size={14} aria-hidden="true" /> {event.location}</dd></div>
-            <div><dt>Slug</dt><dd className="mc-mono">/memoria/{event.slug}</dd></div>
+            <div><dt>Link público</dt><dd className="mc-mono">{memoryEventPath(event.publicId)}</dd></div>
             <div><dt>Actualizado</dt><dd>{formatDateTime(event.updatedAt)}</dd></div>
           </dl>
           {event.description && <p className="mc-detail-desc">{event.description}</p>}

@@ -20,6 +20,7 @@ const SIGNED_URL_TTL = 60 * 60 * 2; // 2 horas
 
 interface EventRow {
   id: string;
+  public_id: string;
   slug: string;
   title: string;
   description: string;
@@ -30,7 +31,10 @@ interface EventRow {
 }
 
 const EVENT_SELECT =
-  "id, slug, title, description, event_date, location, cover_path, memory_albums(id, memory_photos(count))";
+  "id, public_id, slug, title, description, event_date, location, cover_path, memory_albums(id, memory_photos(count))";
+
+/** Como uma página pública identifica o evento. */
+export type EventKey = { publicId: string } | { slug: string };
 
 export class MemoryUnavailableError extends Error {
   constructor() {
@@ -61,6 +65,7 @@ async function signPaths(paths: Array<string | null>): Promise<Map<string, strin
 function toEvents(rows: EventRow[], covers: Map<string, string>): MemoryEvent[] {
   return rows.map((row) => ({
     id: row.id,
+    publicId: row.public_id,
     slug: row.slug,
     title: row.title,
     description: row.description,
@@ -87,13 +92,17 @@ export const memoryPublicApi = {
     return toEvents(rows, await signPaths(rows.map((row) => row.cover_path)));
   },
 
-  /** Evento publicado por slug, com álbuns e media publicados. null = não existe/não publicado. */
-  async getEventDetail(slug: string): Promise<MemoryEventDetail | null> {
+  /**
+   * Evento publicado — pelo identificador público (URL/QR Code) ou pelo slug —
+   * com álbuns e media publicados. null = não existe ou não está publicado.
+   */
+  async getEventDetail(key: EventKey): Promise<MemoryEventDetail | null> {
     const { client } = await getClient();
+    const [column, value] = "publicId" in key ? ["public_id", key.publicId] : ["slug", key.slug];
     const { data, error } = await client
       .from("memory_events")
       .select(EVENT_SELECT)
-      .eq("slug", slug)
+      .eq(column, value)
       .eq("status", "published")
       .maybeSingle();
     if (error) throw new MemoryUnavailableError();

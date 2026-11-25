@@ -50,3 +50,14 @@ próprio Supabase à função (`SUPABASE_SERVICE_ROLE_KEY`) e nunca vai para o f
 Roles:
 - `memory_admin` — eventos, álbuns, fotografias, publicações e definições da galeria.
 - `super_admin` — tudo o anterior + gestão de contas.
+
+## Partilhar Galeria (link público + QR Code)
+
+- Migração `supabase/migrations/0004_event_public_id.sql`: cada evento recebe um
+  `public_id` aleatório de 12 caracteres, gerado pela base de dados e imutável.
+- URL pública: `/memoria/e/{public_id}` — só abre eventos publicados (RLS).
+  Os links antigos `/memoria/{slug}` continuam a funcionar.
+- O QR Code é gerado no browser (biblioteca `qrcode`) a partir dessa URL; nada é
+  guardado no Storage. Como o `public_id` nunca muda, o QR Code impresso continua
+  válido quando se juntam fotografias ou se edita o evento.
+- `VITE_PUBLIC_SITE_URL` (opcional) fixa o domínio usado nos links/QR Codes.

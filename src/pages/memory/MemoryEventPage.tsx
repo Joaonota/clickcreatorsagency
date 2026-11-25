@@ -23,7 +23,9 @@ type LoadState = "loading" | "ready" | "missing" | "error";
  * Álbuns e media vêm do Supabase (só conteúdo publicado, via RLS).
  */
 export const MemoryEventPage: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
+  /* /memoria/e/{publicId} (link e QR Code) ou /memoria/{slug} (links antigos). */
+  const { publicId, slug } = useParams<{ publicId?: string; slug?: string }>();
+  const routeKey = publicId ? `p:${publicId}` : slug ? `s:${slug}` : "";
   const { t, lang } = useTranslation();
 
   const [detail, setDetail] = useState<MemoryEventDetail | null>(null);
@@ -39,9 +41,9 @@ export const MemoryEventPage: React.FC = () => {
   const [zipProgress, setZipProgress] = useState(0);
 
   /* Repõe o estado ao navegar para outro evento. */
-  const [loadedSlug, setLoadedSlug] = useState(slug);
-  if (loadedSlug !== slug) {
-    setLoadedSlug(slug);
+  const [loadedKey, setLoadedKey] = useState(routeKey);
+  if (loadedKey !== routeKey) {
+    setLoadedKey(routeKey);
     setState("loading");
     setDetail(null);
     setAlbumFilter("all");
@@ -56,13 +58,14 @@ export const MemoryEventPage: React.FC = () => {
 
   useEffect(() => {
     let active = true;
-    if (!slug) return undefined;
-    Promise.all([memoryPublicApi.getEventDetail(slug), memoryPublicApi.getSettings(), memoryPublicApi.getEvents()])
+    if (!publicId && !slug) return undefined;
+    const key = publicId ? { publicId } : { slug: slug as string };
+    Promise.all([memoryPublicApi.getEventDetail(key), memoryPublicApi.getSettings(), memoryPublicApi.getEvents()])
       .then(([eventDetail, gallerySettings, events]) => {
         if (!active) return;
         setDetail(eventDetail);
         setSettings(gallerySettings);
-        setOtherEvents(events.filter((item) => item.slug !== slug).slice(0, 3));
+        setOtherEvents(events.filter((item) => item.id !== eventDetail?.event.id).slice(0, 3));
         setState(eventDetail ? "ready" : "missing");
       })
       .catch(() => {
@@ -71,7 +74,7 @@ export const MemoryEventPage: React.FC = () => {
     return () => {
       active = false;
     };
-  }, [slug]);
+  }, [publicId, slug]);
 
   const media = useMemo(() => {
     if (!detail) return [];

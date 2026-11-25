@@ -29,6 +29,7 @@ const SIGNED_URL_TTL = 60 * 60; // 1 hora
 /* ------------------------------------------------------------ linhas da BD */
 interface EventRow {
   id: string;
+  public_id: string;
   slug: string;
   title: string;
   description: string;
@@ -134,6 +135,7 @@ export function createSupabaseRepository(client: SupabaseClient): MemoryAdminRep
     const urls = await signPaths(rows.map((row) => row.cover_path));
     return rows.map((row) => ({
       id: row.id,
+      publicId: row.public_id,
       slug: row.slug,
       title: row.title,
       description: row.description,

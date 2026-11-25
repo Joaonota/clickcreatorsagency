@@ -4,6 +4,7 @@ import { Camera, ArrowRight } from "lucide-react";
 import type { MemoryEvent } from "../../data/memory";
 import { displayCover, formatEventDate } from "../../data/memory";
 import { useTranslation } from "../../i18n";
+import { memoryEventPath } from "../../lib/memoryLinks";
 
 interface EventCardProps {
   event: MemoryEvent;
@@ -16,7 +17,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, compact = false }) 
 
   return (
     <Link
-      to={`/memoria/${event.slug}`}
+      to={memoryEventPath(event.publicId)}
       className={`mem-card group ${compact ? "mem-card-compact" : ""}`}
       aria-label={`${event.title} — ${t.memory.viewGallery}`}
     >
