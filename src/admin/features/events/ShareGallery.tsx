@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import QRCode from "qrcode";
 import { Check, Copy, Download, ExternalLink, EyeOff, Lock, QrCode, Send, Share2 } from "lucide-react";
-import { memoryEventUrl } from "../../../lib/memoryLinks";
+import { memoryEventQrUrl, memoryEventUrl } from "../../../lib/memoryLinks";
 import { useToast } from "../../components/toast";
 import { StatusBadge } from "../../components/ui";
 import { eventStatusMeta } from "../../data/labels";
@@ -16,9 +16,9 @@ interface ShareGalleryProps {
 const QR_OPTIONS = { errorCorrectionLevel: "M" as const, margin: 1, color: { dark: "#090909", light: "#ffffff" } };
 
 /** Gera o PNG para impressão: QR Code grande + nome do evento, fundo branco. */
-async function buildQrPng(url: string, title: string): Promise<Blob> {
+async function buildQrPng(qrUrl: string, url: string, title: string): Promise<Blob> {
   const qr = document.createElement("canvas");
-  await QRCode.toCanvas(qr, url, { ...QR_OPTIONS, width: 1000 });
+  await QRCode.toCanvas(qr, qrUrl, { ...QR_OPTIONS, width: 1000 });
 
   const canvas = document.createElement("canvas");
   canvas.width = 1200;
@@ -58,13 +58,15 @@ export const ShareGallery: React.FC<ShareGalleryProps> = ({ event, busy, onToggl
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const url = memoryEventUrl(event.publicId);
+  /* O QR Code leva o marcador ?src=qr para contar as leituras no Dashboard. */
+  const qrUrl = memoryEventQrUrl(event.publicId);
   const isPublished = event.status === "published";
   const canShare = typeof navigator !== "undefined" && typeof navigator.share === "function";
   const isLocal = /^https?:\/\/(localhost|127\.|\[::1\])/.test(url);
 
   useEffect(() => {
-    if (canvasRef.current) void QRCode.toCanvas(canvasRef.current, url, { ...QR_OPTIONS, width: 440 });
-  }, [url]);
+    if (canvasRef.current) void QRCode.toCanvas(canvasRef.current, qrUrl, { ...QR_OPTIONS, width: 440 });
+  }, [qrUrl]);
 
   useEffect(() => {
     if (!copied) return undefined;
@@ -85,7 +87,7 @@ export const ShareGallery: React.FC<ShareGalleryProps> = ({ event, busy, onToggl
   const downloadPng = async () => {
     setDownloading(true);
     try {
-      const blob = await buildQrPng(url, event.title);
+      const blob = await buildQrPng(qrUrl, url, event.title);
       const href = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = href;

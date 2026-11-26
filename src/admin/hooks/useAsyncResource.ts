@@ -14,6 +14,14 @@ export function useAsyncResource<T>(loader: () => Promise<T>, key: string) {
   const [state, setState] = useState<ResourceState<T>>({ status: "loading", data: null, error: null });
   const [version, setVersion] = useState(0);
 
+  /* Novo pedido (key mudou): mostra o estado de carregamento em vez dos dados antigos. */
+  const requestKey = `${key}#${version}`;
+  const [activeRequest, setActiveRequest] = useState(requestKey);
+  if (activeRequest !== requestKey) {
+    setActiveRequest(requestKey);
+    if (state.status !== "loading") setState({ status: "loading", data: null, error: null });
+  }
+
   useEffect(() => {
     let active = true;
     loader()

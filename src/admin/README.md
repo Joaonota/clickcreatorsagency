@@ -61,3 +61,14 @@ Roles:
   guardado no Storage. Como o `public_id` nunca muda, o QR Code impresso continua
   válido quando se juntam fotografias ou se edita o evento.
 - `VITE_PUBLIC_SITE_URL` (opcional) fixa o domínio usado nos links/QR Codes.
+
+## Analytics (Dashboard)
+
+Migration: `supabase/migrations/0005_analytics.sql`.
+
+- **Tabela** `memory_analytics_events` (unificada): `gallery_view`, `photo_view`, `album_view`, `qr_scan`, `download` (`download_kind`: `single` · `multiple` · `album` · `all`, com `item_count`).
+  Sem dados pessoais — cada visitante é um UUID aleatório gerado no browser (`localStorage` `sym-visitor`, renovado a cada 30 dias).
+- **Escrita**: só pela função `track_memory_event` (security definer). Valida que o evento/fotografia/álbum estão publicados, fixa a data no servidor, conta visualizações repetidas do mesmo visitante uma vez a cada 30 minutos (downloads contam sempre), respeita as definições de download, limita abusos e ignora administradores autenticados. O público não lê, não altera nem apaga registos.
+- **Leitura**: RLS — só administradores (`is_memory_admin()`). Agregados pelas funções `memory_analytics_summary`, `memory_analytics_timeseries`, `memory_analytics_top_events` e `memory_analytics_top_photos` (verificam o role no servidor; execução vedada a `anon`).
+- **QR Code**: o QR Code codifica `/memoria/e/{public_id}?src=qr`. A galeria regista `qr_scan` + `gallery_view` e remove o marcador da barra de endereço (links partilhados contam como acesso normal).
+- **Frontend**: `src/services/memoryAnalytics.ts` (tracking público) e `src/admin/data/analyticsRepository.ts` (Dashboard).

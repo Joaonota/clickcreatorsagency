@@ -833,6 +833,115 @@ a.mc-cell-title:hover { text-decoration: underline; text-decoration-color: var(-
 .mc-empty-desc { margin-top: 0.3rem; color: var(--text-muted); font-size: 0.82rem; }
 .mc-empty-action { margin-top: 1.25rem; }
 
+/* ------------------------------------------------------------ analytics */
+@media (min-width: 1280px) { .mc-stats-grid-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+.mc-analytics-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.mc-analytics-dates { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.mc-analytics-dates .mc-input { width: auto; min-width: 150px; padding-top: 0.45rem; padding-bottom: 0.45rem; }
+.mc-analytics-filters-end { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; min-width: 0; flex: 0 1 300px; }
+.mc-analytics-filters-end .mc-select { flex: 1; min-width: 0; padding-top: 0.45rem; padding-bottom: 0.45rem; }
+@media (max-width: 767px) {
+  .mc-analytics-filters-end { margin-left: 0; flex: 1 1 100%; }
+  .mc-analytics-dates { flex: 1 1 100%; }
+  .mc-analytics-dates .mc-input { flex: 1; min-width: 0; }
+}
+.mc-segmented-sm button { padding: 0.3rem 0.6rem; font-size: 0.7rem; }
+.mc-analytics-filters > .mc-segmented { scrollbar-width: none; }
+.mc-analytics-filters > .mc-segmented::-webkit-scrollbar { display: none; }
+@media (max-width: 559px) {
+  .mc-analytics-filters > .mc-segmented { width: 100%; }
+  .mc-analytics-filters > .mc-segmented button { flex: 1 1 auto; padding: 0.4rem 0.4rem; font-size: 0.7rem; }
+}
+
+.mc-metric-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid var(--border); }
+@media (min-width: 640px) { .mc-metric-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.mc-metric-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.85rem 1.25rem;
+  text-align: left;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.mc-metric-tab:hover { background: var(--surface-hover); }
+.mc-metric-tab.active { border-bottom-color: var(--accent); }
+.mc-metric-tab-label { font-size: 0.68rem; font-weight: 700; color: var(--text-secondary); }
+.mc-metric-tab-value { font-family: var(--font-display); font-size: 1.6rem; line-height: 1; color: var(--text-muted); width: 100%; }
+.mc-metric-tab.active .mc-metric-tab-value { color: var(--text-primary); }
+.mc-metric-tab-value .mc-skel { height: 22px; }
+
+.mc-chart { position: relative; width: 100%; min-height: 248px; }
+.mc-chart svg { display: block; overflow: visible; }
+.mc-chart-grid { stroke: var(--border); stroke-width: 1; opacity: 0.6; }
+.mc-chart-baseline { stroke: var(--border-hover); stroke-width: 1; }
+.mc-chart-axis { fill: var(--text-muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.mc-chart-bar { fill: var(--accent); transition: opacity var(--t-fast) var(--ease); }
+.mc-chart-bar.is-dim { opacity: 0.35; }
+.mc-chart-band { fill: var(--surface-hover); }
+.mc-chart-tooltip {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.45rem 0.65rem;
+  background: var(--text-primary);
+  color: var(--background);
+  border-radius: var(--mc-radius);
+  box-shadow: var(--mc-shadow);
+  font-size: 0.74rem;
+  white-space: nowrap;
+  z-index: 2;
+}
+.mc-chart-tooltip-label { opacity: 0.75; font-size: 0.68rem; }
+.mc-chart-empty { min-height: 248px; display: flex; align-items: center; justify-content: center; }
+.mc-skel-chart { height: 248px; width: 100%; }
+
+.mc-rank { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.9rem; }
+.mc-rank-item { display: flex; align-items: flex-start; gap: 0.75rem; }
+.mc-rank-pos { font-family: var(--font-display); font-size: 1.05rem; line-height: 1.2; color: var(--text-muted); min-width: 1.6rem; font-variant-numeric: tabular-nums; }
+.mc-rank-item:first-child .mc-rank-pos { color: var(--accent); }
+.mc-rank-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.mc-rank-row { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; min-width: 0; }
+.mc-rank-title { font-weight: 600; color: var(--text-primary); min-width: 0; }
+a.mc-rank-title:hover { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+.mc-rank-value { font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mc-rank-track { display: block; height: 4px; border-radius: 999px; background: var(--surface-hover); overflow: hidden; }
+.mc-rank-track > span { display: block; height: 100%; border-radius: 999px; background: var(--accent); min-width: 0; }
+.mc-breakdown-foot { margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--text-muted); }
+.mc-breakdown-foot strong { color: var(--text-primary); }
+
+.mc-activity-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  color: var(--text-primary);
+}
+.mc-activity-body { min-width: 0; flex: 1; }
+.mc-activity-scroll { max-height: 440px; overflow-y: auto; }
+.mc-link-muted { color: inherit; }
+.mc-link-muted:hover { color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px; }
+.mc-truncate-inline { overflow-wrap: anywhere; }
+
+.mc-thumb-sm { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); }
+.mc-num { font-variant-numeric: tabular-nums; font-weight: 600; }
+.mc-table th.mc-text-right { text-align: right; }
+.mc-top-photos .mc-cell-media { max-width: 320px; }
+@media (max-width: 767px) {
+  .mc-top-photos td[data-label="Fotografia"] { display: block; padding-bottom: 0.5rem; }
+  .mc-top-photos td[data-label="Fotografia"]::before { display: none; }
+}
+
 /* ------------------------------------------------------------ skeleton */
 .mc-skel {
   display: block;

@@ -84,10 +84,10 @@ export interface PhotoFilter {
 export interface DashboardStats {
   totalEvents: number;
   publishedEvents: number;
-  draftEvents: number;
+  /** Fotografias (sem vídeos). */
   totalPhotos: number;
+  totalVideos: number;
   pendingPhotos: number;
-  downloads: number;
 }
 
 export type ActivityKind =
@@ -120,3 +120,82 @@ export interface GallerySettings {
 }
 
 export type UploadProgressHandler = (fraction: number) => void;
+
+
+/* ------------------------------------------------------------ analytics */
+export type AnalyticsEventType = "gallery_view" | "photo_view" | "album_view" | "qr_scan" | "download";
+export type DownloadKind = "single" | "multiple" | "album" | "all";
+export type AnalyticsBucket = "hour" | "day" | "week";
+/** Métricas com série temporal e ranking. */
+export type AnalyticsMetric = "gallery_views" | "photo_views" | "downloads" | "qr_scans";
+
+export interface AnalyticsRange {
+  /** ISO, inclusivo. */
+  from: string;
+  /** ISO, exclusivo. */
+  to: string;
+  bucket: AnalyticsBucket;
+}
+
+export interface AnalyticsQuery extends AnalyticsRange {
+  eventId: string | null;
+}
+
+export interface AnalyticsSummary {
+  galleryViews: number;
+  photoViews: number;
+  albumViews: number;
+  qrScans: number;
+  downloads: number;
+  downloadedFiles: number;
+  downloadsByKind: Record<DownloadKind, number>;
+  uniqueVisitors: number;
+  activeEvents: number;
+}
+
+export interface AnalyticsPoint {
+  /** Início do intervalo, hora local "yyyy-mm-ddThh:mm:ss". */
+  bucket: string;
+  values: Record<AnalyticsMetric, number>;
+}
+
+export interface TopEvent {
+  eventId: string;
+  publicId: string;
+  title: string;
+  status: EventStatus;
+  values: Record<AnalyticsMetric, number>;
+}
+
+export interface TopPhoto {
+  photoId: string;
+  fileName: string;
+  mediaType: MediaType;
+  previewUrl: string | null;
+  eventId: string;
+  eventTitle: string;
+  views: number;
+  downloads: number;
+}
+
+export interface VisitorActivity {
+  id: string;
+  type: AnalyticsEventType;
+  downloadKind: DownloadKind | null;
+  itemCount: number | null;
+  eventId: string;
+  eventTitle: string;
+  fileName: string | null;
+  createdAt: string;
+}
+
+export interface AnalyticsSnapshot {
+  summary: AnalyticsSummary;
+  series: AnalyticsPoint[];
+  topPhotos: TopPhoto[];
+}
+
+export interface EventOption {
+  id: string;
+  title: string;
+}

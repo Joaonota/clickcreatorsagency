@@ -52,7 +52,9 @@ interface SupabaseLikeError {
 export function fromSupabaseError(error: SupabaseLikeError): Error {
   switch (error.code) {
     case "PGRST205":
+    case "PGRST202":
     case "42P01":
+    case "42883":
       return new UserFacingError("O esquema da base de dados ainda não foi aplicado no Supabase.");
     case "42501":
     case "PGRST301":

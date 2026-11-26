@@ -241,13 +241,12 @@ export function createSupabaseRepository(client: SupabaseClient): MemoryAdminRep
 
     /* ---------------------------------------------------- dashboard */
     async getDashboard() {
-      const [totalEvents, publishedEvents, draftEvents, totalPhotos, pendingPhotos, downloads] = await Promise.all([
+      const [totalEvents, publishedEvents, totalPhotos, totalVideos, pendingPhotos] = await Promise.all([
         count("memory_events"),
         count("memory_events", ["status", "published"]),
-        count("memory_events", ["status", "draft"]),
-        count("memory_photos"),
+        count("memory_photos", ["media_type", "image"]),
+        count("memory_photos", ["media_type", "video"]),
         count("memory_photos", ["status", "pending_review"]),
-        count("memory_downloads"),
       ]);
       const activityRows = unwrap(
         await client
@@ -273,7 +272,7 @@ export function createSupabaseRepository(client: SupabaseClient): MemoryAdminRep
       }));
 
       return {
-        stats: { totalEvents, publishedEvents, draftEvents, totalPhotos, pendingPhotos, downloads },
+        stats: { totalEvents, publishedEvents, totalPhotos, totalVideos, pendingPhotos },
         recentActivity,
       };
     },

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Camera, CalendarDays, Download, Loader2, MapPin, Sparkles } from "lucide-react";
 import { EventCard } from "../../components/memory/EventCard";
 import { PhotoMasonry } from "../../components/memory/PhotoMasonry";
@@ -9,6 +9,8 @@ import { Reveal } from "../../hooks/useReveal";
 import { useTranslation } from "../../i18n";
 import { memoryPublicApi } from "../../services/memoryPublicApi";
 import { downloadEventPhotosZip, openDownloadUrl } from "../../services/memoryZip";
+import { trackMemoryEvent } from "../../services/memoryAnalytics";
+import { QR_SOURCE_PARAM, QR_SOURCE_VALUE } from "../../lib/memoryLinks";
 import { formatEventDate } from "../../data/memory";
 import type { MemoryEvent, MemoryEventDetail, MemorySettings } from "../../data/memory";
 
@@ -27,6 +29,9 @@ export const MemoryEventPage: React.FC = () => {
   const { publicId, slug } = useParams<{ publicId?: string; slug?: string }>();
   const routeKey = publicId ? `p:${publicId}` : slug ? `s:${slug}` : "";
   const { t, lang } = useTranslation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  /* Entrada pelo QR Code (?src=qr): guardada uma vez, para a rota em que chegou. */
+  const [qrEntryKey] = useState(() => (searchParams.get(QR_SOURCE_PARAM) === QR_SOURCE_VALUE ? routeKey : null));
 
   const [detail, setDetail] = useState<MemoryEventDetail | null>(null);
   const [settings, setSettings] = useState<MemorySettings>({ allowDownloads: false, allowZipDownloads: false });
@@ -76,10 +81,42 @@ export const MemoryEventPage: React.FC = () => {
     };
   }, [publicId, slug]);
 
+  /* Analytics: acesso à galeria e, se veio do QR Code, leitura do QR Code. */
+  const trackedPublicId = detail?.event.publicId ?? "";
+  useEffect(() => {
+    if (!trackedPublicId) return;
+    trackMemoryEvent("gallery_view", trackedPublicId);
+    if (qrEntryKey === routeKey) trackMemoryEvent("qr_scan", trackedPublicId);
+  }, [trackedPublicId, qrEntryKey, routeKey]);
+
+  /* Remove o marcador do QR Code da barra de endereço (links partilhados contam como acesso normal). */
+  const hasQrParam = searchParams.has(QR_SOURCE_PARAM);
+  useEffect(() => {
+    if (!hasQrParam) return;
+    setSearchParams(
+      (params) => {
+        params.delete(QR_SOURCE_PARAM);
+        return params;
+      },
+      { replace: true }
+    );
+  }, [hasQrParam, setSearchParams]);
+
+  /* Analytics: álbum aberto (quando o evento tem mais de um álbum). */
+  useEffect(() => {
+    if (trackedPublicId && albumFilter !== "all") trackMemoryEvent("album_view", trackedPublicId, { albumId: albumFilter });
+  }, [trackedPublicId, albumFilter]);
+
   const media = useMemo(() => {
     if (!detail) return [];
     return albumFilter === "all" ? detail.media : detail.media.filter((item) => item.albumId === albumFilter);
   }, [detail, albumFilter]);
+
+  /* Analytics: fotografia/vídeo visualizado no lightbox. */
+  const viewedPhotoId = lightboxIndex === null ? null : media[lightboxIndex]?.id ?? null;
+  useEffect(() => {
+    if (trackedPublicId && viewedPhotoId) trackMemoryEvent("photo_view", trackedPublicId, { photoId: viewedPhotoId });
+  }, [trackedPublicId, viewedPhotoId]);
 
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
   const stepLightbox = useCallback(
@@ -99,11 +136,14 @@ export const MemoryEventPage: React.FC = () => {
     setItemBusy(true);
     try {
       const url = await memoryPublicApi.getDownloadUrl(item);
-      if (url) openDownloadUrl(url);
+      if (url) {
+        openDownloadUrl(url);
+        if (detail) trackMemoryEvent("download", detail.event.publicId, { photoId: item.id, downloadKind: "single" });
+      }
     } finally {
       setItemBusy(false);
     }
-  }, [lightboxIndex, media]);
+  }, [lightboxIndex, media, detail]);
 
   const photoCount = media.filter((item) => item.type === "image").length;
 
@@ -117,6 +157,12 @@ export const MemoryEventPage: React.FC = () => {
         setZipProgress(Math.round((progress.done / progress.total) * 100));
         if (progress.done > 0) setZipMessage(t.memory.event.downloading);
       });
+      /* Analytics: ZIP de todas as fotografias ou de um álbum. */
+      trackMemoryEvent("download", detail.event.publicId, {
+        downloadKind: albumFilter === "all" ? "all" : "album",
+        albumId: albumFilter === "all" ? undefined : albumFilter,
+        itemCount: included,
+      });
       if (included === photoCount) {
         setZipStatus("done");
         setZipMessage(t.memory.event.zipDone);
@@ -128,7 +174,7 @@ export const MemoryEventPage: React.FC = () => {
       setZipStatus("failed");
       setZipMessage(t.memory.event.zipFailed);
     }
-  }, [detail, media, photoCount, zipStatus, t]);
+  }, [detail, media, photoCount, zipStatus, albumFilter, t]);
 
   if (state === "loading") {
     return (

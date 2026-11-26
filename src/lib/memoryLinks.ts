@@ -16,3 +16,11 @@ export function publicSiteOrigin(): string {
 
 /** URL absoluta da galeria, pronta para copiar, partilhar e codificar no QR Code. */
 export const memoryEventUrl = (publicId: string) => `${publicSiteOrigin()}${memoryEventPath(publicId)}`;
+
+/** Marcador que identifica as entradas pelo QR Code (contadas como "QR Code escaneado"). */
+export const QR_SOURCE_PARAM = "src";
+export const QR_SOURCE_VALUE = "qr";
+
+/** URL codificada no QR Code: a mesma galeria, com o marcador de origem. */
+export const memoryEventQrUrl = (publicId: string) =>
+  `${memoryEventUrl(publicId)}?${QR_SOURCE_PARAM}=${QR_SOURCE_VALUE}`;

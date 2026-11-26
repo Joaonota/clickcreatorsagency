@@ -34,9 +34,11 @@ interface StatCardProps {
   value: number | null;
   loading?: boolean;
   accent?: boolean;
+  /** Texto curto por baixo do valor (ex.: período ou detalhe). */
+  caption?: string;
 }
 
-export const StatCard: React.FC<StatCardProps> = ({ icon: Icon, label, value, loading, accent }) => (
+export const StatCard: React.FC<StatCardProps> = ({ icon: Icon, label, value, loading, accent, caption }) => (
   <div className={`mc-stat ${accent ? "mc-stat-accent" : ""}`}>
     <div className="mc-stat-top">
       <span className="mc-stat-label">{label}</span>
@@ -52,7 +54,10 @@ export const StatCard: React.FC<StatCardProps> = ({ icon: Icon, label, value, lo
         <span className="mc-stat-caption">Sem dados disponíveis</span>
       </div>
     ) : (
-      <span className="mc-stat-value">{value.toLocaleString("pt-PT")}</span>
+      <div>
+        <span className="mc-stat-value">{value.toLocaleString("pt-PT")}</span>
+        {caption && <span className="mc-stat-caption">{caption}</span>}
+      </div>
     )}
   </div>
 );
